@@ -7,10 +7,8 @@ import { ListingPayload } from "./types";
 import * as express from "express";
 import { validateListing } from "./schema";
 import { addListing, getListings, isDuplicateListing } from "./persistence";
-import * as cors from "cors";
 
 const app = express();
-app.use(cors());
 admin.initializeApp(functions.config().firebase);
 
 
@@ -36,7 +34,7 @@ app.post("/listings",
 
                 await addListing(payload);
                 functions.logger.debug(`Successfully Posted: ${JSON.stringify(payload)}`);
-                response.sendStatus(200);
+                response.sendStatus(200).setHeader("Access-Control-Allow-Origin", "*");
                 break;
             }
             default: {
@@ -58,7 +56,7 @@ app.get("/:region/:realm/items", async (request, response) => {
             break;
         }
         default: {
-            response.sendStatus(405);
+            response.sendStatus(405).setHeader("Access-Control-Allow-Origin", "*");
             break;
         }
     }
@@ -77,7 +75,7 @@ app.get("/:region/:realm/item/:itemId", async (request, response) => {
             break;
         }
         default: {
-            response.sendStatus(405);
+            response.sendStatus(405).setHeader("Access-Control-Allow-Origin", "*");
             break;
         }
     }

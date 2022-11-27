@@ -9,7 +9,7 @@ export interface Seller {
 
 export interface Listing {
     id: string;
-    sellerId: string; // Seller ID
+    seller: Seller; // TODO: Should probably split off into a disjoint collection
     item: number; // Item ID
     commission: number;
 }

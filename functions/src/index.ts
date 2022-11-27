@@ -1,55 +1,39 @@
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
-import {Listing} from "./types";
+import { Listing } from "./types";
+import * as express from "express";
+
+const app = express();
+
 admin.initializeApp(functions.config().firebase);
 
 const LISTINGS_COLLECTION = "listings";
-const SELLERS_COLLECTION = "sellers";
 
-// // Start writing functions
-// // https://firebase.google.com/docs/functions/typescript
+// 1. Create Listing - <region, server, item, character, commission> tuple
 
-// Create <region, server, item, character, commission> tuple
+// 2. Get Items for Realm
+app.get("/:region/:realm/items", async (request, response) => {
+    const db = admin.firestore();
+    switch (request.method) {
+        case "GET": {
+            const listings = (await db.collection(LISTINGS_COLLECTION).get()).docs.map(doc => {
+                return doc.data() as Listing;
+            })
 
-// Get list of items for a given <region, realm> tuple
-export const items = functions.https.onRequest(async (request, response) => {
-  const db = admin.firestore();
-  switch (request.method) {
-    case "GET": {
-      const region = request.body.region;
-      const realm = request.body.realm;
-      const listings = (await db.collection(LISTINGS_COLLECTION).get()).docs.map(doc => {
-
-        return {
-          id: doc.id;
-          sellerId: doc.sellerId;
-        } as Listing;
-      })
-      const sellers = await db.collection(SELLERS_COLLECTION).get();
-
-      const itemsInRealm = listings.docs
-          .filter(listing => {
-            const seller = sellers.docs.find(seller => seller.id === listing.seller);
-            if (!seller) {
-              response.status(400).send(`Unable to find seller with id ${listing.seller}`)
-              return;
-            }
-          })
-
-      response.send();
-
-      const returnValue = "Hello from Firebase!";
-      functions.logger.info("Returning ", returnValue);
-      response.send("Returning " + returnValue);
-      break;
+            response.send(listings.filter(listing => {
+                return listing.seller.region === request.params.region &&
+                    listing.seller.realm === request.params.realm
+            }));
+            break;
+        }
+        default: {
+            functions.logger.warn(`Illegal method ${request.method} on endpoint /items`);
+            response.sendStatus(405);
+            break;
+        }
     }
-    default: {
-      functions.logger.warn(`Illegal method ${request.method} on endpoint /items`);
-      response.sendStatus(405);
-      break;
-    }
-  }
 });
 
-// Get sellers for a given item
+// 3. Get Listings for Item
 
+exports.app = functions.https.onRequest(app);

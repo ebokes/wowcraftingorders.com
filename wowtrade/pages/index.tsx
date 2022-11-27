@@ -1,8 +1,11 @@
 import Head from 'next/head'
 import styles from '../styles/Home.module.css'
-import { Col, Form, Row } from "react-bootstrap";
+import { useState } from "react";
+import ListingsList from "../components/ListingsList";
 
 export default function Home() {
+    const [region, setRegion] = useState("en");
+    const [realm, setRealm] = useState("thrall");
 
     return (
         <div className={styles.container}>
@@ -13,24 +16,7 @@ export default function Home() {
             </Head>
 
             <main className={styles.main}>
-                <Form>
-                    <Row>
-                        <Col md={6}><Form.Group>
-                            <Form.Label>Region</Form.Label>
-                            <Form.Control as="select">
-                                <option>en</option>
-                                <option>eu</option>
-                            </Form.Control>
-                        </Form.Group></Col>
-                        <Col md={6}><Form.Group>
-                            <Form.Label>Server</Form.Label>
-                            <Form.Control as="select">
-                                <option>en</option>
-                                <option>eu</option>
-                            </Form.Control>
-                        </Form.Group></Col>
-                    </Row>
-                </Form>
+                <ListingsList region={region} realm={realm}/>
             </main>
         </div>
     )

@@ -34,7 +34,9 @@ app.post("/listings",
 
                 await addListing(payload);
                 functions.logger.debug(`Successfully Posted: ${JSON.stringify(payload)}`);
-                response.sendStatus(200).setHeader("Access-Control-Allow-Origin", "*");
+
+                // TODO: Modify CORS to point towards my actual domain
+                response.setHeader("Access-Control-Allow-Origin", "*").sendStatus(200);
                 break;
             }
             default: {
@@ -56,7 +58,7 @@ app.get("/:region/:realm/items", async (request, response) => {
             break;
         }
         default: {
-            response.sendStatus(405).setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Access-Control-Allow-Origin", "*").sendStatus(405);
             break;
         }
     }
@@ -75,7 +77,7 @@ app.get("/:region/:realm/item/:itemId", async (request, response) => {
             break;
         }
         default: {
-            response.sendStatus(405).setHeader("Access-Control-Allow-Origin", "*");
+            response.setHeader("Access-Control-Allow-Origin", "*").sendStatus(405);
             break;
         }
     }

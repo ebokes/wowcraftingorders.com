@@ -26,7 +26,6 @@ const schema: JSONSchemaType<ListingPayload> = {
                 battleNetTag: {
                     type: "string",
                     nullable: true,
-                    // eslint-disable-next-line max-len
                     pattern: "(^([A-zÀ-ú][A-zÀ-ú0-9]{2,11})|(^([а-яёА-ЯЁÀ-ú][а-яёА-ЯЁ0-9À-ú]{2,11})))(#[0-9]{4,})$", // https://eu.forums.blizzard.com/en/blizzard/t/battle-tag-regex-expression/444
                 },
             },

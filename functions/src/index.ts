@@ -26,7 +26,6 @@ app.post("/listings",
                 }
 
                 // Check to see if duplicate
-                // eslint-disable-next-line max-len
                 // TODO: If I check for this, users need a way to delete and re-list. This requires some form of authentication - it's probably better to just go straight for Battle.net instead of trying Firebase.
                 if (await isDuplicateListing(payload)) {
                     response.sendStatus(409);

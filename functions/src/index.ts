@@ -59,7 +59,7 @@ app.get("/:region/:realm/items", async (request, response) => {
 });
 
 // 3. Get Listings for Item
-app.get("/:region/:realm/:itemId", async (request, response) => {
+app.get("/:region/:realm/item/:itemId", async (request, response) => {
     const db = admin.firestore();
     switch (request.method) {
         case "GET": {

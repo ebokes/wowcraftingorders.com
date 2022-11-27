@@ -7,8 +7,10 @@ import { ListingPayload } from "./types";
 import * as express from "express";
 import { validateListing } from "./schema";
 import { addListing, getListings, isDuplicateListing } from "./persistence";
+import * as cors from "cors";
 
 const app = express();
+app.use(cors());
 admin.initializeApp(functions.config().firebase);
 
 

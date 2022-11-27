@@ -3,8 +3,8 @@
   "scripts": {
     "lint": "eslint --ext .js,.ts .",
     "build": "tsc",
-    "build:watch": "tsc --watch",
-    "serve": "npm run build && firebase emulators:start --only functions",
+    "build:watch": "tsc --watch --preserveWatchOutput",
+    "serve": "npm run build:watch | firebase emulators:start --only functions",
     "shell": "npm run build && firebase functions:shell",
     "start": "npm run shell",
     "deploy": "firebase deploy --only functions",
@@ -15,6 +15,7 @@
   },
   "main": "lib/index.js",
   "dependencies": {
+    "ajv": "^8.11.2",
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^4.1.0"
   },

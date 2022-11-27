@@ -4,15 +4,15 @@ import { Listing, ListingPayload } from "./types";
 const LISTINGS_COLLECTION = "listings";
 export const getListings = async () => {
     const db = admin.firestore();
-    return (await db.collection(LISTINGS_COLLECTION).get()).docs.map(doc => {
+    return (await db.collection(LISTINGS_COLLECTION).get()).docs.map((doc) => {
         return doc.data() as Listing;
-    })
-}
+    });
+};
 
 export const addListing = async (listing: ListingPayload) => {
     const db = admin.firestore();
     await db.collection(LISTINGS_COLLECTION).add(listing);
-}
+};
 
 export const isDuplicateListing = async (listing: ListingPayload) => {
     const db = admin.firestore();
@@ -23,4 +23,4 @@ export const isDuplicateListing = async (listing: ListingPayload) => {
         .where("itemId", "==", listing.itemId)
         .get();
     return listings.docs.length > 0;
-}
+};

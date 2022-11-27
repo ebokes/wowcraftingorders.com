@@ -17,7 +17,6 @@ app.post("/listings",
     async (request, response) => {
         switch (request.method) {
             case "POST": {
-
                 // Validate payload
                 const payload = request.body as ListingPayload;
                 const valid = validateListing(payload);
@@ -27,6 +26,7 @@ app.post("/listings",
                 }
 
                 // Check to see if duplicate
+                // eslint-disable-next-line max-len
                 // TODO: If I check for this, users need a way to delete and re-list. This requires some form of authentication - it's probably better to just go straight for Battle.net instead of trying Firebase.
                 if (await isDuplicateListing(payload)) {
                     response.sendStatus(409);
@@ -50,9 +50,9 @@ app.get("/:region/:realm/items", async (request, response) => {
     switch (request.method) {
         case "GET": {
             const listings = await getListings();
-            response.send(listings.filter(listing => {
+            response.send(listings.filter((listing) => {
                 return listing.seller.region === request.params.region &&
-                    listing.seller.realm === request.params.realm
+                    listing.seller.realm === request.params.realm;
             }));
             break;
         }
@@ -68,10 +68,10 @@ app.get("/:region/:realm/item/:itemId", async (request, response) => {
     switch (request.method) {
         case "GET": {
             const listings = await getListings();
-            response.send(listings.filter(listing => {
+            response.send(listings.filter((listing) => {
                 return listing.seller.region === request.params.region &&
                     listing.seller.realm === request.params.realm &&
-                    listing.itemId === parseInt(request.params.itemId)
+                    listing.itemId === parseInt(request.params.itemId);
             }));
             break;
         }

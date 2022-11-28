@@ -6,8 +6,8 @@ import { Col } from "react-bootstrap";
 import { SWRConfig } from "swr";
 
 let ROOT_URL: string;
-if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development' && false) {
-    ROOT_URL = 'http://localhost:5001';
+if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    ROOT_URL = 'http://localhost:5001/wowtrade/us-central1/app';
 } else {
     ROOT_URL = 'https://wowtrade.web.app';
 }
@@ -31,10 +31,9 @@ export default function App({ Component, pageProps }: AppProps) {
         `}
         </Script>
 
-        <Script
-            id={'custom'}
-        >{`if (typeof(whTooltips) === undefined) { var whTooltips = {colorLinks: true, iconizeLinks: true, renameLinks: true}; }`}</Script>
-        <Script src={'https://wow.zamimg.com/js/tooltips.js'}/>
+        <script
+            id={'custom'}>{`var whTooltips = whTooltips || { colorLinks: true, iconizeLinks: true, renameLinks: true};`}</script>
+        <Script strategy={"afterInteractive"} src={'https://wow.zamimg.com/js/tooltips.js'}/>
 
         <Col md={2}></Col>
         <Col md={8}>

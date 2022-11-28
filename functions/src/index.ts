@@ -9,7 +9,7 @@ import { validateListing } from "./schema";
 import { addListing, getListings, isDuplicateListing } from "./persistence";
 import * as cors from "cors";
 
-const corsObject = cors();
+const corsObject = cors({ origin: true });
 
 const app = express();
 admin.initializeApp(functions.config().firebase);
@@ -38,9 +38,7 @@ app.post("/listings",
 
                     await addListing(payload);
                     functions.logger.debug(`Successfully Posted: ${JSON.stringify(payload)}`);
-
-                    // TODO: Modify CORS to point towards my actual domain
-                    response.setHeader("Access-Control-Allow-Origin", "*").sendStatus(200);
+                    response.send(201);
                     break;
                 }
                 default: {
@@ -58,14 +56,14 @@ app.get("/:region/:realm/items", async (request, response) => {
         switch (request.method) {
             case "GET": {
                 const listings = await getListings();
-                response.send(listings.filter((listing) => {
+                response.header("Access-Control-Allow-Origin", "*").send(listings.filter((listing) => {
                     return listing.seller.region === request.params.region &&
                         listing.seller.realm === request.params.realm;
                 }));
                 break;
             }
             default: {
-                response.setHeader("Access-Control-Allow-Origin", "*").sendStatus(405);
+                response.sendStatus(405);
                 break;
             }
         }
@@ -86,7 +84,7 @@ app.get("/:region/:realm/item/:itemId", async (request, response) => {
                 break;
             }
             default: {
-                response.setHeader("Access-Control-Allow-Origin", "*").sendStatus(405);
+                response.sendStatus(405);
                 break;
             }
         }

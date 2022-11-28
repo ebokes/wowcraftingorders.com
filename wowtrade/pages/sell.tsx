@@ -4,8 +4,13 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { ListingPayload } from "../types/types";
 import { ROOT_URL } from "./_app";
+import { useSession } from "next-auth/react";
 
 export default function Sell() {
+
+    const session = useSession();
+    console.log("session: ", session);
+
     const [region, setRegion] = useState<string>("en");
     const [realm, setRealm] = useState<string>(REALM_LIST[0]);
     const [search, setSearch] = useState<string>("");

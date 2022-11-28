@@ -7,7 +7,7 @@ name: Deploy to Firebase Hosting on merge
     branches:
       - master
 jobs:
-  build_and_deploy:
+  deploy-functions:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -24,9 +24,12 @@ jobs:
           name: "app"
           entry_point: "app"
           runtime: "nodejs16"
-      - uses: FirebaseExtended/action-hosting-deploy@v0
-        with:
-          repoToken: '${{ secrets.GITHUB_TOKEN }}'
-          firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_WOWTRADE }}'
-          channelId: live
-          projectId: wowtrade
+
+  deploy-hosting:
+    - uses: actions/checkout@v3
+    - uses: FirebaseExtended/action-hosting-deploy@v0
+      with:
+        repoToken: '${{ secrets.GITHUB_TOKEN }}'
+        firebaseServiceAccount: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_WOWTRADE }}'
+        channelId: live
+        projectId: wowtrade

@@ -66,7 +66,7 @@ app.get("/:region/:realm/items", async (request, response) => {
         switch (request.method) {
             case "GET": {
                 const listings = await getListings();
-                response.header("Access-Control-Allow-Origin", "*").send(listings.filter((listing) => {
+                response.send(listings.filter((listing) => {
                     return listing.seller.region === request.params.region &&
                         listing.seller.realm === request.params.realm;
                 }));

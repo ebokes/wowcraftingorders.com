@@ -47,6 +47,10 @@ export default function ListingsList({ region, realm, search }: Props) {
                             {listing.commission.silver}<span style={{ color: "#C0C0C0" }}>s</span>{" "}
                             {listing.commission.copper}<span style={{ color: "#B87333" }}>c</span></p>
                         <p className={"m-0"}><b>Seller:</b> {listing.seller.characterName}</p>
+                        {listing.seller.discordTag &&
+                            <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.discordTag}</p>}
+                        {listing.seller.battleNetTag &&
+                            <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.battleNetTag}</p>}
                     </ListGroup.Item>
                 ))}
         </ListGroup>

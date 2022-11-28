@@ -12,10 +12,6 @@ import * as cors from 'cors';
 const corsHandler = cors({ origin: true });
 
 const app = express();
-app.use((req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
-    next();
-});
 
 admin.initializeApp(functions.config().firebase);
 
@@ -104,6 +100,11 @@ app.get("/:region/:realm/item/:itemId", async (request, response) => {
             }
         }
     });
+});
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
 });
 
 exports.app = functions.https.onRequest(app);

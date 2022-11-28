@@ -12,10 +12,11 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: cd functions && npm ci && npm run build
-      - uses: "google-github-actions/auth@v0"
+      - id: 'auth'
+        uses: 'google-github-actions/auth@v1'
         with:
           workload_identity_provider: "projects/151006879681/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
-          service_account: '${{ secrets.FIREBASE_SERVICE_ACCOUNT_WOWTRADE }}'
+          service_account: 'firebase-adminsdk-mtzhg@wowtrade.iam.gserviceaccount.com'
       - uses: 'google-github-actions/deploy-cloud-functions@v1'
         with:
           name: 'app'

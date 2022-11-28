@@ -17,7 +17,7 @@ admin.initializeApp(functions.config().firebase);
 // 1. Create Listing - <region, server, item, character, commission> tuple
 app.post("/listings",
     async (request, response) => {
-        cors(request, response, async () => {
+        return cors(request, response, async () => {
             switch (request.method) {
                 case "POST": {
                     // Validate payload
@@ -57,7 +57,7 @@ app.post("/listings",
 
 // 2. Get Items for Realm
 app.get("/:region/:realm/items", async (request, response) => {
-    cors(request, response, async () => {
+    return cors(request, response, async () => {
         switch (request.method) {
             case "GET": {
                 const listings = await getListings();
@@ -75,7 +75,7 @@ app.get("/:region/:realm/items", async (request, response) => {
 
 // 3. Get Listings for Item
 app.get("/:region/:realm/item/:itemId", async (request, response) => {
-    cors(request, response, async () => {
+    return cors(request, response, async () => {
         switch (request.method) {
             case "GET": {
                 const listings = await getListings();

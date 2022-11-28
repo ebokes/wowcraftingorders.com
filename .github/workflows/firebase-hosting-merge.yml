@@ -8,6 +8,9 @@ name: Deploy to Firebase Hosting on merge
       - master
 jobs:
   deploy-functions:
+    defaults:
+      run:
+        working-directory: functions
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -18,7 +21,6 @@ jobs:
         with:
           credentials_json: '${{ secrets.GOOGLE_SERVICE_ACCOUNT }}'
       - id: "deploy"
-        uses: "google-github-actions/deploy-cloud-functions@v0"
         working-directory: "functions"
         with:
           name: "app"

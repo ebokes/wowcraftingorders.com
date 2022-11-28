@@ -9,8 +9,6 @@ import { validateListing } from "./ListingSchema";
 import { addListing, getListings, isDuplicateListing } from "./persistence";
 
 const cors = require('cors')({ origin: true });
-
-
 const app = express();
 app.use(cors);
 

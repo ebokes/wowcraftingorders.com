@@ -1,9 +1,11 @@
 import { ListingPayload } from "./types";
 import Ajv, { JSONSchemaType } from "ajv";
 
-const ajv = new Ajv();
+const ajv = new Ajv({ allErrors: true });
 
-const schema: JSONSchemaType<ListingPayload> = {
+require("ajv-errors")(ajv, { singleError: true });
+
+export const ListingSchema: JSONSchemaType<ListingPayload> = {
     type: "object",
     properties: {
         itemId: { type: "number", minimum: 0 },
@@ -30,8 +32,31 @@ const schema: JSONSchemaType<ListingPayload> = {
                 },
             },
             required: ["region", "realm", "characterName"],
+            errorMessage: {
+                required: {
+                    region: "Region is required.",
+                    realm: "Realm is required.",
+                    characterName: "Character Name is required.",
+                },
+                properties: {
+                    region: "Region must be a valid region.",
+                    realm: "Realm must be a valid realm.",
+                    characterName: "Character Name must be a valid character name.",
+                    discordTag: "Discord Tag must be a valid Discord Tag.",
+                    battleNetTag: "Battle.net Tag must be a valid Battle.net Tag.",
+                }
+            }
         },
     },
     required: ["itemId", "commission", "seller"],
+    errorMessage: {
+        required: {
+            itemId: "Item ID is required.",
+            commission: "Commission is required.",
+        },
+        properties: {
+            itemId: "Item ID must be a valid Item ID.",
+        },
+    }
 };
-export const validateListing = ajv.compile(schema);
+export const validateListing = ajv.compile(ListingSchema);

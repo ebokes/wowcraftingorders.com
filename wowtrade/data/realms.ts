@@ -1,4 +1,4 @@
-export const SERVER_LIST = [
+export const REALM_LIST = [
     "Aegwynn",
     "Aerie Peak",
     "Agamaggan",

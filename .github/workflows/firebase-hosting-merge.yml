@@ -19,6 +19,7 @@ jobs:
           credentials_json: '${{ secrets.GOOGLE_SERVICE_ACCOUNT }}'
       - id: "deploy"
         uses: "google-github-actions/deploy-cloud-functions@v0"
+        working-directory: "functions"
         with:
           name: "app"
           entry_point: "app"

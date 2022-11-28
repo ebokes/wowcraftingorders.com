@@ -34,7 +34,7 @@ export default function Sell() {
         };
     }, [region, realm, search, characterName, discordTag, battleNetTag, gold, silver, copper]);
 
-    if (!session.status === "authenticated") {
+    if (session.status !== "authenticated") {
         return (
             <p>Please sign in to submit a listing. This helps ensure people can only post listings for characters they
                 own.</p>

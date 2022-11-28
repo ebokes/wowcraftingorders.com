@@ -20,7 +20,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
         {/* TODO: Update measurement ID once I choose a domain */}
         <Script
             strategy="lazyOnload"
-            src={`https://www.googletagmanager.com/gtag/js?id=ABCD`}
+            src={`https://www.googletagmanager.com/gtag/js?id=G-M4VZ4J6S5J`}
         />
         <Script strategy="lazyOnload" id="ga-script">
             {`

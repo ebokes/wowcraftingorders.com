@@ -86,4 +86,4 @@ app.get("/:region/:realm/item/:itemId", async (request, response) => {
     }
 });
 
-exports.app = functions.https.onRequest(app);
+exports.app = functions.region("us-central1").https.onRequest(app);

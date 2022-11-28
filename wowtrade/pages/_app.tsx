@@ -39,7 +39,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <CustomNavbar/>
         <Container>
             <SWRConfig value={{
-                fetcher: (url) => fetch(ROOT_URL + url).then(r => r.json())
+                fetcher: (url) => fetch(ROOT_URL + url, {
+                    mode: "cors",
+                }).then(r => r.json())
             }}>
                 <Component {...pageProps} />
             </SWRConfig>

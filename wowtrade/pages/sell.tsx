@@ -69,6 +69,7 @@ export default function Sell() {
         try {
             const response = await fetch(`${ROOT_URL}/listings`, {
                 method: "POST",
+                mode: "cors",
                 headers: {
                     "Content-Type": "application/json",
                 },

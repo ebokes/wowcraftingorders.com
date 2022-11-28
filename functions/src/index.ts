@@ -12,6 +12,11 @@ import * as cors from 'cors';
 const corsHandler = cors({ origin: true });
 
 const app = express();
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    next();
+});
+
 admin.initializeApp(functions.config().firebase);
 
 // 1. Create Listing - <region, server, item, character, commission> tuple

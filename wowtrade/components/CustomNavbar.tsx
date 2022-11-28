@@ -1,8 +1,11 @@
 import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
+import { signIn, signOut, useSession } from "next-auth/react";
+import { Button } from "react-bootstrap";
 
 export default function BasicNavbar() {
+    const { data: session } = useSession();
     return (
         <Navbar bg="light" expand="lg">
             <Container>
@@ -25,6 +28,10 @@ export default function BasicNavbar() {
                         {/*    </NavDropdown.Item>*/}
                         {/*</NavDropdown>*/}
                     </Nav>
+                </Navbar.Collapse>
+                <Navbar.Collapse className="justify-content-end">
+                    {!session && <Button onClick={() => signIn()}>Sign In to Battle.net</Button>}
+                    {session && <Button onClick={() => signOut()}>Sign Out</Button>}
                 </Navbar.Collapse>
             </Container>
         </Navbar>

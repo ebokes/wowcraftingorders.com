@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { SWRConfig } from "swr";
 import CustomNavbar from "../components/CustomNavbar";
 import Container from "react-bootstrap/Container";
+import { SessionProvider } from "next-auth/react"
 
 export let ROOT_URL: string;
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -13,7 +14,7 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     ROOT_URL = 'https://wowtrade.web.app';
 }
 
-export default function App({ Component, pageProps }: AppProps) {
+export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     return <div>
 
         {/* TODO: Update measurement ID once I choose a domain */}
@@ -36,17 +37,19 @@ export default function App({ Component, pageProps }: AppProps) {
             id={'custom'}>{`var whTooltips = whTooltips || { colorLinks: true, iconizeLinks: true, renameLinks: true};`}</script>
         <Script strategy={"beforeInteractive"} src={'https://wow.zamimg.com/js/tooltips.js'}/>
 
-        <CustomNavbar/>
-        <Container>
+
+        <SessionProvider session={session}>
             <SWRConfig value={{
                 fetcher: (url) => fetch(ROOT_URL + url, {
                     mode: "cors",
                 }).then(r => r.json())
             }}>
-                <Component {...pageProps} />
+                <CustomNavbar/>
+                <Container>
+                    <Component {...pageProps} />
+                </Container>
             </SWRConfig>
-        </Container>
-
+        </SessionProvider>
 
     </div>
 }

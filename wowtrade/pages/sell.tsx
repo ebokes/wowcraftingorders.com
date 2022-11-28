@@ -30,6 +30,7 @@ export default function Sell() {
         };
     }, [region, realm, search, characterName, discordTag, battleNetTag, gold, silver, copper]);
 
+
     const isValid = () => {
         const errors = [];
         if (!region) errors.push("Region is required.");
@@ -119,8 +120,6 @@ export default function Sell() {
                         }}>
                             <option value="en">EN (Americas)</option>
                             <option value="eu">EU (Europe)</option>
-                            <option value="kr">KR (Korea)</option>
-                            <option value="tw">TW (Taiwan)</option>
                         </Form.Control>
                     </Col>
                     <Col>

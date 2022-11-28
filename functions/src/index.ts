@@ -9,97 +9,90 @@ import { validateListing } from "./ListingSchema";
 import { addListing, getListings, isDuplicateListing } from "./persistence";
 import * as cors from 'cors';
 
-const corsHandler = cors({ origin: true });
-
 const app = express();
+app.use(cors({ origin: true }));
 
 admin.initializeApp(functions.config().firebase);
 
 // 1. Create Listing - <region, server, item, character, commission> tuple
 app.post("/listings",
     async (request, response) => {
-        corsHandler(request, response, async () => {
-            switch (request.method) {
-                case "POST": {
-                    // Validate payload
-                    const payload = request.body as ListingPayload;
-                    let valid = validateListing(payload);
+        switch (request.method) {
+            case "POST": {
+                // Validate payload
+                const payload = request.body as ListingPayload;
+                let valid = validateListing(payload);
 
-                    // Manually handling because the logic is a bit complicated
-                    // TODO: See if I can build this directly into AJV
-                    if (!payload.commission.gold && !payload.commission.silver && !payload.commission.copper) {
-                        valid = false;
-                        response.status(400).send([{ message: "Commission must be nonzero." }]);
-                        return;
-                    } else if (!valid) {
-                        if (!validateListing.errors) {
-                            functions.logger.error(`Unknown issue validating Listing payload: ${JSON.stringify(payload)}`)
-                            response.status(400).send([{ message: "Unknown error. Please verify all fields are filled out and correct." }]);
-                        } else {
-                            response.status(400).send(validateListing.errors);
-                        }
-                        return;
+                // Manually handling because the logic is a bit complicated
+                // TODO: See if I can build this directly into AJV
+                if (!payload.commission.gold && !payload.commission.silver && !payload.commission.copper) {
+                    valid = false;
+                    response.status(400).send([{ message: "Commission must be nonzero." }]);
+                    return;
+                } else if (!valid) {
+                    if (!validateListing.errors) {
+                        functions.logger.error(`Unknown issue validating Listing payload: ${JSON.stringify(payload)}`)
+                        response.status(400).send([{ message: "Unknown error. Please verify all fields are filled out and correct." }]);
+                    } else {
+                        response.status(400).send(validateListing.errors);
                     }
-
-                    // Check to see if duplicate
-                    // TODO: If I check for this, users need a way to delete and re-list. This requires some form of authentication - it's probably better to just go straight for Battle.net instead of trying Firebase.
-                    if (await isDuplicateListing(payload)) {
-                        response.sendStatus(409);
-                        return;
-                    }
-
-                    await addListing(payload);
-                    functions.logger.debug(`Successfully created Listing: ${JSON.stringify(payload)}`);
-                    response.sendStatus(201);
-                    break;
+                    return;
                 }
-                default: {
-                    response.sendStatus(405);
-                    break;
+
+                // Check to see if duplicate
+                // TODO: If I check for this, users need a way to delete and re-list. This requires some form of authentication - it's probably better to just go straight for Battle.net instead of trying Firebase.
+                if (await isDuplicateListing(payload)) {
+                    response.sendStatus(409);
+                    return;
                 }
+
+                await addListing(payload);
+                functions.logger.debug(`Successfully created Listing: ${JSON.stringify(payload)}`);
+                response.sendStatus(201);
+                break;
             }
-        })
+            default: {
+                response.sendStatus(405);
+                break;
+            }
+        }
     });
 
 // 2. Get Items for Realm
 app.get("/:region/:realm/items", async (request, response) => {
-    corsHandler(request, response, async () => {
-        switch (request.method) {
-            case "GET": {
-                const listings = await getListings();
-                response.send(listings.filter((listing) => {
-                    return listing.seller.region === request.params.region &&
-                        listing.seller.realm === request.params.realm;
-                }));
-                break;
-            }
-            default: {
-                response.sendStatus(405);
-                break;
-            }
+    switch (request.method) {
+        case "GET": {
+            const listings = await getListings();
+            response.send(listings.filter((listing) => {
+                return listing.seller.region === request.params.region &&
+                    listing.seller.realm === request.params.realm;
+            }));
+            break;
         }
-    });
+        default: {
+            response.sendStatus(405);
+            break;
+        }
+    }
 });
 
 // 3. Get Listings for Item
 app.get("/:region/:realm/item/:itemId", async (request, response) => {
-    corsHandler(request, response, async () => {
-        switch (request.method) {
-            case "GET": {
-                const listings = await getListings();
-                response.send(listings.filter((listing) => {
-                    return listing.seller.region === request.params.region &&
-                        listing.seller.realm === request.params.realm &&
-                        listing.itemId === parseInt(request.params.itemId);
-                }));
-                break;
-            }
-            default: {
-                response.sendStatus(405);
-                break;
-            }
+    switch (request.method) {
+        case "GET": {
+            const listings = await getListings();
+            response.send(listings.filter((listing) => {
+                return listing.seller.region === request.params.region &&
+                    listing.seller.realm === request.params.realm &&
+                    listing.itemId === parseInt(request.params.itemId);
+            }));
+            break;
         }
-    });
+        default: {
+            response.sendStatus(405);
+            break;
+        }
+    }
 });
 
 app.use((req, res, next) => {

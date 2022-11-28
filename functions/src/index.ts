@@ -28,33 +28,28 @@ app.post("/listings",
                     // TODO: See if I can build this directly into AJV
                     if (!payload.commission.gold && !payload.commission.silver && !payload.commission.copper) {
                         valid = false;
-                        response.status(400).send([{ message: "Commission must be nonzero." }]);
-                        return;
+                        return response.status(400).send([{ message: "Commission must be nonzero." }]);
                     } else if (!valid) {
                         if (!validateListing.errors) {
                             functions.logger.error(`Unknown issue validating Listing payload: ${JSON.stringify(payload)}`)
-                            response.status(400).send([{ message: "Unknown error. Please verify all fields are filled out and correct." }]);
+                            return response.status(400).send([{ message: "Unknown error. Please verify all fields are filled out and correct." }]);
                         } else {
-                            response.status(400).send(validateListing.errors);
+                            return response.status(400).send(validateListing.errors);
                         }
-                        return;
                     }
 
                     // Check to see if duplicate
                     // TODO: If I check for this, users need a way to delete and re-list. This requires some form of authentication - it's probably better to just go straight for Battle.net instead of trying Firebase.
                     if (await isDuplicateListing(payload)) {
-                        response.sendStatus(409);
-                        return;
+                        return response.sendStatus(409);
                     }
 
                     await addListing(payload);
                     functions.logger.debug(`Successfully created Listing: ${JSON.stringify(payload)}`);
-                    response.sendStatus(201);
-                    break;
+                    return response.sendStatus(201);
                 }
                 default: {
-                    response.sendStatus(405);
-                    break;
+                    return response.sendStatus(405);
                 }
             }
         });
@@ -66,15 +61,13 @@ app.get("/:region/:realm/items", async (request, response) => {
         switch (request.method) {
             case "GET": {
                 const listings = await getListings();
-                response.send(listings.filter((listing) => {
+                return response.send(listings.filter((listing) => {
                     return listing.seller.region === request.params.region &&
                         listing.seller.realm === request.params.realm;
                 }));
-                break;
             }
             default: {
-                response.sendStatus(405);
-                break;
+                return response.sendStatus(405);
             }
         }
     });
@@ -86,16 +79,14 @@ app.get("/:region/:realm/item/:itemId", async (request, response) => {
         switch (request.method) {
             case "GET": {
                 const listings = await getListings();
-                response.send(listings.filter((listing) => {
+                return response.send(listings.filter((listing) => {
                     return listing.seller.region === request.params.region &&
                         listing.seller.realm === request.params.realm &&
                         listing.itemId === parseInt(request.params.itemId);
                 }));
-                break;
             }
             default: {
-                response.sendStatus(405);
-                break;
+                return response.sendStatus(405);
             }
         }
     });

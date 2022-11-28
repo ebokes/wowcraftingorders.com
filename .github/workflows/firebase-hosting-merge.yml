@@ -25,7 +25,10 @@ jobs:
         with:
           name: "app"
           entry_point: "app"
+          region: "us-central1"
           runtime: "nodejs16"
+          source_dir: "functions"
+          project_id: "wowtrade"
 
   deploy-hosting:
     runs-on: ubuntu-latest

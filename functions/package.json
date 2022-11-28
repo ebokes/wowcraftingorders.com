@@ -20,6 +20,7 @@
     "ajv-errors": "^3.0.0",
     "ajv-i18n": "^4.2.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.0.3",
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^4.1.0",
     "passport": "^0.6.0",

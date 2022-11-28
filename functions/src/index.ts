@@ -1,6 +1,7 @@
 // TODO: Split business logic into its own layer that'll be between this and persistence layer
 // TODO: Write unit tests https://firebase.google.com/docs/functions/unit-testing
 
+import * as dotenv from 'dotenv';
 import * as functions from "firebase-functions";
 import * as admin from "firebase-admin";
 import { ListingPayload } from "./types";
@@ -9,15 +10,16 @@ import { validateListing } from "./ListingSchema";
 import { addListing, getListings, isDuplicateListing } from "./persistence";
 import * as passport from "passport";
 
+dotenv.config();
+
 const cors = require('cors')({ origin: true });
 const app = express();
 app.use(cors);
 app.use(passport.initialize());
 app.use(passport.session());
 
-var BnetStrategy = require('passport-bnet').Strategy;
-
-passport.use(new BnetStrategy({
+// @ts-ignore
+passport.use(new require('passport-bnet').Strategy({
     clientID: process.env.BATTLENET_CLIENT_ID,
     clientSecret: process.env.BATTLENET_CLIENT_SECRET,
     callbackUrl: "https://wowtrade.xyz",
@@ -33,7 +35,8 @@ admin.initializeApp(functions.config().firebase);
 // TODO: Validate the Battle.net access token; verify they own the character
 app.post("/listings",
     async (request, response) => {
-        passport.authenticate('bnet', { session: false }, async (err, user, info) => {
+        passport.authenticate('bnet', { session: false }, async (err, user) => {
+            functions.logger.info("User: " + JSON.stringify(user));
             switch (request.method) {
                 case "POST": {
                     // Validate payload

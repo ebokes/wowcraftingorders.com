@@ -9,7 +9,6 @@ import { useSession } from "next-auth/react";
 export default function Sell() {
 
     const session = useSession();
-    console.log("session: ", session);
 
     const [region, setRegion] = useState<string>("en");
     const [realm, setRealm] = useState<string>(REALM_LIST[0]);
@@ -34,6 +33,13 @@ export default function Sell() {
             inlineScript.remove();
         };
     }, [region, realm, search, characterName, discordTag, battleNetTag, gold, silver, copper]);
+
+    if (!session.status === "authenticated") {
+        return (
+            <p>Please sign in to submit a listing. This helps ensure people can only post listings for characters they
+                own.</p>
+        );
+    }
 
 
     const isValid = () => {

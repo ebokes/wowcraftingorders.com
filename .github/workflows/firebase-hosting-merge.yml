@@ -11,17 +11,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: cd functions && npm ci && npm run build
+      - run: npm ci && npm run build
       - id: 'auth'
         name: 'Authenticate to Google Cloud'
         uses: 'google-github-actions/auth@v1'
         with:
-          workload_identity_provider: "projects/151006879681/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
-          service_account: 'github-action-570634447@wowtrade.iam.gserviceaccount.com'
-      - uses: 'google-github-actions/deploy-cloud-functions@v1'
-        with:
-          name: 'app'
-          runtime: 'nodejs16'
+          workload_identity_provider: 'projects/123456789/locations/global/workloadIdentityPools/my-pool/providers/my-provider'
+          service_account: 'github-actions-service-account@wowtrade.iam.gserviceaccount.com'
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: '${{ secrets.GITHUB_TOKEN }}'

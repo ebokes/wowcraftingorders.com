@@ -7,15 +7,14 @@ import { ListingPayload } from "./types";
 import * as express from "express";
 import { validateListing } from "./ListingSchema";
 import { addListing, getListings, isDuplicateListing } from "./persistence";
-import * as cors from "cors";
 
 const app = express();
-app.use(cors());
 admin.initializeApp(functions.config().firebase);
 
 // 1. Create Listing - <region, server, item, character, commission> tuple
 app.post("/listings",
     async (request, response) => {
+        response.set('Access-Control-Allow-Origin', '*');
         switch (request.method) {
             case "POST": {
                 // Validate payload
@@ -60,6 +59,7 @@ app.post("/listings",
 
 // 2. Get Items for Realm
 app.get("/:region/:realm/items", async (request, response) => {
+    response.set('Access-Control-Allow-Origin', '*');
     switch (request.method) {
         case "GET": {
             const listings = await getListings();
@@ -78,6 +78,7 @@ app.get("/:region/:realm/items", async (request, response) => {
 
 // 3. Get Listings for Item
 app.get("/:region/:realm/item/:itemId", async (request, response) => {
+    response.set('Access-Control-Allow-Origin', '*');
     switch (request.method) {
         case "GET": {
             const listings = await getListings();

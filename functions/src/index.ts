@@ -10,6 +10,11 @@ import { validateListing } from "./ListingSchema";
 import { addListing, getListings, isDuplicateListing } from "./persistence";
 import * as passport from "passport";
 
+import { defineString } from "firebase-functions/params";
+
+const BATTLENET_CLIENT_ID = defineString("BATTLENET_CLIENT_ID");
+const BATTLENET_CLIENT_SECRET = defineString("BATTLENET_CLIENT_SECRET");
+
 dotenv.config();
 
 const cors = require('cors')({ origin: true });
@@ -20,8 +25,8 @@ app.use(passport.session());
 
 // @ts-ignore
 passport.use(new require('passport-bnet').Strategy({
-    clientID: process.env.BATTLENET_CLIENT_ID,
-    clientSecret: process.env.BATTLENET_CLIENT_SECRET,
+    clientID: BATTLENET_CLIENT_ID,
+    clientSecret: BATTLENET_CLIENT_SECRET,
     callbackUrl: "https://wowtrade.xyz",
     region: "us"
     // @ts-ignore

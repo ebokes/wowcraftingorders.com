@@ -13,15 +13,19 @@ export default function Home() {
     const [realm, setRealm] = useState(REALM_LIST[0]);
     const [search, setSearch] = useState("");
 
-    // TODO: Hacky, but works; best practice is to just call refresh every time the input changes
-    useEffect(() => {
-        const interval = setInterval(() => {
-            window.$WowheadPower.refreshLinks();
-        }, 200);
-        return () => clearInterval(interval);
-    }, []);
 
     // TODO: Add a "search" button to the input group, which will help not overload the API with useless queries
+
+    // Forces Wowhead tooltips to redraw
+    useEffect(() => {
+        const inlineScript = document.createElement('script');
+        inlineScript.innerHTML = 'window.$WowheadPower.refreshLinks();';
+        document.body.append(inlineScript);
+
+        return () => {
+            inlineScript.remove();
+        };
+    }, [region, realm, search]);
 
     return (
         <div className={styles.container}>
@@ -61,7 +65,7 @@ export default function Home() {
                             }}
                                           placeholder={REALM_LIST[0]}>
                                 {REALM_LIST.sort().map((realm) => (
-                                    <option value={realm}>{realm}</option>
+                                    <option key={realm} value={realm}>{realm}</option>
                                 ))}
                             </Form.Control>
                         </Col>
@@ -73,8 +77,9 @@ export default function Home() {
                             <InputGroup>
                                 <InputGroup.Text id="basic-addon1">https://www.wowhead.com/item=</InputGroup.Text>
                                 <Form.Control type="number" value={search}
-                                              onChange={(e) => setSearch(e.target.value.trim())
-                                              } placeholder="199686"/>
+                                              onChange={(e) => {
+                                                  setSearch(e.target.value.trim())
+                                              }} placeholder="199686"/>
                             </InputGroup>
                             <Link href={`https://www.wowhead.com/item=${search}`}/>
                         </Col>

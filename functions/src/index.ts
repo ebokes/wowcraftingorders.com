@@ -20,14 +20,20 @@ app.post("/listings",
             case "POST": {
                 // Validate payload
                 const payload = request.body as ListingPayload;
-                const valid = validateListing(payload);
-                if (!valid) {
+                let valid = validateListing(payload);
+
+                // Manually handling because the logic is a bit complicated
+                // TODO: See if I can build this directly into AJV
+                if (!payload.commission.gold && !payload.commission.silver && !payload.commission.copper) {
+                    valid = false;
+                    response.status(400).send([{ message: "Commission must be nonzero." }]);
+                    return;
+                } else if (!valid) {
                     if (!validateListing.errors) {
-                        functions.logger.warn(`Issue validating Listing payload ${JSON.stringify(payload)}`)
-                        response.status(400).send("Unknown error. Please check that all fields are filled out and correct.");
+                        functions.logger.error(`Unknown issue validating Listing payload: ${JSON.stringify(payload)}`)
+                        response.status(400).send([{ message: "Unknown error. Please verify all fields are filled out and correct." }]);
                     } else {
                         response.status(400).send(validateListing.errors);
-
                     }
                     return;
                 }
@@ -40,8 +46,8 @@ app.post("/listings",
                 }
 
                 await addListing(payload);
-                functions.logger.debug(`Successfully Posted: ${JSON.stringify(payload)}`);
-                response.send(201);
+                functions.logger.debug(`Successfully created Listing: ${JSON.stringify(payload)}`);
+                response.sendStatus(201);
                 break;
             }
             default: {

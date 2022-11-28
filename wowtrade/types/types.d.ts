@@ -7,9 +7,9 @@ export interface Seller {
 }
 
 export interface Commission {
-    gold: number;
-    silver: number;
-    copper: number;
+    gold?: number;
+    silver?: number;
+    copper?: number;
 }
 
 export interface ListingPayload {

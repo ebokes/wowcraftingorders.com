@@ -1,13 +1,13 @@
-import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
+import { Button, Col, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
 import { REALM_LIST } from "../data/realms";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ListingPayload } from "../types/types";
 import { ROOT_URL } from "./_app";
 
 export default function Sell() {
     const [region, setRegion] = useState<string>("en");
-    const [realm, setRealm] = useState<string>("thrall");
+    const [realm, setRealm] = useState<string>(REALM_LIST[0]);
     const [search, setSearch] = useState<string>("");
     const [characterName, setCharacterName] = useState<string>("");
     const [discordTag, setDiscordTag] = useState<string>("");
@@ -15,10 +15,37 @@ export default function Sell() {
     const [gold, setGold] = useState<string>("0");
     const [silver, setSilver] = useState<string>("0");
     const [copper, setCopper] = useState<string>("0");
+    const [submitting, setSubmitting] = useState<boolean>(false);
     const [errors, setErrors] = useState<string[]>([]);
+    const [success, setSuccess] = useState<boolean>(false);
 
+    // Wowhead tooltips
+    useEffect(() => {
+        const inlineScript = document.createElement('script');
+        inlineScript.innerHTML = 'window.$WowheadPower.refreshLinks();';
+        document.body.append(inlineScript);
+
+        return () => {
+            inlineScript.remove();
+        };
+    }, [region, realm, search, characterName, discordTag, battleNetTag, gold, silver, copper]);
+
+    const isValid = () => {
+        const errors = [];
+        if (!region) errors.push("Region is required.");
+        if (!realm) errors.push("Realm is required.");
+        if (!search) errors.push("Item ID is required.");
+        if (!characterName) errors.push("Character name is required.");
+        if (gold === "" && silver === "" && copper === "") errors.push("Commission must be nonzero.");
+        setErrors(errors);
+        return errors.length === 0;
+    }
     const handleSubmit = async (e: any) => {
         e.preventDefault();
+        setSubmitting(true);
+        setErrors([]);
+        setSuccess(false);
+
         const payload = {
             itemId: parseInt(search),
             commission: {
@@ -26,8 +53,19 @@ export default function Sell() {
                 silver: parseInt(silver),
                 copper: parseInt(copper),
             },
-            seller: {}
+            seller: {
+                region,
+                realm,
+                characterName,
+                discordTag: discordTag === "" ? undefined : discordTag,
+                battleNetTag: battleNetTag === "" ? undefined : battleNetTag,
+            }
         } as ListingPayload;
+        if (!isValid()) {
+            setSubmitting(false);
+            return;
+        }
+
         try {
             const response = await fetch(`${ROOT_URL}/listings`, {
                 method: "POST",
@@ -36,18 +74,34 @@ export default function Sell() {
                 },
                 body: JSON.stringify(payload)
             });
-            if (!response.ok) {
-                const body = await response.json();
-                console.log("body: ", body);
-                console.log("body: ", body);
-                alert("Errors: \n" + body);
+            if (response.status === 201) {
+                setSuccess(true);
             } else {
-                alert("Successfully submitted listing!");
+                switch (response.status) {
+                    case 400: {
+                        const body = await response.json();
+                        setErrors(
+                            body.map((error: any) => error.message)
+                        );
+                        break;
+                    }
+                    case 409: {
+                        setErrors(["This character already has a listing for this item."]);
+                        break;
+                    }
+                    default: {
+                        console.error("Failed to parse response from backend: ", response);
+                        setErrors(["An unknown error occurred. Please try again later."]);
+                        break;
+                    }
+                }
             }
         } catch (err) {
             console.error("Error: ", err);
-            alert("Unknown error. Please check that all fields are filled out and correct.");
+            setErrors(["Unknown error. Please verify all fields are filled out and correct then try again."]);
+            setSubmitting(false);
         }
+        setSubmitting(false);
     }
 
     return <div>
@@ -146,12 +200,21 @@ export default function Sell() {
                 </Row>
                 <Row className={"my-3"}>
                     <Col md={12}>
-                        <Button variant="primary" type="submit" style={{ width: "100%" }} onClick={handleSubmit}>
+                        <Button disabled={submitting} variant="primary" type="submit" style={{ width: "100%" }}
+                                onClick={handleSubmit}>
                             Submit Listing
                         </Button>
                     </Col>
                 </Row>
             </Form>
+            {errors && <ListGroup>
+                {errors.map((error) => (
+                    <ListGroup.Item variant="danger">{error}</ListGroup.Item>
+                ))}
+            </ListGroup>}
+            {success && <ListGroup>
+                <ListGroup.Item variant="success">Successfully submitted listing!</ListGroup.Item>
+            </ListGroup>}
         </main>
     </div>
 }

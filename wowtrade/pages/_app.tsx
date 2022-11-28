@@ -34,7 +34,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
         <script
             id={'custom'}>{`var whTooltips = whTooltips || { colorLinks: true, iconizeLinks: true, renameLinks: true};`}</script>
-        <Script strategy={"afterInteractive"} src={'https://wow.zamimg.com/js/tooltips.js'}/>
+        <Script strategy={"beforeInteractive"} src={'https://wow.zamimg.com/js/tooltips.js'}/>
 
         <CustomNavbar/>
         <Container>

@@ -17,7 +17,7 @@ export default function Home() {
             <Row>
                 <Col md={6}>
                     <ButtonGroup className={"w-100"}>
-                        <Button href={"/buy"}>Buy</Button>
+                        <Button href={"/"}>Buy</Button>
                     </ButtonGroup>
                 </Col>
                 <Col md={6}>

@@ -12,11 +12,10 @@ export const ListingSchema: JSONSchemaType<ListingPayload> = {
         commission: {
             type: "object",
             properties: {
-                gold: { type: "number", minimum: 0, maximum: 9999999 },
-                silver: { type: "number", minimum: 0, maximum: 99 },
-                copper: { type: "number", minimum: 0, maximum: 99 },
+                gold: { type: "number", nullable: true, minimum: 0, maximum: 9999999 },
+                silver: { type: "number", nullable: true, minimum: 0, maximum: 99 },
+                copper: { type: "number", nullable: true, minimum: 0, maximum: 99 },
             },
-            required: ["gold", "silver", "copper"],
         },
         seller: {
             type: "object",

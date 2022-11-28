@@ -10,7 +10,7 @@ export default function BasicNavbar() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link href="/buy">Buy</Nav.Link>
+                        <Nav.Link href="/">Buy</Nav.Link>
                         <Nav.Link href="/sell">Sell</Nav.Link>
                         {/*<Nav.Link href="#link">Link</Nav.Link>*/}
                         {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">*/}

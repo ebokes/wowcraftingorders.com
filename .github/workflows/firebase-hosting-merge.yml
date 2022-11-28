@@ -17,7 +17,7 @@ jobs:
         uses: 'google-github-actions/auth@v1'
         with:
           workload_identity_provider: "projects/151006879681/locations/global/workloadIdentityPools/github-pool/providers/github-provider"
-          service_account: 'firebase-adminsdk-mtzhg@wowtrade.iam.gserviceaccount.com'
+          service_account: 'github-action-570634447@wowtrade.iam.gserviceaccount.com'
       - uses: 'google-github-actions/deploy-cloud-functions@v1'
         with:
           name: 'app'

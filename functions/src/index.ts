@@ -58,10 +58,12 @@ app.get("/:region/:realm/items", async (request, response) => {
     switch (request.method) {
         case "GET": {
             const listings = await getListings();
-            return response.send(listings.filter((listing) => {
+            const result = listings.filter((listing) => {
                 return listing.seller.region === request.params.region &&
                     listing.seller.realm === request.params.realm;
-            }));
+            });
+            functions.logger.debug(`Successfully retrieved Listings for ${request.params.region}/${request.params.realm}: ${JSON.stringify(result)}`);
+            return response.status(200).send(result);
         }
         default: {
             return response.sendStatus(405);
@@ -74,11 +76,13 @@ app.get("/:region/:realm/item/:itemId", async (request, response) => {
     switch (request.method) {
         case "GET": {
             const listings = await getListings();
-            return response.send(listings.filter((listing) => {
+            const result = listings.filter((listing) => {
                 return listing.seller.region === request.params.region &&
                     listing.seller.realm === request.params.realm &&
                     listing.itemId === parseInt(request.params.itemId);
-            }));
+            });
+            functions.logger.debug(`Successfully retrieved Listings for ${request.params.region}/${request.params.realm} w/ Item ID${request.params.itemId}: ${JSON.stringify(result)}`);
+            return response.send();
         }
         default: {
             return response.sendStatus(405);

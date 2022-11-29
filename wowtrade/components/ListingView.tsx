@@ -26,6 +26,10 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
     if (includeSeller === undefined) includeSeller = true;
     if (includeDelete === undefined) includeDelete = true;
 
+    if (includeDelete && !deleteUserListing || !includeDelete && deleteUserListing) {
+        throw new Error("You must either provide a callback to delete the listing, or set includeDelete to false.");
+    }
+
     return <ListGroup.Item key={listing.itemId}>
         {includeItem && <Link href={`/${listing.seller.region}/${listing.seller.realm}/item/${listing.itemId}`}
                               data-wowhead={`item=${listing.itemId}`}>Loading
@@ -41,7 +45,7 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.discordTag}</p>}
         {listing.seller.battleNetTag &&
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.battleNetTag}</p>}
-        {includeDelete &&
+        {includeDelete && deleteUserListing &&
             <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>}
     </ListGroup.Item>
 }

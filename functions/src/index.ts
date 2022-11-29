@@ -55,6 +55,11 @@ app.post("/listings",
                 }
 
                 // Validate that they own the character in question
+                console.log(`Requesting user info with payload ${JSON.stringify({
+                    headers: {
+                        "Authorization": request.headers["authorization"]
+                    }
+                })}`);
                 const profileDataResponse = await axios.get("https://us.api.blizzard.com/profile/user/wow", {
                     headers: {
                         "Authorization": request.headers["authorization"]

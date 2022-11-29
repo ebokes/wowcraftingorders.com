@@ -102,11 +102,6 @@ export default function Sell() {
         }
 
         try {
-            console.log(`Sending payload ${JSON.stringify(payload)} headers ${JSON.stringify({
-                "Content-Type": "application/json",
-                // @ts-ignore
-                "Authorization": `Bearer ${session.data.accessToken}`
-            })}`);
             const response = await fetch(`${ROOT_URL}/listings`, {
                 method: "POST",
                 mode: "cors",

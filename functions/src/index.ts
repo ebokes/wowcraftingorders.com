@@ -4,6 +4,7 @@
 import * as functions from "firebase-functions";
 import { initializeApp } from "firebase-admin/app";
 import { ListingPayload } from "./types";
+import type { RequestHandler } from "express";
 import * as express from "express";
 import { validateListing } from "./ListingSchema";
 import { addListing, getListings, isDuplicateListing } from "./persistence";
@@ -11,6 +12,7 @@ import * as session from "express-session";
 
 import { config } from "dotenv";
 import { defineString } from "firebase-functions/params";
+import * as timeout from "connect-timeout";
 
 config({ override: true });
 
@@ -22,6 +24,13 @@ const BATTLENET_CLIENT_SECRET = defineString("BATTLENET_CLIENT_SECRET");
 
 const cors = require('cors')({ origin: true });
 const app = express();
+
+const haltOnTimedOut: RequestHandler = (req, res, next) => {
+    if (!req.timedout) next();
+};
+app.use(timeout(5000));
+app.use(haltOnTimedOut);
+
 app.use(session({
     secret: "wqejfpiqweopfnsdaflsadnf;awlkdj",
     resave: false,

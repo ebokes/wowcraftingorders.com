@@ -6,6 +6,10 @@ import { Button } from "react-bootstrap";
 
 export default function BasicNavbar() {
     const { data: session } = useSession();
+    if (session) {
+        console.log(`session: ${JSON.stringify(session)}`);
+    }
+
     return (
         <Navbar bg="light" expand="lg">
             <Container>

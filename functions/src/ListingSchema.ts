@@ -9,6 +9,7 @@ export const ListingSchema: JSONSchemaType<ListingPayload> = {
     type: "object",
     properties: {
         itemId: { type: "number", minimum: 0 },
+        quality: { type: "string" },
         commission: {
             type: "object",
             properties: {
@@ -47,7 +48,7 @@ export const ListingSchema: JSONSchemaType<ListingPayload> = {
             }
         },
     },
-    required: ["itemId", "commission", "seller"],
+    required: ["itemId", "commission", "seller", "quality"],
     errorMessage: {
         required: {
             itemId: "Item ID is required.",

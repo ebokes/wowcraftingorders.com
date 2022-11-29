@@ -12,6 +12,7 @@ export default function Sell() {
 
     const [region, setRegion] = useState<string>("en");
     const [realm, setRealm] = useState<string>(REALM_LIST[0]);
+    const [qualityGuarantee, setQualityGuarantee] = useState<string>("Rank 1");
     const [search, setSearch] = useState<string>("");
     const [characterName, setCharacterName] = useState<string>("");
     const [discordTag, setDiscordTag] = useState<string>("");
@@ -34,7 +35,7 @@ export default function Sell() {
         };
     }, [region, realm, search, characterName, discordTag, battleNetTag, gold, silver, copper]);
 
-    if (session.status !== "authenticated") {
+    if (session.status !== "authenticated" && !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development')) {
         return (
             <p>Please sign in to submit a listing. This ensures people can only post listings for characters they
                 own.</p>
@@ -152,18 +153,41 @@ export default function Sell() {
                                 <option value={realm}>{realm}</option>
                             ))}
                         </Form.Control>
+                        <Form.Text muted>Will add a quicker way to search soon!</Form.Text>
                     </Col>
                 </Row>
                 <Row className={"my-3"}>
                     <h4>Item Details</h4>
-                    <Col md={12}>
-                        <InputGroup>
-                            <InputGroup.Text id="basic-addon1">https://www.wowhead.com/item=</InputGroup.Text>
-                            <Form.Control type="number" value={search} onChange={(e) => setSearch(e.target.value)
-                            } placeholder="199686"/>
-                        </InputGroup>
-                        <Link href={`https://www.wowhead.com/item=${search}`}/>
-                    </Col>
+
+                    <Form.Group>
+                        <Row>
+                            <Col md={8}>
+                                <Form.Label>Item ID</Form.Label>
+                                <InputGroup>
+                                    <InputGroup.Text id="basic-addon1">https://www.wowhead.com/item=</InputGroup.Text>
+                                    <Form.Control type="number" value={search}
+                                                  onChange={(e) => setSearch(e.target.value)
+                                                  } placeholder="199686"/>
+                                </InputGroup>
+                                <Link href={`https://www.wowhead.com/item=${search}`}/>
+
+                            </Col>
+                            <Col md={4}>
+                                <Form.Label>Quality Guarantee</Form.Label>
+                                <Form.Control as={"select"} value={qualityGuarantee}
+                                              onChange={(e) => setQualityGuarantee(e.target.value)}>
+                                    <option value={"Rank 1"}>Rank 1 (Worst)</option>
+                                    <option value={"Rank 2"}>Rank 2</option>
+                                    <option value={"Rank 3"}>Rank 3</option>
+                                    <option value={"Rank 4"}>Rank 4</option>
+                                    <option value={"Rank 5"}>Rank 5 (Best)</option>
+                                </Form.Control>
+
+                            </Col>
+                        </Row>
+                    </Form.Group>
+
+
                 </Row>
                 <Row className={"my-3"}>
                     <h4>Commission</h4>

@@ -42,6 +42,8 @@ export default function ListingsList({ region, realm, search }: Props) {
                 .map((listing: Listing) => (
                     <ListGroup.Item key={listing.itemId}>
                         <a href={`https://www.wowhead.com/item=${listing.itemId}`}>Loading Tooltip...</a>{"    "}
+                        <p className={"m-0"}><b>Quality Guarantee: </b>{listing.quality + " " + "(1 = Worst, 5 = Best)"}
+                        </p>
                         <p className={"m-0"}><b>Commission:</b>{" "}
                             {listing.commission.gold}<span style={{ color: "#D4A017" }}>g</span>{" "}
                             {listing.commission.silver}<span style={{ color: "#C0C0C0" }}>s</span>{" "}

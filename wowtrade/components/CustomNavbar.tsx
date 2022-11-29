@@ -35,7 +35,7 @@ export default function BasicNavbar() {
                 </Navbar.Collapse>
                 <Navbar.Collapse className="justify-content-end">
                     {session && session.user && <Navbar.Text className={"me-2"}>{session.user.name}</Navbar.Text>}
-                    {!session && <Button onClick={() => signIn()}>Sign In to Battle.net</Button>}
+                    {!session && <Button onClick={() => signIn("battlenet")}>Sign In to Battle.net</Button>}
                     {session && <Button onClick={() => signOut()}>Sign Out</Button>}
                 </Navbar.Collapse>
             </Container>

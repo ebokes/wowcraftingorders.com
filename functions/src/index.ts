@@ -4,7 +4,7 @@
 
 import * as functions from "firebase-functions";
 import { initializeApp } from "firebase-admin/app";
-import { ListingPayload } from "./types";
+import { BattleNetProfileDataResponse, ListingPayload } from "./types";
 import type { RequestHandler } from "express";
 import * as express from "express";
 import { validateListing } from "./ListingSchema";
@@ -61,7 +61,7 @@ app.post("/listings",
                     }
                 })
                 if (profileDataResponse.status !== 200) return response.sendStatus(profileDataResponse.status);
-                const profileData: any = await profileDataResponse.data;
+                const profileData: BattleNetProfileDataResponse = await profileDataResponse.data.body.json();
                 functions.logger.debug("Profile data: ", JSON.stringify(profileData));
                 const charactersInRealm = profileData.wow_accounts
                     .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])

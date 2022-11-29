@@ -62,8 +62,7 @@ app.post("/listings",
                 })
                 if (profileDataResponse.status !== 200) return response.sendStatus(profileDataResponse.status);
                 const profileData: any = await profileDataResponse.data;
-                functions.logger.debug("Profile data response: ", profileDataResponse);
-                functions.logger.debug("Profile data: ", profileData);
+                functions.logger.debug("Profile data: ", JSON.stringify(profileData));
                 const charactersInRealm = profileData.wow_accounts
                     .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])
                     .filter((character: any) => character.realm.name.toLowerCase() === payload.seller.realm.toLowerCase() && character.name.toLowerCase() === payload.seller.characterName.toLowerCase());

@@ -12,6 +12,7 @@ import { addListing, getListings, isDuplicateListing } from "./persistence";
 import * as timeout from "connect-timeout";
 
 import axios from "axios";
+import { itemExists } from "./util";
 
 const haltOnTimedOut: RequestHandler = (req, res, next) => {
     if (!req.timedout) next();
@@ -26,6 +27,7 @@ app.use(cors);
 initializeApp(functions.config().firebase);
 
 // 1. Create Listing - <region, server, item, character, commission> tuple
+// TODO: This is a god function that needs simplified.
 app.post("/listings",
     async (request, response) => {
         switch (request.method) {
@@ -55,7 +57,7 @@ app.post("/listings",
                 }
 
                 // Validate that they own the character in question
-                const blizzardResponse = await axios.get<BattleNetProfileDataResponse>("https://us.api.blizzard.com/profile/user/wow?namespace=profile-us&locale=en_US", {
+                const blizzardResponse = await axios.get<BattleNetProfileDataResponse>("https://us.api.blizzard.com/profile/user/wow", {
                     headers: {
                         "Authorization": request.headers["authorization"],
                         "Accept-Encoding": "utf-8",
@@ -65,17 +67,20 @@ app.post("/listings",
                         "locale": "en_US"
                     }
                 })
-
                 if (blizzardResponse.status !== 200) {
                     functions.logger.error(`Blizzard API returned status code ${blizzardResponse.status} for token ${request.headers["authorization"]} submitting listing for seller ${payload.seller.characterName} on realm ${payload.seller.realm} in region ${payload.seller.region}.`);
                     return response.status(500).send([{ message: "Blizzard API  returned an error. Please try again later." }]);
                 }
-
                 const data = blizzardResponse.data;
                 const charactersInRealm = data["wow_accounts"]
                     .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])
                     .filter((character: any) => character.realm.name.toLowerCase() === payload.seller.realm.toLowerCase() && character.name.toLowerCase() === payload.seller.characterName.toLowerCase());
                 if (charactersInRealm.length === 0) return response.status(401).send([{ message: "You do not own this character." }]);
+
+                // Validate that item exists
+                if (!(await itemExists(payload.itemId, request.headers["authorization"]))) {
+                    return response.status(400).send([{ message: "Item does not exist." }]);
+                }
 
                 // Check to see if that character already has a listing for this item
                 if (await isDuplicateListing(payload)) {

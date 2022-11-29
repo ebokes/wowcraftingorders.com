@@ -3,12 +3,13 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "react-bootstrap";
+import { useContext } from "react";
+import { RegionRealmContext } from "../pages/_app";
+import Link from "next/link";
 
 export default function BasicNavbar() {
     const { data: session } = useSession();
-    if (session) {
-        console.log("session: ", session);
-    }
+    const context = useContext(RegionRealmContext);
 
     return (
         <Navbar bg="light" expand="lg">
@@ -17,8 +18,8 @@ export default function BasicNavbar() {
                 <Navbar.Toggle aria-controls="basic-navbar-nav"/>
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
-                        <Nav.Link href="/">Buy</Nav.Link>
-                        <Nav.Link href="/sell">Sell</Nav.Link>
+                        <Link href="/" className={"navbar-text me-3"} style={{ textDecoration: "none" }}>Buy</Link>
+                        <Link href="/sell" className={"navbar-text me-3"} style={{ textDecoration: "none" }}>Sell</Link>
                         {/*<Nav.Link href="#link">Link</Nav.Link>*/}
                         {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">*/}
                         {/*    <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>*/}
@@ -34,6 +35,8 @@ export default function BasicNavbar() {
                     </Nav>
                 </Navbar.Collapse>
                 <Navbar.Collapse className="justify-content-end">
+                    {context.region && <Navbar.Text className={"me-3"}>Region: {context.region}</Navbar.Text>}
+                    {context.realm && <Navbar.Text className={"me-3"}>Realm: {context.realm}</Navbar.Text>}
                     {session && session.user && <Navbar.Text className={"me-2"}>{session.user.name}</Navbar.Text>}
                     {!session && <Button onClick={() => signIn("battlenet")}>Sign In to Battle.net</Button>}
                     {session && <Button onClick={() => signOut()}>Sign Out</Button>}

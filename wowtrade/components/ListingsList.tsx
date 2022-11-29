@@ -4,10 +4,10 @@ import Script from "next/script";
 import { ListGroup } from "react-bootstrap";
 import { ListingView } from "./Listing";
 import { commissionSort } from "../util/utils";
+import { useContext } from "react";
+import { RegionRealmContext } from "../pages/_app";
 
 interface Props {
-    region: string;
-    realm: string;
     search: string;
 }
 
@@ -16,8 +16,9 @@ export function totalMoneyValue(gold: number | undefined, silver: number | undef
 }
 
 // TODO: Only show each item once, with its lowest commission
-export default function ListingsList({ region, realm, search }: Props) {
-    const { data, error } = useSWR(`/${region}/${realm}/items`);
+export default function ListingsList({ search }: Props) {
+    const context = useContext(RegionRealmContext);
+    const { data, error } = useSWR(`/${context.region}/${context.realm}/items`);
     if (error) return <div>Failed to load listings. Please try and refresh the page.</div>
     if (!data) return <div>Loading...</div>
 

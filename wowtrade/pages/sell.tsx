@@ -1,20 +1,19 @@
 import { Button, Col, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
-import { REALM_LIST } from "../data/realms";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Listing, ListingPayload } from "../types/types";
-import { ROOT_URL } from "./_app";
+import { RegionRealmContext, ROOT_URL } from "./_app";
 import { useSession } from "next-auth/react";
 import { ConciseListingView } from "../components/ConciseListing";
+import { SetRegionRealmView } from "../components/SetRealms";
 
 export default function Sell() {
 
     const session = useSession();
+    const context = useContext(RegionRealmContext);
     const [userListings, setUserListings] = useState<Listing[]>([]);
 
     // Form input
-    const [region, setRegion] = useState<string>("en");
-    const [realm, setRealm] = useState<string>(REALM_LIST[0]);
     const [qualityGuarantee, setQualityGuarantee] = useState<string>("Rank 1");
     const [search, setSearch] = useState<string>("");
     const [characterName, setCharacterName] = useState<string>("");
@@ -36,7 +35,7 @@ export default function Sell() {
         return () => {
             inlineScript.remove();
         };
-    }, [region, realm, search, characterName, discordTag, battleNetTag, gold, silver, copper]);
+    }, [context.region, context.realm, search, characterName, discordTag, battleNetTag, gold, silver, copper]);
 
     // Retrieve listings for user
     useEffect(() => {
@@ -65,8 +64,8 @@ export default function Sell() {
 
     const isValid = () => {
         const errors = [];
-        if (!region) errors.push("Region is required.");
-        if (!realm) errors.push("Realm is required.");
+        if (!context.region) errors.push("Region is required.");
+        if (!context.realm) errors.push("Realm is required.");
         if (!search) errors.push("Item ID is required.");
         if (!characterName) errors.push("Character name is required.");
         if (gold === "" && silver === "" && copper === "") errors.push("Commission must be nonzero.");
@@ -88,8 +87,8 @@ export default function Sell() {
                 copper: parseInt(copper),
             },
             seller: {
-                region,
-                realm,
+                region: context.region,
+                realm: context.realm,
                 characterName,
                 discordTag: discordTag === "" ? undefined : discordTag,
                 battleNetTag: battleNetTag === "" ? undefined : battleNetTag,
@@ -151,32 +150,7 @@ export default function Sell() {
         <main className={"p-3"}>
             <h3>Create a Listing</h3>
             <Form style={{ width: "100%" }}>
-                <Row>
-                    <h4>Realm Options</h4>
-                    <Col>
-                        <Form.Label>Region</Form.Label>
-                        <Form.Control as="select" value={region} onChange={(e) => {
-                            localStorage.setItem("region", e.target.value);
-                            setRegion(e.target.value);
-                        }}>
-                            <option value="en">EN (Americas)</option>
-                        </Form.Control>
-                        <Form.Text muted>Will be adding more regions soon!</Form.Text>
-                    </Col>
-                    <Col>
-                        <Form.Label>Realm</Form.Label>
-                        <Form.Control as="select" value={realm} onChange={(e) => {
-                            localStorage.setItem("realm", e.target.value);
-                            setRealm(e.target.value)
-                        }}
-                                      placeholder={REALM_LIST[0]}>
-                            {REALM_LIST.sort().map((realm) => (
-                                <option value={realm}>{realm}</option>
-                            ))}
-                        </Form.Control>
-                    </Col>
-                </Row>
-
+                <SetRegionRealmView/>
                 <Row className={"my-3"}>
                     <h4>Seller Details</h4>
                     <Col md={4}>

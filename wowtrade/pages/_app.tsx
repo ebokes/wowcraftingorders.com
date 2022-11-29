@@ -6,6 +6,9 @@ import { SWRConfig } from "swr";
 import CustomNavbar from "../components/CustomNavbar";
 import Container from "react-bootstrap/Container";
 import { SessionProvider } from "next-auth/react"
+import { createContext, useState } from "react";
+import { REGIONS } from "../data/regions";
+import { REALM_LIST } from "../data/realms";
 
 export let ROOT_URL: string;
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
@@ -14,7 +17,18 @@ if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     ROOT_URL = 'https://wowtrade.web.app';
 }
 
+export const RegionRealmContext = createContext({
+    region: REGIONS[0],
+    setRegion: (_: string) => {
+    },
+    realm: REALM_LIST[0],
+    setRealm: (_: string) => {
+    },
+})
+
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
+    const [realm, setRealm] = useState(REALM_LIST[0]);
+    const [region, setRegion] = useState(REGIONS[0]);
     return <div>
 
         {/* TODO: Update measurement ID once I choose a domain */}
@@ -45,16 +59,24 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
 
 
         <SessionProvider session={session}>
-            <SWRConfig value={{
-                fetcher: (url) => fetch(ROOT_URL + url, {
-                    mode: "cors",
-                }).then(r => r.json())
+            <RegionRealmContext.Provider value={{
+                region: region,
+                setRegion: (region: string) => {
+                    setRegion(region);
+                }, realm: realm,
+                setRealm: (realm: string) => {
+                    setRealm(realm);
+                }
             }}>
-                <CustomNavbar/>
-                <Container>
-                    <Component {...pageProps} />
-                </Container>
-            </SWRConfig>
+                <SWRConfig value={{
+                    fetcher: (url) => fetch(ROOT_URL + url).then(r => r.json())
+                }}>
+                    <CustomNavbar/>
+                    <Container>
+                        <Component {...pageProps} />
+                    </Container>
+                </SWRConfig>
+            </RegionRealmContext.Provider>
         </SessionProvider>
 
     </div>

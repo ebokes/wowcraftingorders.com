@@ -9,7 +9,7 @@ export const itemExists = async (itemId: number, authHeader: string): Promise<bo
                 "Accept-Encoding": "utf-8",
             },
             params: {
-                "namespace": "profile-us",
+                "namespace": "static-us",
                 "locale": "en_US"
             }
         })

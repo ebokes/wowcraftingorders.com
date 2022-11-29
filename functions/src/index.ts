@@ -7,12 +7,12 @@ import { ListingPayload } from "./types";
 import * as express from "express";
 import { validateListing } from "./ListingSchema";
 import { addListing, getListings, isDuplicateListing } from "./persistence";
-import session from "express-session";
+import * as session from "express-session";
 
 import { config } from "dotenv";
 import { defineString } from "firebase-functions/params";
 
-config();
+config({ override: true });
 
 const passport = require("passport");
 
@@ -22,12 +22,15 @@ const BATTLENET_CLIENT_SECRET = defineString("BATTLENET_CLIENT_SECRET");
 
 const cors = require('cors')({ origin: true });
 const app = express();
+app.use(session({
+    secret: "wqejfpiqweopfnsdaflsadnf;awlkdj",
+    resave: false,
+    saveUninitialized: true,
+}));
 app.use(cors);
-app.use(session({ secret: "wqejfpiqweopfnsdaflsadnf;awlkdj" }));
+
 app.use(passport.initialize());
 app.use(passport.session());
-
-// @ts-ignore
 const { Strategy: BNetStrategy } = require("passport-bnet");
 passport.use(new BNetStrategy({
     clientID: BATTLENET_CLIENT_ID,

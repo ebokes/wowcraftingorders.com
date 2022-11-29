@@ -28,7 +28,7 @@ export const RegionRealmContext = createContext({
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     const [realm, setRealm] = useState(REALM_LIST[0]);
-    const [region, setRegion] = useState(REGIONS[0]);
+    const [region, setRegion] = useState(REGIONS.EN);
     return <div>
 
         {/* TODO: Update measurement ID once I choose a domain */}

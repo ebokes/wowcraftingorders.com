@@ -55,15 +55,15 @@ app.post("/listings",
                 }
 
                 // Validate that they own the character in question
-                const profileDataResponse: AxiosResponse = await axios.get("https://us.api.blizzard.com/profile/user/wow?namespace=profile-us&locale=en_US", {
+                const profileDataResponse: AxiosResponse<BattleNetProfileDataResponse> = await axios.get("https://us.api.blizzard.com/profile/user/wow?namespace=profile-us&locale=en_US", {
                     headers: {
                         "Authorization": request.headers["authorization"]
                     }
                 })
                 if (profileDataResponse.status !== 200) return response.sendStatus(profileDataResponse.status);
-                const profileData: BattleNetProfileDataResponse = (await profileDataResponse).data;
+                const profileData: BattleNetProfileDataResponse = profileDataResponse.data;
                 functions.logger.debug("Profile data: ", JSON.stringify(profileData));
-                const charactersInRealm = profileData.wow_accounts
+                const charactersInRealm = profileData["wow_accounts"]
                     .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])
                     .filter((character: any) => character.realm.name.toLowerCase() === payload.seller.realm.toLowerCase() && character.name.toLowerCase() === payload.seller.characterName.toLowerCase());
                 if (charactersInRealm.length === 0) return response.status(401).send([{ message: "You do not own this character." }]);

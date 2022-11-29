@@ -6,12 +6,13 @@ import { RegionRealmContext, ROOT_URL } from "./_app";
 import { useSession } from "next-auth/react";
 import { SetRegionRealmView } from "../components/SetRealms";
 import { ListingView } from "../components/ListingView";
+import Script from "next/script";
 
 export default function Sell() {
 
     const session = useSession();
     const context = useContext(RegionRealmContext);
-    const [userListings, setUserListings] = useState<Listing[]>([]);
+    const [userListings, setUserListings] = useState<Listing[] | undefined>(undefined);
 
     // Form input
     const [qualityGuarantee, setQualityGuarantee] = useState<string>("Rank 1");
@@ -27,12 +28,13 @@ export default function Sell() {
     const [success, setSuccess] = useState<boolean>(false);
 
     const deleteUserListing = async (id: string) => {
+        console.log(`deleteUserListings called with id ${id}`);
         const response = await fetch(ROOT_URL + `/listings/${id}`, {
             method: "DELETE",
         });
         if (response.ok) {
             setSuccess(true);
-            setUserListings(userListings.filter((listing) => listing.id !== id));
+            setUserListings(userListings ? userListings.filter((listing) => listing.id !== id) : []);
         } else {
             setErrors(["Error deleting listing. Please try again."])
         }
@@ -268,6 +270,9 @@ export default function Sell() {
                                  key={listing.id}/>
                 ))}
             </ListGroup>
+            {userListings === undefined && <p>Loading...</p>}
+            {userListings && userListings.length === 0 && <p>You have no listings.</p>}
+            {userListings && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
         </main>
     </div>
 }

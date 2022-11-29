@@ -9,6 +9,14 @@ export const authOptions = {
             clientId: process.env.BATTLENET_CLIENT_ID,
             clientSecret: process.env.BATTLENET_CLIENT_SECRET,
             issuer: process.env.BATTLENET_ISSUER,
+            authorization: {
+                url: "https://oauth.battle.net/authorize",
+                params: {scope: "wow.profile"},
+            },
+            token: {
+                url: "https://oauth.battle.net/token",
+                params: {grant_type: "authorization_code", scope: "wow.profile"},
+            }
         })
         // ...add more providers here
     ],

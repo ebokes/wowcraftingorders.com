@@ -61,6 +61,7 @@ export default function Sell() {
 
         const payload = {
             itemId: parseInt(search),
+            quality: qualityGuarantee,
             commission: {
                 gold: parseInt(gold),
                 silver: parseInt(silver),

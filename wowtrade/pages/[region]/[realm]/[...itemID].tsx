@@ -50,7 +50,7 @@ export default function itemPage() {
         <ListGroup>
             {data && data
                 .filter((listing: Listing) => { // Filter
-                    if (quality === "") return true;
+                    if (quality === "All") return true;
                     return listing.quality === quality;
                 })
                 .sort((a: Listing, b: Listing) => { // Sort by commission, lowest to highest

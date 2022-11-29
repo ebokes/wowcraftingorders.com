@@ -60,7 +60,7 @@ app.post("/listings",
                         "Authorization": request.headers["authorization"]
                     }
                 })}`);
-                const profileDataResponse = await axios.get("https://us.api.blizzard.com/profile/user/wow", {
+                const profileDataResponse = await axios.get("https://us.api.blizzard.com/profile/user/wow?namespace=profile-us&locale=en_US", {
                     headers: {
                         "Authorization": request.headers["authorization"]
                     }

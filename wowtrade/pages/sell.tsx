@@ -105,8 +105,8 @@ export default function Sell() {
                         break;
                     }
                     default: {
-                        console.error("Failed to parse response from backend: ", response);
-                        setErrors(["An unknown error occurred. Please try again later."]);
+                        console.warn("Unanticipated response from backend: ", response);
+                        setErrors(["An unknown error occurred. Please try again shortly."]);
                         break;
                     }
                 }

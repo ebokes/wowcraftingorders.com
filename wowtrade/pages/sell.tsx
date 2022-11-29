@@ -98,7 +98,8 @@ export default function Sell() {
                 setSuccess(true);
             } else {
                 switch (response.status) {
-                    case 400: {
+                    case 400: // Error messages sent alongside with more detail
+                    case 401: {
                         const body = await response.json();
                         setErrors(
                             body.map((error: any) => error.message)

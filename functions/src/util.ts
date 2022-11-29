@@ -1,4 +1,4 @@
-import axios from "axios/index";
+import axios from "axios";
 import { BattleNetProfileDataResponse } from "./types";
 
 export const itemExists = async (itemId: number, authHeader: string): Promise<boolean> => {

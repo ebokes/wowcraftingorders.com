@@ -41,7 +41,7 @@ export default function Sell() {
     useEffect(() => {
         const fetchData = async () => {
             if (!session.data) return;
-            const listings = await fetch(`${ROOT_URL}/listings`, {
+            const listings = await fetch(`${ROOT_URL}/${context.region}/listings`, {
                 method: "GET",
                 headers: {
                     // TODO: Proper way to not need to ignore this is to extend the Session type

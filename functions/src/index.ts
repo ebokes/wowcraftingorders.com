@@ -9,8 +9,9 @@ import * as express from "express";
 import { validateListing } from "./ListingSchema";
 import { addListing, getListings, isDuplicateListing } from "./persistence";
 import { config } from "dotenv";
-import { defineString } from "firebase-functions/params";
+// import { defineString } from "firebase-functions/params";
 import * as timeout from "connect-timeout";
+import * as BearerStrategy from "passport-http-bearer";
 
 const session = require("cookie-session");
 
@@ -18,8 +19,8 @@ config({ override: true });
 
 const passport = require("passport");
 
-const BATTLENET_CLIENT_ID = defineString("BATTLENET_CLIENT_ID");
-const BATTLENET_CLIENT_SECRET = defineString("BATTLENET_CLIENT_SECRET");
+// const BATTLENET_CLIENT_ID = defineString("BATTLENET_CLIENT_ID");
+// const BATTLENET_CLIENT_SECRET = defineString("BATTLENET_CLIENT_SECRET");
 
 
 const cors = require('cors')({ origin: true });
@@ -40,18 +41,10 @@ app.use(cors);
 
 app.use(passport.initialize());
 app.use(passport.session());
-const { Strategy: BNetStrategy } = require("passport-bnet");
-passport.use(new BNetStrategy({
-    clientID: BATTLENET_CLIENT_ID,
-    clientSecret: BATTLENET_CLIENT_SECRET,
-    callbackUrl: "https://wowtrade.xyz",
-    region: "us"
-    // @ts-ignore
-}, function (accessToken, refreshToken, profile, done) {
-    functions.logger.debug(`accessToken: ${accessToken}`);
-    functions.logger.debug(`refreshToken: ${refreshToken}`);
-    return done(null, profile);
-}));
+passport.use(new BearerStrategy.Strategy(
+    function (token, done) {
+        return done(null, token);
+    }));
 
 initializeApp(functions.config().firebase);
 
@@ -60,15 +53,11 @@ initializeApp(functions.config().firebase);
 app.post("/listings",
     async (request, response) => {
         functions.logger.debug("Calling passport.authenticate.");
-        return passport.authenticate('bnet', {
-            session: false,
-            failureMessage: true,
-            failureRedirect: "failed!"
-        }, async (err: any, user: any) => {
-            if (err) {
-                throw new Error(err);
-            }
-            functions.logger.debug("User: " + JSON.stringify(user));
+        passport.authenticate('bearer', {
+            session: false
+        }, async (request: any, response: any) => {
+            const token = request.token;
+            functions.logger.debug("Token: " + JSON.stringify(token));
             switch (request.method) {
                 case "POST": {
                     // Validate payload

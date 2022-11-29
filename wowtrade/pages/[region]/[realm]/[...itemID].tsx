@@ -5,6 +5,7 @@ import { Listing } from "../../../types/types";
 import Script from "next/script";
 import { totalMoneyValue } from "../../../components/ListingsList";
 import { useState } from "react";
+import Link from "next/link";
 
 export default function itemPage() {
 
@@ -31,7 +32,8 @@ export default function itemPage() {
     return <div>
         <div className={"mt-5"}></div>
         {data &&
-            <a style={{ fontSize: "1.5rem" }} href={`https://www.wowhead.com/item=${itemID}`}>Loading Tooltip...</a>}
+            <Link style={{ fontSize: "1.5rem" }} href={`https://www.wowhead.com/item=${itemID}`}>Loading
+                Tooltip...</Link>}
         {!data && <div>Loading...</div>}
         {data && <h3 className={"mt-3"}>Listings on {region.toUpperCase()} {realm}</h3>}
         <Form>

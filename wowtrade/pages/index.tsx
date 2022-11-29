@@ -38,9 +38,10 @@ export default function Home() {
             <main className={"p-3"}>
                 <h3>What Is This?</h3>
                 <p>WowTrade.xyz is a marketplace for high-quality work orders in World of Warcraft (WoW). Public work
-                    orders don't guarantee a quality (if you're unfamiliar with the new crafting system, read <a
+                    orders don't guarantee a quality (if you're unfamiliar with the new crafting system, read <Link
                         href={"https://www.wowhead.com/guide/professions/overview-dragonflight"}>this page on
-                        Wowhead</a>), so this site is intended to enable people to sell high-quality work orders for a
+                        Wowhead</Link>), so this site is intended to enable people to sell high-quality work orders for
+                    a
                     higher amount, without needing to spam trade chat.</p>
 
                 <Form style={{ width: "100%" }}>

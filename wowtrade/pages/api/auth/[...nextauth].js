@@ -9,7 +9,6 @@ export const authOptions = {
             clientId: process.env.BATTLENET_CLIENT_ID,
             clientSecret: process.env.BATTLENET_CLIENT_SECRET,
             issuer: process.env.BATTLENET_ISSUER,
-            authorization: {params: {scope: "wow.profile"}},
         })
         // ...add more providers here
     ],
@@ -21,7 +20,7 @@ export const authOptions = {
             }
             return token
         },
-        async session({session, token, user}) {
+        async session({session, token}) {
             // Send properties to the client, like an access_token from a provider.
             session.accessToken = token.accessToken
             return session

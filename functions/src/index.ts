@@ -60,7 +60,11 @@ initializeApp(functions.config().firebase);
 app.post("/listings",
     async (request, response) => {
         functions.logger.debug("Calling passport.authenticate.");
-        return passport.authenticate('bnet', { session: false }, async (err: any, user: any) => {
+        return passport.authenticate('bnet', {
+            session: false,
+            failureMessage: true,
+            failureRedirect: "failed!"
+        }, async (err: any, user: any) => {
             if (err) {
                 throw new Error(err);
             }

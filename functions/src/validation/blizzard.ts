@@ -1,9 +1,8 @@
 import axios from "axios";
 import { BattleNetProfileDataResponse, Character } from "../types";
-import { CustomError } from "./common";
 
 const blizzardApiRequest = async (url: string, namespace: string, token: string): Promise<BattleNetProfileDataResponse | object> => {
-    const response = await axios.get<BattleNetProfileDataResponse>(url, {
+    const config = {
         headers: {
             "Authorization": token,
             "Accept-Encoding": "utf-8",
@@ -12,7 +11,9 @@ const blizzardApiRequest = async (url: string, namespace: string, token: string)
             "namespace": `${namespace}`,
             "locale": "en_US"
         }
-    });
+    };
+    console.debug(`Making request to ${url} with config: ${JSON.stringify(config)}`);
+    const response = await axios.get<BattleNetProfileDataResponse>(url, config);
     return response.data;
 }
 
@@ -24,9 +25,7 @@ export const getCharacters = async (region: string, token: string): Promise<Char
 }
 
 export const ownsCharacter = async (region: string, realm: string, characterName: string, token: string): Promise<boolean> => {
-    const response = await blizzardApiRequest(`https://us.api.blizzard.com/profile/user/wow`, `profile-us`, token);
-    if (response instanceof CustomError) return false;
-    const data = response as unknown as BattleNetProfileDataResponse;
+    const data = await blizzardApiRequest(`https://us.api.blizzard.com/profile/user/wow`, `profile-us`, token) as BattleNetProfileDataResponse;
     const charactersInRealm = data["wow_accounts"]
         .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])
         .filter((character: any) => character.realm.name.toLowerCase() === realm.toLowerCase() && character.name.toLowerCase() === characterName.toLowerCase());

@@ -68,7 +68,6 @@ export default function Home() {
                                     <option key={realm} value={realm}>{realm}</option>
                                 ))}
                             </Form.Control>
-                            <Form.Text muted>Will add a quicker way to search soon!</Form.Text>
                         </Col>
                     </Row>
                     <Row className={"my-4"}>

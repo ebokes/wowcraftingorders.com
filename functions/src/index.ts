@@ -10,6 +10,7 @@ import * as express from "express";
 import { validateListing } from "./ListingSchema";
 import { addListing, getListings, isDuplicateListing } from "./persistence";
 import * as timeout from "connect-timeout";
+import fetch from "node-fetch";
 
 
 const haltOnTimedOut: RequestHandler = (req, res, next) => {

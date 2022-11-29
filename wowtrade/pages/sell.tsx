@@ -54,7 +54,7 @@ export default function Sell() {
         }
 
         fetchData().catch(console.error);
-    }, [session]);
+    }, [session, context.region, context.realm]);
 
     if (session.status !== "authenticated" && !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development')) {
         return (

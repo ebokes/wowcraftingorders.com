@@ -11,7 +11,7 @@ import { validateListing } from "./ListingSchema";
 import { addListing, getListings, isDuplicateListing } from "./persistence";
 import * as timeout from "connect-timeout";
 
-import axios from "axios";
+import axios, { AxiosResponse } from "axios";
 
 const haltOnTimedOut: RequestHandler = (req, res, next) => {
     if (!req.timedout) next();
@@ -55,19 +55,14 @@ app.post("/listings",
                 }
 
                 // Validate that they own the character in question
-                console.log(`Requesting user info with payload ${JSON.stringify({
-                    headers: {
-                        "Authorization": request.headers["authorization"]
-                    }
-                })}`);
-                const profileDataResponse = await axios.get("https://us.api.blizzard.com/profile/user/wow?namespace=profile-us&locale=en_US", {
+                const profileDataResponse: AxiosResponse = await axios.get("https://us.api.blizzard.com/profile/user/wow?namespace=profile-us&locale=en_US", {
                     headers: {
                         "Authorization": request.headers["authorization"]
                     }
                 })
 
                 // TODO: I should make actual types for these
-                if (profileDataResponse.status !== 200) return response.sendStatus(401);
+                if (profileDataResponse.status !== 200) return response.sendStatus(profileDataResponse.status);
                 const profileData: any = await profileDataResponse.data();
                 const charactersInRealm = profileData.wow_accounts
                     .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])

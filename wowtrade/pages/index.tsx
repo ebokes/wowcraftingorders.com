@@ -54,10 +54,8 @@ export default function Home() {
                                 setRegion(e.target.value)
                             }}>
                                 <option value="en">EN (Americas)</option>
-                                <option value="eu">EU (Europe)</option>
-                                <option value="kr">KR (Korea)</option>
-                                <option value="tw">TW (Taiwan)</option>
                             </Form.Control>
+                            <Form.Text muted>Will be adding more regions soon!</Form.Text>
                         </Col>
                         <Col>
                             <Form.Label>Realm</Form.Label>

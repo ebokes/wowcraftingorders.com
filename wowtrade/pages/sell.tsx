@@ -138,8 +138,8 @@ export default function Sell() {
                             setRegion(e.target.value);
                         }}>
                             <option value="en">EN (Americas)</option>
-                            <option value="eu">EU (Europe)</option>
                         </Form.Control>
+                        <Form.Text muted>Will be adding more regions soon!</Form.Text>
                     </Col>
                     <Col>
                         <Form.Label>Realm</Form.Label>

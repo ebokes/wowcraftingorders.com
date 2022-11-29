@@ -63,7 +63,7 @@ app.post("/listings",
 
                 // TODO: I should make actual types for these
                 if (!profileDataResponse.ok) return response.sendStatus(401);
-                const profileData = await profileDataResponse.json();
+                const profileData: any = await profileDataResponse.json();
                 const charactersInRealm = profileData.wow_accounts
                     .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])
                     .filter((character: any) => character.realm.name.toLowerCase() === payload.seller.realm.toLowerCase() && character.name.toLowerCase() === payload.seller.characterName.toLowerCase());

@@ -46,7 +46,7 @@ export default function Sell() {
                 headers: {
                     // TODO: Proper way to not need to ignore this is to extend the Session type
                     // @ts-ignore
-                    "Authentication": `Bearer ${session.data.accessToken}`
+                    "Authorization": `Bearer ${session.data.accessToken}`
                 }
             })
             const listingsJson: Listing[] = await listings.json();

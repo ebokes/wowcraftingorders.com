@@ -41,9 +41,10 @@ export default function Sell() {
     useEffect(() => {
         const fetchData = async () => {
             if (!session.data) return;
-            const listings = await fetch(`${ROOT_URL}/api/user/listings`, {
+            const listings = await fetch(`${ROOT_URL}/listings`, {
                 method: "GET",
                 headers: {
+                    // TODO: Proper way to not need to ignore this is to extend the Session type
                     // @ts-ignore
                     "Authentication": `Bearer ${session.data.accessToken}`
                 }

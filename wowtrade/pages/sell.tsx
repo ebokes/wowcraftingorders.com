@@ -36,7 +36,7 @@ export default function Sell() {
 
     if (session.status !== "authenticated") {
         return (
-            <p>Please sign in to submit a listing. This helps ensure people can only post listings for characters they
+            <p>Please sign in to submit a listing. This ensures people can only post listings for characters they
                 own.</p>
         );
     }

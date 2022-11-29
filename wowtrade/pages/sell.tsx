@@ -4,8 +4,8 @@ import { useContext, useEffect, useState } from "react";
 import { Listing, ListingPayload } from "../types/types";
 import { RegionRealmContext, ROOT_URL } from "./_app";
 import { useSession } from "next-auth/react";
-import { ConciseListingView } from "../components/ConciseListing";
 import { SetRegionRealmView } from "../components/SetRealms";
+import { ListingView } from "../components/ListingView";
 
 export default function Sell() {
 
@@ -25,6 +25,18 @@ export default function Sell() {
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [errors, setErrors] = useState<string[]>([]);
     const [success, setSuccess] = useState<boolean>(false);
+
+    const deleteUserListing = async (id: string) => {
+        const response = await fetch(ROOT_URL + `/listings/${id}`, {
+            method: "DELETE",
+        });
+        if (response.ok) {
+            setSuccess(true);
+            setUserListings(userListings.filter((listing) => listing.id !== id));
+        } else {
+            setErrors(["Error deleting listing. Please try again."])
+        }
+    }
 
     // Wowhead tooltips
     useEffect(() => {
@@ -250,9 +262,12 @@ export default function Sell() {
             </ListGroup>}
 
             <h3>Existing Listings</h3>
-            {userListings && userListings.map((listing) => (
-                <ConciseListingView listing={listing} key={listing.id}/>
-            ))}
+            <ListGroup>
+                {userListings && userListings.map((listing) => (
+                    <ListingView listing={listing} deleteUserListing={deleteUserListing} includeDelete
+                                 key={listing.id}/>
+                ))}
+            </ListGroup>
         </main>
     </div>
 }

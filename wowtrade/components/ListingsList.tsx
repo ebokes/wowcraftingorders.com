@@ -2,7 +2,7 @@ import useSWR from "swr";
 import { Listing } from "../types/types";
 import Script from "next/script";
 import { ListGroup } from "react-bootstrap";
-import { ListingView } from "./Listing";
+import { ListingView } from "./ListingView";
 import { commissionSort } from "../util/utils";
 import { useContext } from "react";
 import { RegionRealmContext } from "../pages/_app";

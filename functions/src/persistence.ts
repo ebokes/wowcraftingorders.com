@@ -5,13 +5,14 @@ const LISTINGS_COLLECTION = "listings";
 export const getListings = async () => {
     const db = admin.firestore();
     return (await db.collection(LISTINGS_COLLECTION).get()).docs.map((doc) => {
-        return doc.data() as Listing;
+        return { id: doc.id, ...doc.data() } as Listing;
     });
 };
 
 export const getListing = async (listingId: string): Promise<Listing | undefined> => {
     const db = admin.firestore();
-    return (await db.collection(LISTINGS_COLLECTION).doc(listingId).get()).data() as Listing;
+    const doc = await db.collection(LISTINGS_COLLECTION).doc(listingId).get();
+    return { id: doc.id, ...doc.data() } as Listing;
 }
 
 export const deleteListing = async (listingId: string) => {
@@ -19,9 +20,10 @@ export const deleteListing = async (listingId: string) => {
     return db.collection(LISTINGS_COLLECTION).doc(listingId).delete();
 }
 
-export const addListing = async (listing: ListingPayload) => {
+export const addListing = async (listing: ListingPayload): Promise<Listing> => {
     const db = admin.firestore();
-    await db.collection(LISTINGS_COLLECTION).add(listing);
+    const data = await db.collection(LISTINGS_COLLECTION).add(listing);
+    return { id: data.id, ...listing } as Listing;
 };
 
 export const getCharacterListings = async (characters: Character[]): Promise<Listing[]> => {
@@ -33,7 +35,9 @@ export const getCharacterListings = async (characters: Character[]): Promise<Lis
             .where("seller.realm", "==", character.realm)
             .where("seller.characterName", "==", character.characterName)
             .get();
-        listings.push(...matchingListings.docs.map((doc) => doc.data() as Listing));
+        listings.push(...matchingListings.docs.map((doc) => {
+            return { id: doc.id, ...doc.data() } as Listing;
+        }));
     }
     return listings;
 }

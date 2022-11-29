@@ -9,6 +9,7 @@ name: Deploy to Firebase Hosting on merge
 jobs:
   deploy-functions:
     runs-on: ubuntu-latest
+    timeout-minutes: 15
     defaults:
       run:
         working-directory: functions

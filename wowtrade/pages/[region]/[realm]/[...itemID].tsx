@@ -1,39 +1,38 @@
+import { useRouter } from "next/router";
 import useSWR from "swr";
-import { Listing } from "../types/types";
-import Script from "next/script";
 import { ListGroup } from "react-bootstrap";
+import { Listing } from "../../../types/types";
+import Script from "next/script";
+import { totalMoneyValue } from "../../../components/ListingsList";
 
-interface Props {
-    region: string;
-    realm: string;
-    search: string;
-}
+export default function itemPage() {
 
-export function totalMoneyValue(gold: number | undefined, silver: number | undefined, copper: number | undefined) {
-    return (gold ?? 0) * 10000 + (silver ?? 0) * 100 + (copper ?? 0);
-}
+    // Hooks
+    const router = useRouter();
+    let { region, realm, itemID } = router.query;
 
-// TODO: Only show each item once, with its lowest commission
-export default function ListingsList({ region, realm, search }: Props) {
-    const { data, error } = useSWR(`/${region}/${realm}/items`);
-    if (error) return <div>Failed to load listings. Please try and refresh the page.</div>
-    if (!data) return <div>Loading...</div>
+    // TODO: This is a hacky workaround for me needing to use ...itemID in the path. Find a cleaner way to do it.
+    if (itemID != null) { // Hacky workaround for me not being able to get
+        itemID = itemID[1];
+    }
+    region = region as string; // TODO: Hacky, needs fix. Necessary so that Webstorm stops yelling at me for the later .toUpperCase()
+    const { data, error } = useSWR(`/${region}/${realm}/item/${itemID}`);
+
+    // Conditionally not rendering
+    if (!region || !realm || !itemID) return <div>Loading...</div>
+    if (error) {
+        console.error("SWR Error: ", error);
+        return <div>Failed to load listings for this item. Please try and refresh the page.</div>
+    }
 
     return <div>
+        <div className={"mt-5"}></div>
+        {data &&
+            <a style={{ fontSize: "1.5rem" }} href={`https://www.wowhead.com/item=${itemID}`}>Loading Tooltip...</a>}
+        {!data && <div>Loading...</div>}
+        {data && <h3 className={"mt-3"}>Listings on {region.toUpperCase()} {realm}</h3>}
         <ListGroup>
-            {data
-                .filter((listing: Listing) => { // Filter by item ID
-                    if (search === "") return true;
-                    return listing.itemId.toString() === search;
-                })
-                .filter((listing: Listing) => { // Filter by whether it's the lowest commission for the item
-                    const otherListings = data.filter((otherListing: Listing) => {
-                        return otherListing.itemId === listing.itemId;
-                    });
-                    return otherListings.every((otherListing: Listing) => {
-                        return totalMoneyValue(otherListing.commission.gold, otherListing.commission.silver, otherListing.commission.copper) >= totalMoneyValue(listing.commission.gold, listing.commission.silver, listing.commission.copper);
-                    });
-                })
+            {data && data
                 .sort((a: Listing, b: Listing) => { // Sort by commission, lowest to highest
                     const aCommission = totalMoneyValue(a.commission.gold, a.commission.silver, a.commission.copper);
                     const bCommission = totalMoneyValue(b.commission.gold, b.commission.silver, b.commission.copper);
@@ -41,8 +40,6 @@ export default function ListingsList({ region, realm, search }: Props) {
                 })
                 .map((listing: Listing) => (
                     <ListGroup.Item key={listing.itemId}>
-                        <a href={`/${region}/${realm}/item/${listing.itemId}`} data-wowhead={`item=${listing.itemId}`}>Loading
-                            Tooltip...</a>{"    "}
                         <p className={"m-0"}><b>Quality Guarantee: </b>{listing.quality + " " + "(1 = Worst, 5 = Best)"}
                         </p>
                         <p className={"m-0"}><b>Commission:</b>{" "}

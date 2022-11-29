@@ -126,7 +126,7 @@ app.get("/:region/:realm/item/:itemId", async (request, response) => {
                     listing.itemId === parseInt(request.params.itemId);
             });
             functions.logger.debug(`Successfully retrieved Listings for ${request.params.region}/${request.params.realm} w/ Item ID${request.params.itemId}: ${JSON.stringify(result)}`);
-            return response.send();
+            return response.send(result);
         }
         default: {
             return response.sendStatus(405);

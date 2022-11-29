@@ -1,7 +1,3 @@
-interface Regions {
-    [key: string]: string;
-}
-
-export const REGIONS: Regions = {
-    EN: "en"
+export enum REGIONS {
+    EN = "en"
 }

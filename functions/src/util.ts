@@ -3,7 +3,7 @@ import { BattleNetProfileDataResponse } from "./types";
 
 export const itemExists = async (itemId: number, authHeader: string): Promise<boolean> => {
     try {
-        await axios.get<BattleNetProfileDataResponse>(`https://us.api.blizzard.com/data/wow/item/${itemId}`, {
+        const response = await axios.get<BattleNetProfileDataResponse>(`https://us.api.blizzard.com/data/wow/item/${itemId}`, {
             headers: {
                 "Authorization": authHeader,
                 "Accept-Encoding": "utf-8",
@@ -13,8 +13,9 @@ export const itemExists = async (itemId: number, authHeader: string): Promise<bo
                 "locale": "en_US"
             }
         })
-        return true;
+        return response.status === 200;
     } catch (err) {
+        console.debug(`Item ${itemId} does not exist.`);
         return false;
     }
 };

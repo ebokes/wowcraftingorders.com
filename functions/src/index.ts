@@ -61,7 +61,7 @@ app.post("/listings",
                     }
                 })
                 if (profileDataResponse.status !== 200) return response.sendStatus(profileDataResponse.status);
-                const profileData: BattleNetProfileDataResponse = await profileDataResponse.data.body.json();
+                const profileData: BattleNetProfileDataResponse = (await profileDataResponse).data;
                 functions.logger.debug("Profile data: ", JSON.stringify(profileData));
                 const charactersInRealm = profileData.wow_accounts
                     .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])

@@ -12,9 +12,9 @@ export const authOptions = {
             // authorization: {
             //     params: {scope: "wow.profile"},
             // },
-            // token: {
-            //     params: {scope: "wow.profile"},
-            // }
+            token: {
+                params: {scope: "wow.profile"},
+            }
         })
         // ...add more providers here
     ],

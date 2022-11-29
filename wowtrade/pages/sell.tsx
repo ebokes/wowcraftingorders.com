@@ -156,6 +156,35 @@ export default function Sell() {
                         </Form.Control>
                     </Col>
                 </Row>
+
+                <Row className={"my-3"}>
+                    <h4>Seller Details</h4>
+                    <Col md={4}>
+                        <Form.Group>
+                            <Form.Label>Character Name</Form.Label>
+                            <Form.Control type="text" value={characterName}
+                                          onChange={(e) => setCharacterName(e.target.value)
+                                          }/>
+                        </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                        <Form.Group>
+                            <Form.Label>Discord Tag</Form.Label>
+                            <Form.Control type="text" value={discordTag} onChange={(e) => setDiscordTag(e.target.value)
+                            }/>
+                            <Form.Text muted>Optional, but recommended.</Form.Text>
+                        </Form.Group>
+                    </Col>
+                    <Col md={4}>
+                        <Form.Group>
+                            <Form.Label>Battle.net Tag</Form.Label>
+                            <Form.Control type="text" value={battleNetTag}
+                                          onChange={(e) => setBattleNetTag(e.target.value)
+                                          }/>
+                            <Form.Text muted>Optional.</Form.Text>
+                        </Form.Group>
+                    </Col>
+                </Row>
                 <Row className={"my-3"}>
                     <h4>Item Details</h4>
 
@@ -186,8 +215,6 @@ export default function Sell() {
                             </Col>
                         </Row>
                     </Form.Group>
-
-
                 </Row>
                 <Row className={"my-3"}>
                     <h4>Commission</h4>
@@ -211,34 +238,6 @@ export default function Sell() {
                             }/>
                             <InputGroup.Text id="basic-addon1">copper</InputGroup.Text>
                         </InputGroup>
-                    </Col>
-                </Row>
-                <Row className={"my-3"}>
-                    <h4>Seller Details</h4>
-                    <Col md={4}>
-                        <Form.Group>
-                            <Form.Label>Character Name</Form.Label>
-                            <Form.Control type="text" value={characterName}
-                                          onChange={(e) => setCharacterName(e.target.value)
-                                          }/>
-                        </Form.Group>
-                    </Col>
-                    <Col md={4}>
-                        <Form.Group>
-                            <Form.Label>Discord Tag</Form.Label>
-                            <Form.Control type="text" value={discordTag} onChange={(e) => setDiscordTag(e.target.value)
-                            }/>
-                            <Form.Text muted>Optional, but recommended.</Form.Text>
-                        </Form.Group>
-                    </Col>
-                    <Col md={4}>
-                        <Form.Group>
-                            <Form.Label>Battle.net Tag</Form.Label>
-                            <Form.Control type="text" value={battleNetTag}
-                                          onChange={(e) => setBattleNetTag(e.target.value)
-                                          }/>
-                            <Form.Text muted>Optional.</Form.Text>
-                        </Form.Group>
                     </Col>
                 </Row>
                 <Row className={"my-3"}>

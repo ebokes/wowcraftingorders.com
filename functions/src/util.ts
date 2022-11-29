@@ -15,7 +15,7 @@ export const itemExists = async (itemId: number, authHeader: string): Promise<bo
         })
         return response.status === 200;
     } catch (err) {
-        console.debug(`Item ${itemId} does not exist.`);
+        console.debug(`Item ${itemId} does not exist or is no longer in the game.`);
         return false;
     }
 };

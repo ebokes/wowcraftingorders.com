@@ -33,6 +33,11 @@ export default function Sell() {
         setErrors([]);
         const response = await fetch(ROOT_URL + `/listings/${id}`, {
             method: "DELETE",
+            headers: {
+                // TODO: Proper way to not need to ignore this is to extend the Session type
+                // @ts-ignore
+                "Authorization": `Bearer ${session.data.accessToken}`
+            }
         });
         if (response.ok) {
             setSuccess(true);

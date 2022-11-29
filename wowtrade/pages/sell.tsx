@@ -40,6 +40,7 @@ export default function Sell() {
     // Retrieve listings for user
     useEffect(() => {
         const fetchData = async () => {
+            if (!session.data) return;
             const listings = await fetch(`${ROOT_URL}/api/user/listings`, {
                 method: "GET",
                 headers: {

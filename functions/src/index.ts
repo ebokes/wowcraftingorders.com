@@ -11,7 +11,7 @@ import { validateListing } from "./ListingSchema";
 import { addListing, getListings, isDuplicateListing } from "./persistence";
 import * as timeout from "connect-timeout";
 
-const fetch = require("node-fetch");
+import axios from "axios";
 
 const haltOnTimedOut: RequestHandler = (req, res, next) => {
     if (!req.timedout) next();
@@ -55,15 +55,15 @@ app.post("/listings",
                 }
 
                 // Validate that they own the character in question
-                const profileDataResponse = await fetch("https://us.api.blizzard.com/profile/user/wow", {
+                const profileDataResponse = await axios.get("https://us.api.blizzard.com/profile/user/wow", {
                     headers: {
                         "Authorization": request.headers["authorization"]
                     }
                 })
 
                 // TODO: I should make actual types for these
-                if (!profileDataResponse.ok) return response.sendStatus(401);
-                const profileData: any = await profileDataResponse.json();
+                if (profileDataResponse.status !== 200) return response.sendStatus(401);
+                const profileData: any = await profileDataResponse.data();
                 const charactersInRealm = profileData.wow_accounts
                     .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])
                     .filter((character: any) => character.realm.name.toLowerCase() === payload.seller.realm.toLowerCase() && character.name.toLowerCase() === payload.seller.characterName.toLowerCase());

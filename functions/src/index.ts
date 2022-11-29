@@ -65,7 +65,7 @@ app.post("/listings",
                 const profileData = await profileDataResponse.json();
                 const charactersInRealm = profileData.wow_accounts
                     .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])
-                    .filter((character: any) => character.realm.name === payload.seller.realm && character.name.toLowerCase() === payload.seller.characterName.toLowerCase());
+                    .filter((character: any) => character.realm.name.toLowerCase() === payload.seller.realm.toLowerCase() && character.name.toLowerCase() === payload.seller.characterName.toLowerCase());
                 if (charactersInRealm.length === 0) return response.status(401).send([{ message: "You do not own this character." }]);
 
                 // Check to see if duplicate

@@ -1,3 +1,3 @@
-export const REGIONS = [
-    "EN (North America)"
-]
+export const REGIONS = {
+    EN: "en"
+}

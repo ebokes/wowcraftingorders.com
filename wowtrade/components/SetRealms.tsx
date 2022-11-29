@@ -2,6 +2,7 @@ import { Col, Form, Row } from "react-bootstrap";
 import { REALM_LIST } from "../data/realms";
 import { useContext } from "react";
 import { RegionRealmContext } from "../pages/_app";
+import { REGIONS } from "../data/regions";
 
 export function SetRegionRealmView() {
     const context = useContext(RegionRealmContext);
@@ -11,7 +12,7 @@ export function SetRegionRealmView() {
             <Form.Control as="select" value={context.region} onChange={(e) => {
                 context.setRegion(e.target.value)
             }}>
-                <option value="en">EN (Americas)</option>
+                <option value={REGIONS.EN}>EN (Americas)</option>
             </Form.Control>
             <Form.Text muted>Will be adding more regions soon!</Form.Text>
         </Col>

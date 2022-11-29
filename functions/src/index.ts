@@ -60,16 +60,14 @@ app.post("/listings",
                         "Authorization": request.headers["authorization"]
                     }
                 })
-
-                // TODO: I should make actual types for these
                 if (profileDataResponse.status !== 200) return response.sendStatus(profileDataResponse.status);
-                const profileData: any = await profileDataResponse.data();
+                const profileData: any = await profileDataResponse.data;
                 const charactersInRealm = profileData.wow_accounts
                     .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])
                     .filter((character: any) => character.realm.name.toLowerCase() === payload.seller.realm.toLowerCase() && character.name.toLowerCase() === payload.seller.characterName.toLowerCase());
                 if (charactersInRealm.length === 0) return response.status(401).send([{ message: "You do not own this character." }]);
 
-                // Check to see if duplicate
+                // Check to see if that character already has a listing for this item
                 if (await isDuplicateListing(payload)) {
                     return response.sendStatus(409);
                 }

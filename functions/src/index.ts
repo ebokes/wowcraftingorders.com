@@ -11,7 +11,7 @@ import { validateListing } from "./ListingSchema";
 import { addListing, getListings, isDuplicateListing } from "./persistence";
 import * as timeout from "connect-timeout";
 
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 const haltOnTimedOut: RequestHandler = (req, res, next) => {
     if (!req.timedout) next();
@@ -55,15 +55,24 @@ app.post("/listings",
                 }
 
                 // Validate that they own the character in question
-                const profileDataResponse: AxiosResponse<BattleNetProfileDataResponse> = await axios.get("https://us.api.blizzard.com/profile/user/wow?namespace=profile-us&locale=en_US", {
+                const blizzardResponse = await axios.get<BattleNetProfileDataResponse>("https://us.api.blizzard.com/profile/user/wow?namespace=profile-us&locale=en_US", {
                     headers: {
-                        "Authorization": request.headers["authorization"]
+                        "Authorization": request.headers["authorization"],
+                        "Accept-Encoding": "utf-8",
+                    },
+                    params: {
+                        "namespace": "profile-us",
+                        "locale": "en_US"
                     }
                 })
-                if (profileDataResponse.status !== 200) return response.sendStatus(profileDataResponse.status);
-                const profileData: BattleNetProfileDataResponse = profileDataResponse.data;
-                functions.logger.debug("Profile data: ", JSON.stringify(profileData));
-                const charactersInRealm = profileData["wow_accounts"]
+
+                if (blizzardResponse.status !== 200) {
+                    functions.logger.error(`Blizzard API returned status code ${blizzardResponse.status} for user ${payload.seller.battleNetTag}`);
+                    return response.status(500).send("Blizzard API returned an error. Please try again later.");
+                }
+
+                const data = blizzardResponse.data;
+                const charactersInRealm = data["wow_accounts"]
                     .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])
                     .filter((character: any) => character.realm.name.toLowerCase() === payload.seller.realm.toLowerCase() && character.name.toLowerCase() === payload.seller.characterName.toLowerCase());
                 if (charactersInRealm.length === 0) return response.status(401).send([{ message: "You do not own this character." }]);

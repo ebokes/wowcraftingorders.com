@@ -61,6 +61,9 @@ app.post("/listings",
     async (request, response) => {
         functions.logger.debug("Calling passport.authenticate.");
         return passport.authenticate('bnet', { session: false }, async (err: any, user: any) => {
+            if (err) {
+                throw new Error(err);
+            }
             functions.logger.debug("User: " + JSON.stringify(user));
             switch (request.method) {
                 case "POST": {

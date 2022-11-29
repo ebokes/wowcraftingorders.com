@@ -62,7 +62,8 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
             <RegionRealmContext.Provider value={{
                 region: region,
                 setRegion: (region: string) => {
-                    setRegion(region);
+                    if (region === "en") setRegion(REGIONS.EN);
+                    throw new Error("Unrecognized region " + region);
                 }, realm: realm,
                 setRealm: (realm: string) => {
                     setRealm(realm);

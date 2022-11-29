@@ -10,7 +10,7 @@ export function SetRegionRealmView() {
         <Col>
             <Form.Label>Region</Form.Label>
             <Form.Control as="select" value={context.region} onChange={(e) => {
-                context.setRegion(e.target.value)
+                context.setRegion(e.target.value); // Error checking done in the context function
             }}>
                 <option value={REGIONS.EN}>EN (Americas)</option>
             </Form.Control>

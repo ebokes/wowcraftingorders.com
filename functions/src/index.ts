@@ -8,11 +8,11 @@ import type { RequestHandler } from "express";
 import * as express from "express";
 import { validateListing } from "./ListingSchema";
 import { addListing, getListings, isDuplicateListing } from "./persistence";
-import * as session from "express-session";
-
 import { config } from "dotenv";
 import { defineString } from "firebase-functions/params";
 import * as timeout from "connect-timeout";
+
+const session = require("cookie-session");
 
 config({ override: true });
 

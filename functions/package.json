@@ -21,7 +21,7 @@
     "dotenv": "^16.0.3",
     "firebase-admin": "^10.0.2",
     "firebase-functions": "^4.1.0",
-    "node-fetch": "^3.3.0"
+    "node-fetch": "^2.6.7"
   },
   "devDependencies": {
     "@types/connect-timeout": "^0.0.36",

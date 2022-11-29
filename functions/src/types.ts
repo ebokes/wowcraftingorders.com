@@ -23,6 +23,12 @@ export interface Listing extends ListingPayload {
     id: string;
 }
 
+export interface Character {
+    region: string;
+    realm: string;
+    characterName: string;
+}
+
 export interface BattleNetProfileDataResponse {
     _links: {
         self: {
@@ -44,10 +50,10 @@ export interface BattleNetProfileDataResponse {
 
 interface Account {
     id: number;
-    characters: Character[];
+    characters: BNetCharacter[];
 }
 
-interface Character {
+interface BNetCharacter {
     character: {
         href: string;
     };

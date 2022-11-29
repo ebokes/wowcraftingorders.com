@@ -1,5 +1,6 @@
-import { ListingPayload } from "./types";
+import { ListingPayload } from "../types";
 import Ajv, { JSONSchemaType } from "ajv";
+import { CustomError } from "./common";
 
 const ajv = new Ajv({ allErrors: true });
 
@@ -59,4 +60,23 @@ export const ListingSchema: JSONSchemaType<ListingPayload> = {
         },
     }
 };
-export const validateListing = ajv.compile(ListingSchema);
+
+const validateListingSchema = (payload: ListingPayload): CustomError[] => {
+    const validate = ajv.compile(ListingSchema);
+    validate(payload);
+    if (!validate.errors) return [];
+    return validate.errors.map(error => ({ message: error.message })) as CustomError[];
+}
+const validateListingBusiness = (payload: ListingPayload): CustomError[] => {
+    const errors: CustomError[] = [];
+    if (!payload.commission.gold && !payload.commission.silver && !payload.commission.copper) {
+        errors.push({ message: "Commission must be nonzero." });
+    }
+    return errors;
+}
+
+export const validateListing = (payload: ListingPayload): CustomError[] => {
+    const schemaErrors = validateListingSchema(payload);
+    const businessErrors = validateListingBusiness(payload);
+    return schemaErrors.concat(businessErrors);
+}

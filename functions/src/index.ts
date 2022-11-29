@@ -4,10 +4,10 @@
 
 import * as functions from "firebase-functions";
 import { initializeApp } from "firebase-admin/app";
-import { BattleNetProfileDataResponse, ListingPayload } from "./types";
+import { ListingPayload } from "./types";
 import type { RequestHandler } from "express";
 import * as express from "express";
-import { validateListing } from "./ListingSchema";
+import { validateListing } from "./validation/ListingPayload";
 import {
     addListing,
     deleteListing,
@@ -18,8 +18,8 @@ import {
 } from "./persistence";
 import * as timeout from "connect-timeout";
 
-import axios from "axios";
-import { itemExists } from "./util";
+import { getCharacters, itemExists, ownsCharacter } from "./validation/blizzard";
+import { ensureAuthenticated } from "./middleware";
 
 const haltOnTimedOut: RequestHandler = (req, res, next) => {
     if (!req.timedout) next();
@@ -35,61 +35,31 @@ initializeApp(functions.config().firebase);
 
 // 1. Create Listing - <region, server, item, character, commission> tuple
 // TODO: This is a god function that needs simplified.
-app.post("/listings",
+app.post("/listings", ensureAuthenticated,
     async (request, response) => {
         switch (request.method) {
             case "POST": {
-                if (!request.headers["authorization"]) {
-                    response.status(401).send("Authorization header is required.");
-                    return;
-                }
-                functions.logger.debug("Token: " + JSON.stringify(request.headers["authorization"]));
+                request.headers["authorization"] = request.headers["authorization"] as string;
 
-                // Validate payload
+                // Payload is missing fields
                 const payload = request.body as ListingPayload;
-                let valid = validateListing(payload);
-
-                // Manually handling because the logic is a bit complicated
-                // TODO: See if I can build this directly into AJV
-                if (!payload.commission.gold && !payload.commission.silver && !payload.commission.copper) {
-                    valid = false;
-                    return response.status(400).send([{ message: "Commission must be nonzero." }]);
-                } else if (!valid) {
-                    if (!validateListing.errors) {
-                        functions.logger.error(`Unknown issue validating Listing payload: ${JSON.stringify(payload)}`)
-                        return response.status(400).send([{ message: "Unknown error. Please verify all fields are filled out and correct." }]);
-                    } else {
-                        return response.status(400).send(validateListing.errors);
-                    }
+                const validationErrors = validateListing(payload);
+                if (validationErrors.length) {
+                    return response.status(400).send(validationErrors);
                 }
 
-                // Validate that they own the character in question
-                const blizzardResponse = await axios.get<BattleNetProfileDataResponse>("https://us.api.blizzard.com/profile/user/wow", {
-                    headers: {
-                        "Authorization": request.headers["authorization"],
-                        "Accept-Encoding": "utf-8",
-                    },
-                    params: {
-                        "namespace": "profile-us",
-                        "locale": "en_US"
-                    }
-                })
-                if (blizzardResponse.status !== 200) {
-                    functions.logger.error(`Blizzard API returned status code ${blizzardResponse.status} for token ${request.headers["authorization"]} submitting listing for seller ${payload.seller.characterName} on realm ${payload.seller.realm} in region ${payload.seller.region}.`);
-                    return response.status(500).send([{ message: "Blizzard API  returned an error. Please try again later." }]);
-                }
-                const data = blizzardResponse.data;
-                const charactersInRealm = data["wow_accounts"]
-                    .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])
-                    .filter((character: any) => character.realm.name.toLowerCase() === payload.seller.realm.toLowerCase() && character.name.toLowerCase() === payload.seller.characterName.toLowerCase());
-                if (charactersInRealm.length === 0) return response.status(401).send([{ message: "You do not own this character." }]);
-
-                // Validate that item exists
-                if (!(await itemExists(payload.itemId, request.headers["authorization"]))) {
+                // Item doesn't exist
+                const exists = await itemExists(payload.itemId, request.headers["authorization"]);
+                if (!exists) {
                     return response.status(400).send([{ message: "Item does not exist." }]);
                 }
 
-                // Check to see if that character already has a listing for this item
+                // Doesn't own character
+                if (!ownsCharacter(payload.seller.region, payload.seller.realm, payload.seller.characterName, request.headers["authorization"])) {
+                    return response.status(400).send([{ message: "Character does not exist." }]);
+                }
+
+                // Already has listing
                 if (await isDuplicateListing(payload)) {
                     return response.sendStatus(409);
                 }
@@ -105,12 +75,10 @@ app.post("/listings",
     });
 
 // Delete specific id
-app.delete("/listings/:id", async (request, response) => {
+app.delete("/listings/:id", ensureAuthenticated, async (request, response) => {
     switch (request.method) {
         case "DELETE": {
-            if (!request.headers["authorization"]) {
-                return response.status(401).send("Authorization header is required.");
-            }
+            request.headers["authorization"] = request.headers["authorization"] as string;
 
             // Retrieve the listing by id
             const listing = await getListing(request.params.id);
@@ -118,26 +86,10 @@ app.delete("/listings/:id", async (request, response) => {
                 return response.sendStatus(404);
             }
 
-            // Validate they own the character that the listing is for
-            const blizzardResponse = await axios.get<BattleNetProfileDataResponse>("https://us.api.blizzard.com/profile/user/wow", {
-                headers: {
-                    "Authorization": request.headers["authorization"],
-                    "Accept-Encoding": "utf-8",
-                },
-                params: {
-                    "namespace": "profile-us",
-                    "locale": "en_US"
-                }
-            });
-            if (blizzardResponse.status !== 200) {
-                functions.logger.error(`Blizzard API returned status code ${blizzardResponse.status} for token ${request.headers["authorization"]} deleting listing ${request.params.id}.`);
-                return response.status(500).send([{ message: "Blizzard API  returned an error. Please try again later." }]);
+            // Doesn't own character
+            if (!ownsCharacter(listing.seller.region, listing.seller.realm, listing.seller.characterName, request.headers["authorization"])) {
+                return response.status(400).send([{ message: "Character does not exist." }]);
             }
-            const data = blizzardResponse.data;
-            const charactersInRealm = data["wow_accounts"]
-                .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])
-                .filter((character: any) => character.realm.name.toLowerCase() === listing.seller.realm.toLowerCase() && character.name.toLowerCase() === listing.seller.characterName.toLowerCase());
-            if (charactersInRealm.length === 0) return response.status(401).send([{ message: "You do not own this character." }]);
 
             await deleteListing(request.params.id);
             return response.sendStatus(200);
@@ -149,32 +101,13 @@ app.delete("/listings/:id", async (request, response) => {
 });
 
 // Get all listings for a given WoW account
-app.get("/listings", async (request, response) => {
+app.get("/:region/listings", ensureAuthenticated, async (request, response) => {
     switch (request.method) {
         case "GET": {
-            if (!request.headers["authorization"]) {
-                return response.status(401).send("Authorization header is required.");
-            }
+            request.headers["authorization"] = request.headers["authorization"] as string;
 
-            // Retrieve the listing by id
-            const blizzardResponse = await axios.get<BattleNetProfileDataResponse>("https://us.api.blizzard.com/profile/user/wow", {
-                headers: {
-                    "Authorization": request.headers["authorization"],
-                    "Accept-Encoding": "utf-8",
-                },
-                params: {
-                    "namespace": "profile-us",
-                    "locale": "en_US"
-                }
-            });
-            if (blizzardResponse.status !== 200) {
-                functions.logger.error(`Blizzard API returned status code ${blizzardResponse.status} for token ${request.headers["authorization"]} retrieving listings.`);
-                return response.status(500).send([{ message: "Blizzard API  returned an error. Please try again later." }]);
-            }
-            const data = blizzardResponse.data;
-            const characters = data["wow_accounts"]
-                .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])
-                .map((character: any) => ({ realm: character.realm.name, characterName: character.name }));
+            // Get list of characters
+            const characters = await getCharacters(request.params.region, request.headers["authorization"]);
 
             const listings = await getCharacterListings(characters);
             return response.status(200).send(listings);

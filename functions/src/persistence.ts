@@ -1,5 +1,5 @@
 import * as admin from "firebase-admin";
-import { Listing, ListingPayload } from "./types";
+import { Character, Listing, ListingPayload } from "./types";
 
 const LISTINGS_COLLECTION = "listings";
 export const getListings = async () => {
@@ -24,14 +24,18 @@ export const addListing = async (listing: ListingPayload) => {
     await db.collection(LISTINGS_COLLECTION).add(listing);
 };
 
-export const getCharacterListings = async (characters: string[]): Promise<Listing[]> => {
+export const getCharacterListings = async (characters: Character[]): Promise<Listing[]> => {
     const db = admin.firestore();
-    return db.collection(LISTINGS_COLLECTION)
-        .where("seller.characterName", "in", characters)
-        .get()
-        .then((snapshot) => {
-            return snapshot.docs.map((doc) => doc.data() as Listing);
-        });
+    const listings: Listing[] = [];
+    for (const character of characters) {
+        const matchingListings = await db.collection(LISTINGS_COLLECTION)
+            .where("seller.region", "==", character.region)
+            .where("seller.realm", "==", character.realm)
+            .where("seller.characterName", "==", character.characterName)
+            .get();
+        listings.push(...matchingListings.docs.map((doc) => doc.data() as Listing));
+    }
+    return listings;
 }
 
 export const isDuplicateListing = async (listing: ListingPayload) => {

@@ -8,7 +8,8 @@ export const authOptions = {
         BattleNetProvider({
             clientId: process.env.BATTLENET_CLIENT_ID,
             clientSecret: process.env.BATTLENET_CLIENT_SECRET,
-            issuer: process.env.BATTLENET_ISSUER
+            issuer: process.env.BATTLENET_ISSUER,
+            authorization: {params: {scope: "wow.profile"}},
         })
         // ...add more providers here
     ],

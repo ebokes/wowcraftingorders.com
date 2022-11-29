@@ -8,7 +8,14 @@ import { BattleNetProfileDataResponse, ListingPayload } from "./types";
 import type { RequestHandler } from "express";
 import * as express from "express";
 import { validateListing } from "./ListingSchema";
-import { addListing, getListings, isDuplicateListing } from "./persistence";
+import {
+    addListing,
+    deleteListing,
+    getCharacterListings,
+    getListing,
+    getListings,
+    isDuplicateListing
+} from "./persistence";
 import * as timeout from "connect-timeout";
 
 import axios from "axios";
@@ -96,6 +103,87 @@ app.post("/listings",
             }
         }
     });
+
+// Delete specific id
+app.delete("/listings/:id", async (request, response) => {
+    switch (request.method) {
+        case "DELETE": {
+            if (!request.headers["authorization"]) {
+                return response.status(401).send("Authorization header is required.");
+            }
+
+            // Retrieve the listing by id
+            const listing = await getListing(request.params.id);
+            if (!listing) {
+                return response.sendStatus(404);
+            }
+
+            // Validate they own the character that the listing is for
+            const blizzardResponse = await axios.get<BattleNetProfileDataResponse>("https://us.api.blizzard.com/profile/user/wow", {
+                headers: {
+                    "Authorization": request.headers["authorization"],
+                    "Accept-Encoding": "utf-8",
+                },
+                params: {
+                    "namespace": "profile-us",
+                    "locale": "en_US"
+                }
+            });
+            if (blizzardResponse.status !== 200) {
+                functions.logger.error(`Blizzard API returned status code ${blizzardResponse.status} for token ${request.headers["authorization"]} deleting listing ${request.params.id}.`);
+                return response.status(500).send([{ message: "Blizzard API  returned an error. Please try again later." }]);
+            }
+            const data = blizzardResponse.data;
+            const charactersInRealm = data["wow_accounts"]
+                .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])
+                .filter((character: any) => character.realm.name.toLowerCase() === listing.seller.realm.toLowerCase() && character.name.toLowerCase() === listing.seller.characterName.toLowerCase());
+            if (charactersInRealm.length === 0) return response.status(401).send([{ message: "You do not own this character." }]);
+
+            await deleteListing(request.params.id);
+            return response.sendStatus(200);
+        }
+        default: {
+            return response.sendStatus(405);
+        }
+    }
+});
+
+// Get all listings for a given WoW account
+app.get("/listings", async (request, response) => {
+    switch (request.method) {
+        case "GET": {
+            if (!request.headers["authorization"]) {
+                return response.status(401).send("Authorization header is required.");
+            }
+
+            // Retrieve the listing by id
+            const blizzardResponse = await axios.get<BattleNetProfileDataResponse>("https://us.api.blizzard.com/profile/user/wow", {
+                headers: {
+                    "Authorization": request.headers["authorization"],
+                    "Accept-Encoding": "utf-8",
+                },
+                params: {
+                    "namespace": "profile-us",
+                    "locale": "en_US"
+                }
+            });
+            if (blizzardResponse.status !== 200) {
+                functions.logger.error(`Blizzard API returned status code ${blizzardResponse.status} for token ${request.headers["authorization"]} retrieving listings.`);
+                return response.status(500).send([{ message: "Blizzard API  returned an error. Please try again later." }]);
+            }
+            const data = blizzardResponse.data;
+            const characters = data["wow_accounts"]
+                .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])
+                .map((character: any) => ({ realm: character.realm.name, characterName: character.name }));
+
+            const listings = await getCharacterListings(characters);
+            return response.status(200).send(listings);
+        }
+        default: {
+            return response.sendStatus(405);
+        }
+    }
+});
 
 // 2. Get Items for Realm
 app.get("/:region/:realm/items", async (request, response) => {

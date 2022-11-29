@@ -2,14 +2,17 @@ import { Button, Col, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
 import { REALM_LIST } from "../data/realms";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ListingPayload } from "../types/types";
+import { Listing, ListingPayload } from "../types/types";
 import { ROOT_URL } from "./_app";
 import { useSession } from "next-auth/react";
+import { ConciseListingView } from "../components/ConciseListing";
 
 export default function Sell() {
 
     const session = useSession();
+    const [userListings, setUserListings] = useState<Listing[]>([]);
 
+    // Form input
     const [region, setRegion] = useState<string>("en");
     const [realm, setRealm] = useState<string>(REALM_LIST[0]);
     const [qualityGuarantee, setQualityGuarantee] = useState<string>("Rank 1");
@@ -34,6 +37,23 @@ export default function Sell() {
             inlineScript.remove();
         };
     }, [region, realm, search, characterName, discordTag, battleNetTag, gold, silver, copper]);
+
+    // Retrieve listings for user
+    useEffect(() => {
+        const fetchData = async () => {
+            const listings = await fetch(`${ROOT_URL}/api/user/listings`, {
+                method: "GET",
+                headers: {
+                    // @ts-ignore
+                    "Authentication": `Bearer ${session.data.accessToken}`
+                }
+            })
+            const listingsJson: Listing[] = await listings.json();
+            setUserListings(listingsJson);
+        }
+
+        fetchData().catch(console.error);
+    }, [session]);
 
     if (session.status !== "authenticated" && !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development')) {
         return (
@@ -257,6 +277,11 @@ export default function Sell() {
             {success && <ListGroup>
                 <ListGroup.Item variant="success">Successfully submitted listing!</ListGroup.Item>
             </ListGroup>}
+
+            <h3>Existing Listings</h3>
+            {userListings && userListings.map((listing) => (
+                <ConciseListingView listing={listing} key={listing.id}/>
+            ))}
         </main>
     </div>
 }

@@ -2,6 +2,8 @@ import useSWR from "swr";
 import { Listing } from "../types/types";
 import Script from "next/script";
 import { ListGroup } from "react-bootstrap";
+import { ListingView } from "./Listing";
+import { commissionSort } from "../util/utils";
 
 interface Props {
     region: string;
@@ -34,27 +36,9 @@ export default function ListingsList({ region, realm, search }: Props) {
                         return totalMoneyValue(otherListing.commission.gold, otherListing.commission.silver, otherListing.commission.copper) >= totalMoneyValue(listing.commission.gold, listing.commission.silver, listing.commission.copper);
                     });
                 })
-                .sort((a: Listing, b: Listing) => { // Sort by commission, lowest to highest
-                    const aCommission = totalMoneyValue(a.commission.gold, a.commission.silver, a.commission.copper);
-                    const bCommission = totalMoneyValue(b.commission.gold, b.commission.silver, b.commission.copper);
-                    return aCommission - bCommission;
-                })
+                .sort(commissionSort)
                 .map((listing: Listing) => (
-                    <ListGroup.Item key={listing.itemId}>
-                        <a href={`/${region}/${realm}/item/${listing.itemId}`} data-wowhead={`item=${listing.itemId}`}>Loading
-                            Tooltip...</a>{"    "}
-                        <p className={"m-0"}><b>Seller:</b> {listing.seller.characterName}</p>
-                        <p className={"m-0"}><b>Quality Guarantee: </b>{listing.quality + " " + "(1 = Worst, 5 = Best)"}
-                        </p>
-                        <p className={"m-0"}><b>Commission:</b>{" "}
-                            {listing.commission.gold}<span style={{ color: "#D4A017" }}>g</span>{" "}
-                            {listing.commission.silver}<span style={{ color: "#C0C0C0" }}>s</span>{" "}
-                            {listing.commission.copper}<span style={{ color: "#B87333" }}>c</span></p>
-                        {listing.seller.discordTag &&
-                            <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.discordTag}</p>}
-                        {listing.seller.battleNetTag &&
-                            <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.battleNetTag}</p>}
-                    </ListGroup.Item>
+                    <ListingView listing={listing} key={listing.id}/>
                 ))}
         </ListGroup>
         {data && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}

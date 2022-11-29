@@ -9,14 +9,13 @@ export const authOptions = {
             clientId: process.env.BATTLENET_CLIENT_ID,
             clientSecret: process.env.BATTLENET_CLIENT_SECRET,
             issuer: process.env.BATTLENET_ISSUER,
-            scope: "wow.profile",
+            authorization: {params: {scope: 'openid wow.profile'}}
         })
         // ...add more providers here
     ],
     callbacks: {
         async jwt({token, account}) {
             // Persist the OAuth access_token to the token right after signin
-            console.log("jwt: ", token, account);
             if (account) {
                 token.account = account;
                 token.accessToken = account.access_token

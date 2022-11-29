@@ -1,6 +1,7 @@
 import { Listing } from "../types/types";
 import { Button, ListGroup } from "react-bootstrap";
 import Link from "next/link";
+import Script from "next/script";
 
 interface Props {
     listing: Listing;
@@ -20,7 +21,6 @@ interface Props {
  * @constructor
  */
 export function ListingView({ listing, deleteUserListing, includeItem, includeSeller, includeDelete }: Props) {
-    console.log("listing: ", listing);
 
     // Assumed to be true unless set otherwise
     if (includeItem === undefined) includeItem = true;
@@ -39,14 +39,15 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
         <p className={"m-0"}><b>Quality Guarantee: </b>{listing.quality + " " + "(1 = Worst, 5 = Best)"}
         </p>
         <p className={"m-0"}><b>Commission:</b>{" "}
-            {listing.commission.gold}<span style={{ color: "#D4A017" }}>g</span>{" "}
-            {listing.commission.silver}<span style={{ color: "#C0C0C0" }}>s</span>{" "}
-            {listing.commission.copper}<span style={{ color: "#B87333" }}>c</span></p>
+            {listing.commission.gold}<span style={{ color: "#D4A017" }}><b>g</b></span>{" "}
+            {listing.commission.silver}<span style={{ color: "#909090" }}><b>s</b></span>{" "}
+            {listing.commission.copper}<span style={{ color: "#B87333" }}><b>c</b></span></p>
         {listing.seller.discordTag &&
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.discordTag}</p>}
         {listing.seller.battleNetTag &&
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.battleNetTag}</p>}
         {includeDelete && deleteUserListing &&
             <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>}
+        {listing && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
     </ListGroup.Item>
 }

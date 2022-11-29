@@ -28,7 +28,6 @@ export default function Sell() {
     const [success, setSuccess] = useState<boolean>(false);
 
     const deleteUserListing = async (id: string) => {
-        console.log(`deleteUserListings called with id ${id}`);
         setSuccess(false);
         setErrors([]);
         const response = await fetch(ROOT_URL + `/listings/${id}`, {
@@ -74,7 +73,7 @@ export default function Sell() {
             setUserListings(listingsJson);
         }
 
-        fetchData().catch(console.error);
+        fetchData().catch();
     }, [session, context.region, context.realm]);
 
     if (session.status !== "authenticated" && !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development')) {
@@ -150,14 +149,12 @@ export default function Sell() {
                         break;
                     }
                     default: {
-                        console.warn("Unanticipated response from backend: ", response);
                         setErrors(["An unknown error occurred. Please try again shortly."]);
                         break;
                     }
                 }
             }
         } catch (err) {
-            console.error("Error: ", err);
             setErrors(["Unknown error. Please verify all fields are filled out and correct then try again."]);
             setSubmitting(false);
         }

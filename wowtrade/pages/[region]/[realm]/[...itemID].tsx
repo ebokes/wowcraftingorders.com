@@ -25,7 +25,6 @@ export default function itemPage() {
     // Conditionally not rendering
     if (!region || !realm || !itemID) return <div>Loading...</div>
     if (error) {
-        console.error("SWR Error: ", error);
         return <div>Failed to load listings for this item. Please try and refresh the page.</div>
     }
 

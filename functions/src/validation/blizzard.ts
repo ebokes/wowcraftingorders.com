@@ -12,7 +12,6 @@ const blizzardApiRequest = async (url: string, namespace: string, token: string)
             "locale": "en_US"
         }
     };
-    console.debug(`Making request to ${url} with config: ${JSON.stringify(config)}`);
     const response = await axios.get<BattleNetProfileDataResponse>(url, config);
     return response.data;
 }
@@ -46,7 +45,6 @@ export const itemExists = async (itemId: number, authHeader: string): Promise<bo
         })
         return response.status === 200;
     } catch (err) {
-        console.debug(`Item ${itemId} does not exist or is no longer in the game.`);
         return false;
     }
 };

@@ -21,6 +21,7 @@ export default function ListingsList({ search }: Props) {
     const { data, error } = useSWR(`/${context.region}/${context.realm}/items`);
     if (error) return <div>Failed to load listings. Please try and refresh the page.</div>
     if (!data) return <div>Loading...</div>
+    if (data && !data.length) return <div>No listings found.</div>
 
     return <div>
         <ListGroup>

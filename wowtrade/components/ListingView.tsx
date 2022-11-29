@@ -20,6 +20,7 @@ interface Props {
  * @constructor
  */
 export function ListingView({ listing, deleteUserListing, includeItem, includeSeller, includeDelete }: Props) {
+    console.log("listing: ", listing);
 
     // Assumed to be true unless set otherwise
     if (includeItem === undefined) includeItem = true;

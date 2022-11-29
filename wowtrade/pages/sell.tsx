@@ -84,6 +84,8 @@ export default function Sell() {
                 mode: "cors",
                 headers: {
                     "Content-Type": "application/json",
+                    // @ts-ignore
+                    "Authorization": `Bearer ${session.data.accessToken}`
                 },
                 body: JSON.stringify(payload)
             });

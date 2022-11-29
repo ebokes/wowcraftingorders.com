@@ -48,6 +48,8 @@ passport.use(new BNetStrategy({
     region: "us"
     // @ts-ignore
 }, function (accessToken, refreshToken, profile, done) {
+    functions.logger.debug(`accessToken: ${accessToken}`);
+    functions.logger.debug(`refreshToken: ${refreshToken}`);
     return done(null, profile);
 }));
 

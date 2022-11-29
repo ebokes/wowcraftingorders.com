@@ -29,6 +29,8 @@ export default function Sell() {
 
     const deleteUserListing = async (id: string) => {
         console.log(`deleteUserListings called with id ${id}`);
+        setSuccess(false);
+        setErrors([]);
         const response = await fetch(ROOT_URL + `/listings/${id}`, {
             method: "DELETE",
         });
@@ -263,7 +265,7 @@ export default function Sell() {
                 <ListGroup.Item variant="success">Successfully submitted listing!</ListGroup.Item>
             </ListGroup>}
 
-            <h3>Existing Listings</h3>
+            <h3 className={"mt-3"}>Existing Listings</h3>
             <ListGroup>
                 {userListings && userListings.map((listing) => (
                     <ListingView listing={listing} deleteUserListing={deleteUserListing} includeDelete

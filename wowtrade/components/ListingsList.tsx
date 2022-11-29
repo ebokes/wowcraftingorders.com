@@ -39,7 +39,7 @@ export default function ListingsList({ search }: Props) {
                 })
                 .sort(commissionSort)
                 .map((listing: Listing) => (
-                    <ListingView listing={listing} key={listing.id}/>
+                    <ListingView listing={listing} includeDelete={false} key={listing.id}/>
                 ))}
         </ListGroup>
         {data && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}

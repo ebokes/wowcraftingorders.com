@@ -48,8 +48,9 @@ initializeApp(functions.config().firebase);
 // TODO: Validate the Battle.net access token; verify they own the character
 app.post("/listings",
     async (request, response) => {
-        passport.authenticate('bnet', { session: false }, async (err: any, user: any) => {
-            functions.logger.info("User: " + JSON.stringify(user));
+        functions.logger.debug("Calling passport.authenticate.");
+        return passport.authenticate('bnet', { session: false }, async (err: any, user: any) => {
+            functions.logger.debug("User: " + JSON.stringify(user));
             switch (request.method) {
                 case "POST": {
                     // Validate payload

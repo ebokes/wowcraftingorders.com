@@ -10,12 +10,13 @@ export const authOptions = {
             clientSecret: process.env.BATTLENET_CLIENT_SECRET,
             issuer: process.env.BATTLENET_ISSUER,
             scope: "wow.profile",
-            // authorization: {
-            //     params: {scope: "wow.profile"},
-            // },
-            // token: {
-            //     params: {scope: "wow.profile"},
-            // }
+            authorization: {
+                params: {scope: "wow.profile"},
+            },
+            token: {
+                params: {scope: "wow.profile"},
+            },
+            debug: true
         })
         // ...add more providers here
     ],

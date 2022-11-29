@@ -1,5 +1,6 @@
 // TODO: Split business logic into its own layer that'll be between this and persistence layer
 // TODO: Write unit tests https://firebase.google.com/docs/functions/unit-testing
+// TODO: Delete endpoint and (less importantly) update endpoint
 
 import * as functions from "firebase-functions";
 import { initializeApp } from "firebase-admin/app";
@@ -8,91 +9,78 @@ import type { RequestHandler } from "express";
 import * as express from "express";
 import { validateListing } from "./ListingSchema";
 import { addListing, getListings, isDuplicateListing } from "./persistence";
-import { config } from "dotenv";
-// import { defineString } from "firebase-functions/params";
 import * as timeout from "connect-timeout";
-import * as BearerStrategy from "passport-http-bearer";
 
-const session = require("cookie-session");
-
-config({ override: true });
-
-const passport = require("passport");
-
-// const BATTLENET_CLIENT_ID = defineString("BATTLENET_CLIENT_ID");
-// const BATTLENET_CLIENT_SECRET = defineString("BATTLENET_CLIENT_SECRET");
-
-
-const cors = require('cors')({ origin: true });
-const app = express();
 
 const haltOnTimedOut: RequestHandler = (req, res, next) => {
     if (!req.timedout) next();
 };
+const cors = require('cors')({ origin: true });
+
+const app = express();
 app.use(timeout(5000));
 app.use(haltOnTimedOut);
-
-app.use(session({
-    secret: "wqejfpiqweopfnsdaflsadnf;awlkdj",
-    resave: false,
-    saveUninitialized: true,
-}));
 app.use(cors);
-
-app.use(passport.initialize());
-app.use(passport.session());
-passport.use(new BearerStrategy.Strategy(
-    function (token, done) {
-        return done(null, token);
-    }));
 
 initializeApp(functions.config().firebase);
 
 // 1. Create Listing - <region, server, item, character, commission> tuple
-// TODO: Validate the Battle.net access token; verify they own the character
 app.post("/listings",
     async (request, response) => {
-        functions.logger.debug("Calling passport.authenticate.");
-        passport.authenticate('bearer', {
-            session: false
-        }, async (request: any, response: any) => {
-            const token = request.token;
-            functions.logger.debug("Token: " + JSON.stringify(token));
-            switch (request.method) {
-                case "POST": {
-                    // Validate payload
-                    const payload = request.body as ListingPayload;
-                    let valid = validateListing(payload);
-
-                    // Manually handling because the logic is a bit complicated
-                    // TODO: See if I can build this directly into AJV
-                    if (!payload.commission.gold && !payload.commission.silver && !payload.commission.copper) {
-                        valid = false;
-                        return response.status(400).send([{ message: "Commission must be nonzero." }]);
-                    } else if (!valid) {
-                        if (!validateListing.errors) {
-                            functions.logger.error(`Unknown issue validating Listing payload: ${JSON.stringify(payload)}`)
-                            return response.status(400).send([{ message: "Unknown error. Please verify all fields are filled out and correct." }]);
-                        } else {
-                            return response.status(400).send(validateListing.errors);
-                        }
-                    }
-
-                    // Check to see if duplicate
-                    // TODO: If I check for this, users need a way to delete and re-list. This requires some form of authentication - it's probably better to just go straight for Battle.net instead of trying Firebase.
-                    if (await isDuplicateListing(payload)) {
-                        return response.sendStatus(409);
-                    }
-
-                    await addListing(payload);
-                    functions.logger.debug(`Successfully created Listing: ${JSON.stringify(payload)}`);
-                    return response.sendStatus(201);
+        switch (request.method) {
+            case "POST": {
+                if (!request.headers["authorization"]) {
+                    response.status(401).send("Authorization header is required.");
+                    return;
                 }
-                default: {
-                    return response.sendStatus(405);
+                functions.logger.debug("Token: " + JSON.stringify(request.headers["authorization"]));
+
+                // Validate payload
+                const payload = request.body as ListingPayload;
+                let valid = validateListing(payload);
+
+                // Manually handling because the logic is a bit complicated
+                // TODO: See if I can build this directly into AJV
+                if (!payload.commission.gold && !payload.commission.silver && !payload.commission.copper) {
+                    valid = false;
+                    return response.status(400).send([{ message: "Commission must be nonzero." }]);
+                } else if (!valid) {
+                    if (!validateListing.errors) {
+                        functions.logger.error(`Unknown issue validating Listing payload: ${JSON.stringify(payload)}`)
+                        return response.status(400).send([{ message: "Unknown error. Please verify all fields are filled out and correct." }]);
+                    } else {
+                        return response.status(400).send(validateListing.errors);
+                    }
                 }
+
+                // Validate that they own the character in question
+                const profileDataResponse = await fetch("https://us.api.blizzard.com/profile/user/wow", {
+                    headers: {
+                        "Authorization": request.headers["authorization"]
+                    }
+                })
+
+                // TODO: I should make actual types for these
+                if (!profileDataResponse.ok) return response.sendStatus(401);
+                const profileData = await profileDataResponse.json();
+                const charactersInRealm = profileData.wow_accounts
+                    .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])
+                    .filter((character: any) => character.realm.name === payload.seller.realm && character.name.toLowerCase() === payload.seller.characterName.toLowerCase());
+                if (charactersInRealm.length === 0) return response.status(401).send([{ message: "You do not own this character." }]);
+
+                // Check to see if duplicate
+                if (await isDuplicateListing(payload)) {
+                    return response.sendStatus(409);
+                }
+
+                await addListing(payload);
+                functions.logger.debug(`Successfully created Listing: ${JSON.stringify(payload)}`);
+                return response.sendStatus(201);
             }
-        });
+            default: {
+                return response.sendStatus(405);
+            }
+        }
     });
 
 // 2. Get Items for Realm

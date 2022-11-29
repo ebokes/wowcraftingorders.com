@@ -33,6 +33,12 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
         `}
         </Script>
 
+        <Script
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7827406820675555"
+            crossOrigin="anonymous"
+            strategy={"afterInteractive"}
+        ></Script>
+
         <script
             id={'custom'}>{`var whTooltips = whTooltips || { colorLinks: true, iconizeLinks: true, renameLinks: true};`}</script>
         <Script strategy={"beforeInteractive"} src={'https://wow.zamimg.com/js/tooltips.js'}/>

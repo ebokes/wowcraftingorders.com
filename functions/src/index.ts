@@ -67,7 +67,7 @@ app.post("/listings",
                 })
 
                 if (blizzardResponse.status !== 200) {
-                    functions.logger.error(`Blizzard API returned status code ${blizzardResponse.status} for token ${request.headers["authorization"]} submitting listing for seller ${payload.seller.characterName} on realm ${payload.seller.realm} in region ${payload.seller.region}.`);
+                    functions.logger.error(`Blizzard API returned status ${blizzardResponse.status} for token ${request.headers["authorization"]} submitting listing for seller ${payload.seller.characterName} on realm ${payload.seller.realm} in region ${payload.seller.region}.`);
                     return response.status(500).send([{ message: "Blizzard API returned an error. Please try again later." }]);
                 }
 

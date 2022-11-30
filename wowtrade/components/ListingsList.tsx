@@ -1,7 +1,7 @@
 import useSWR from "swr";
 import { Listing } from "../types/types";
 import Script from "next/script";
-import { ListGroup } from "react-bootstrap";
+import { Card, Row } from "react-bootstrap";
 import { ListingView } from "./ListingView";
 import { commissionSort } from "../util/utils";
 import { useContext } from "react";
@@ -24,7 +24,7 @@ export default function ListingsList({ search }: Props) {
     if (data && !data.length) return <div>No listings found.</div>
 
     return <div>
-        <ListGroup>
+        <Row sm={1} lg={2} xxl={3} className="card-deck">
             {data
                 .filter((listing: Listing) => { // Filter by item ID
                     if (search === "") return true;
@@ -40,9 +40,24 @@ export default function ListingsList({ search }: Props) {
                 })
                 .sort(commissionSort)
                 .map((listing: Listing) => (
-                    <ListingView listing={listing} includeDelete={false} key={listing.id}/>
+                    <div
+                        key={listing.id}
+                        className="p-2"
+                        style={{ alignItems: "stretch" }}
+                    >
+                        <Card
+                            style={{
+                                boxShadow: "rgba(140, 140, 140, 0.2) 0px 0px 4px 3px",
+                                padding: "20px",
+                                minHeight: "100%",
+                                paddingBottom: "20px",
+                            }}
+                        >
+                            <ListingView listing={listing} includeDelete={false} key={listing.id}/>
+                        </Card>
+                    </div>
                 ))}
-        </ListGroup>
+        </Row>
         {data && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
     </div>
 }

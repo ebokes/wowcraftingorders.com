@@ -1,4 +1,4 @@
-import { Button, Col, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
+import { Button, Card, Col, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { Listing, ListingPayload } from "../types/types";
@@ -270,12 +270,29 @@ export default function Sell() {
             </ListGroup>}
 
             <h3 className={"mt-3"}>Existing Listings</h3>
-            <ListGroup>
+            <Row sm={1} lg={2} xxl={3} className="card-deck">
                 {userListings && userListings.map((listing) => (
-                    <ListingView listing={listing} deleteUserListing={deleteUserListing} includeDelete
-                                 key={listing.id}/>
+                    <div
+                        key={listing.id}
+                        className="p-2"
+                        style={{ alignItems: "stretch" }}
+                    >
+                        <Card
+                            style={{
+                                boxShadow: "rgba(140, 140, 140, 0.2) 0px 0px 4px 3px",
+                                height: "100%",
+                                minHeight: "100%",
+                                padding: "20px 0",
+                                paddingBottom: "40px"
+                            }}
+                        >
+                            <ListingView listing={listing} deleteUserListing={deleteUserListing}/>
+                        </Card>
+                    </div>
+
                 ))}
-            </ListGroup>
+            </Row>
+
             {userListings === undefined && <p>Loading...</p>}
             {userListings && userListings.length === 0 && <p>You have no listings.</p>}
             {userListings && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}

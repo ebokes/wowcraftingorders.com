@@ -51,7 +51,7 @@ app.post("/listings", ensureAuthenticated,
                 // Item doesn't exist
                 const exists = await itemExists(payload.itemId, request.headers["authorization"]);
                 if (!exists) {
-                    return response.status(400).send([{ message: "Item does not exist." }]);
+                    return response.status(400).send([{ message: "Item does not exist or is no longer obtainable." }]);
                 }
 
                 // Doesn't own character

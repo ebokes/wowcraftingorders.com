@@ -1,5 +1,5 @@
 import { Listing } from "../types/types";
-import { Button, ListGroup } from "react-bootstrap";
+import { Button } from "react-bootstrap";
 import Link from "next/link";
 import Script from "next/script";
 
@@ -31,8 +31,8 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
         throw new Error("You must either provide a callback to delete the listing, or set includeDelete to false.");
     }
 
-    return <ListGroup.Item key={listing.itemId}>
-        {includeItem && <b><Link style={{ fontSize: "24px" }}
+    return <div>
+        {includeItem && <b><Link style={{ fontSize: "18px" }}
                                  href={`/${listing.seller.region}/${listing.seller.realm}/item/${listing.itemId}`}
                                  data-wowhead={`item=${listing.itemId}`}>Loading
             Tooltip...</Link></b>}
@@ -50,5 +50,5 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
         {includeDelete && deleteUserListing &&
             <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>}
         {listing && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
-    </ListGroup.Item>
+    </div>
 }

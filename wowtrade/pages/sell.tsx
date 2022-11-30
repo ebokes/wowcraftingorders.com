@@ -78,8 +78,8 @@ export default function Sell() {
 
     if (session.status !== "authenticated" && !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development')) {
         return (
-            <p>Please sign in to submit a listing. This ensures people can only post listings for characters they
-                own.</p>
+            <p className={"mt-5"}>Please sign in to submit a listing. This ensures people can only post listings for
+                characters they own.</p>
         );
     }
 

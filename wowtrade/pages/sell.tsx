@@ -282,8 +282,8 @@ export default function Sell() {
                                 boxShadow: "rgba(140, 140, 140, 0.2) 0px 0px 4px 3px",
                                 height: "100%",
                                 minHeight: "100%",
-                                padding: "20px 0",
-                                paddingBottom: "40px"
+                                padding: "20px",
+                                paddingBottom: "20px"
                             }}
                         >
                             <ListingView listing={listing} deleteUserListing={deleteUserListing}/>

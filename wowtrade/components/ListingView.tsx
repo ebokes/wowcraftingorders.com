@@ -32,11 +32,12 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
     }
 
     return <ListGroup.Item key={listing.itemId}>
-        {includeItem && <Link href={`/${listing.seller.region}/${listing.seller.realm}/item/${listing.itemId}`}
-                              data-wowhead={`item=${listing.itemId}`}>Loading
-            Tooltip...</Link>}
+        {includeItem && <b><Link style={{ fontSize: "24px" }}
+                                 href={`/${listing.seller.region}/${listing.seller.realm}/item/${listing.itemId}`}
+                                 data-wowhead={`item=${listing.itemId}`}>Loading
+            Tooltip...</Link></b>}
         {includeSeller && <p className={"m-0"}><b>Seller:</b> {listing.seller.characterName}</p>}
-        <p className={"m-0"}><b>Quality Guarantee: </b>{listing.quality + " " + "(1 = Worst, 5 = Best)"}
+        <p className={"m-0"}><b>Min. Quality: </b>{listing.quality + "/5"}
         </p>
         <p className={"m-0"}><b>Commission:</b>{" "}
             {listing.commission.gold}<span style={{ color: "#D4A017" }}><b>g</b></span>{" "}

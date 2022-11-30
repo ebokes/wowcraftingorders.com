@@ -132,8 +132,9 @@ export default function Sell() {
                 },
                 body: JSON.stringify(payload)
             });
-            if (response.status === 201) {
-                setUserListings(userListings ? [...userListings, await response.json()] : [await response.json()]);
+            if (response.ok) {
+                const responseJson = await response.json();
+                setUserListings(userListings ? [...userListings, responseJson] : [responseJson]);
                 setSuccess(true);
             } else {
                 switch (response.status) {

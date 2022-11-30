@@ -64,9 +64,9 @@ app.post("/listings", ensureAuthenticated,
                     return response.sendStatus(409);
                 }
 
-                await addListing(payload);
+                const createdItem = await addListing(payload);
                 functions.logger.debug(`Successfully created Listing: ${JSON.stringify(payload)}`);
-                return response.sendStatus(201);
+                return response.status(201).send(createdItem);
             }
             default: {
                 return response.sendStatus(405);

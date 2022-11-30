@@ -55,7 +55,7 @@ app.post("/listings", ensureAuthenticated,
                 }
 
                 // Doesn't own character
-                if (!ownsCharacter(payload.seller.region, payload.seller.realm, payload.seller.characterName, request.headers["authorization"])) {
+                if (!await ownsCharacter(payload.seller.region, payload.seller.realm, payload.seller.characterName, request.headers["authorization"])) {
                     return response.status(400).send([{ message: "Character does not exist." }]);
                 }
 

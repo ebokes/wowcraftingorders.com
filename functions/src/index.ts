@@ -56,7 +56,7 @@ app.post("/listings", ensureAuthenticated,
 
                 // Doesn't own character
                 if (!await ownsCharacter(payload.seller.region, payload.seller.realm, payload.seller.characterName, request.headers["authorization"])) {
-                    return response.status(400).send([{ message: "Character does not exist." }]);
+                    return response.status(400).send([{ message: "You do not own that character." }]);
                 }
 
                 // Already has listing
@@ -88,7 +88,7 @@ app.delete("/listings/:id", ensureAuthenticated, async (request, response) => {
 
             // Doesn't own character
             if (!ownsCharacter(listing.seller.region, listing.seller.realm, listing.seller.characterName, request.headers["authorization"])) {
-                return response.status(400).send([{ message: "Character does not exist." }]);
+                return response.status(400).send([{ message: "You do not own that character." }]);
             }
 
             await deleteListing(request.params.id);

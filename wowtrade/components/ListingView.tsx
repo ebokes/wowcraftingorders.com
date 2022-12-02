@@ -2,6 +2,7 @@ import { Listing } from "../types/types";
 import { Button } from "react-bootstrap";
 import Link from "next/link";
 import Script from "next/script";
+import format from "date-fns/format";
 
 interface Props {
     listing: Listing;
@@ -31,6 +32,14 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
         throw new Error("You must either provide a callback to delete the listing, or set includeDelete to false.");
     }
 
+    let postTimestamp;
+    try {
+        postTimestamp = new Date(listing.timestampSeconds * 1000);
+    } catch (err) {
+        console.error(`Error parsing timestamp for listing ${JSON.stringify(listing)}`);
+        console.error(err);
+    }
+
     return <div>
         {includeItem && <b><Link style={{ fontSize: "18px" }}
                                  href={`/${listing.seller.region}/${listing.seller.realm}/item/${listing.itemId}`}
@@ -49,6 +58,7 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.battleNetTag}</p>}
         {includeDelete && deleteUserListing &&
             <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>}
+        {postTimestamp && <p><b>Posted:</b> {format(postTimestamp, "EEEE, LLL d, h:mm aaa")}</p>}
         {listing && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
     </div>
 }

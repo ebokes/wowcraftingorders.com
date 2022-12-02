@@ -21,7 +21,7 @@ export interface ListingPayload {
 
 export interface Listing extends ListingPayload {
     id: string;
-    timestamp: number;
+    timestampSeconds: number;
 }
 
 export interface Item {

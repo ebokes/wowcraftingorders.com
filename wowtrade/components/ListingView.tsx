@@ -43,6 +43,7 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
         console.error(err);
         throw new Error(`Error parsing timestamp for listing ${JSON.stringify(listing)}`);
     }
+    console.log("postTimestamp: " + postTimestamp);
 
     const timeText = [];
     if (differenceInDays(new Date(), postTimestamp) > 0) {

@@ -56,7 +56,13 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
     if (differenceInMinutes(new Date(), postTimestamp) > 0) {
         timeText.push(`${differenceInMinutes(new Date(), postTimestamp) % 60 % 24}m`);
     }
-    const deltaTimeText = "Posted " + timeText.join(" ") + " ago.";
+
+    let deltaTimeText;
+    if (!timeText.length) {
+        deltaTimeText = "Posted just now.";
+    } else {
+        deltaTimeText = "Posted " + timeText.join(" ") + " ago.";
+    }
 
     return <div>
         {includeItem && <b><Link style={{ fontSize: "18px" }}
@@ -74,7 +80,8 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.discordTag}</p>}
         {listing.seller.battleNetTag &&
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.battleNetTag}</p>}
-        {postTimestamp && <p><b>Posted</b>{" " + deltaTimeText}</p>}
+        {postTimestamp && deltaTimeText !== "Posted ago." && <p><b>Posted</b>{" " + deltaTimeText}</p>}
+        {postTimestamp && deltaTimeText === "Posted ago." && <p><b>Posted just now.</b></p>}
         {includeDelete && deleteUserListing &&
             <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>}
         {listing && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}

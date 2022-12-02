@@ -6,6 +6,7 @@ import Script from "next/script";
 import { totalMoneyValue } from "../../../components/ListingsList";
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function itemPage() {
 
@@ -23,7 +24,7 @@ export default function itemPage() {
     const { data, error } = useSWR(`/${region}/${realm}/item/${itemID}`);
 
     // Conditionally not rendering
-    if (!region || !realm || !itemID) return <div>Loading...</div>
+    if (!region || !realm || !itemID) return <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>
     if (error) {
         return <div>Failed to load listings for this item. Please try and refresh the page.</div>
     }
@@ -33,7 +34,7 @@ export default function itemPage() {
         {data &&
             <Link style={{ fontSize: "1.5rem" }} href={`https://www.wowhead.com/item=${itemID}`}>Loading
                 Tooltip...</Link>}
-        {!data && <div>Loading...</div>}
+        {!data && <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>}
         {data && <h3 className={"mt-3"}>Listings on {region.toUpperCase()} {realm}</h3>}
         <Form>
             <Form.Group controlId={"quality"}>

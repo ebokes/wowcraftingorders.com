@@ -9,6 +9,7 @@ import { ListingView } from "../components/ListingView";
 import Script from "next/script";
 import { ITEMS } from "../data/items";
 import ReactSelect from "react-select";
+import Image from "next/image";
 
 export default function Sell() {
 
@@ -306,7 +307,7 @@ export default function Sell() {
                 ))}
             </Row>
 
-            {userListings === undefined && <p>Loading...</p>}
+            {userListings === undefined && <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>}
             {userListings && userListings.length === 0 &&
                 <p>You haven't listed anything yet. Submit the form above and something will show up here!</p>}
             {userListings && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}

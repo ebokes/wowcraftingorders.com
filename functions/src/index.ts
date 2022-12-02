@@ -19,7 +19,7 @@ import {
 import * as timeout from "connect-timeout";
 
 import { getCharacters, ownsCharacter } from "./validation/blizzard";
-import { ensureAuthenticated } from "./middleware";
+import { ensureAuthenticated, logRequest, logResponseBody } from "./middleware";
 import { ITEMS } from "./items";
 
 const haltOnTimedOut: RequestHandler = (req, res, next) => {
@@ -31,6 +31,7 @@ const app = express();
 app.use(timeout(15000));
 app.use(haltOnTimedOut);
 app.use(cors);
+app.use(logRequest);
 
 initializeApp(functions.config().firebase);
 
@@ -67,7 +68,7 @@ app.post("/listings", ensureAuthenticated,
                 }
 
                 const createdItem = await addListing(payload);
-                functions.logger.debug(`Successfully created Listing: ${JSON.stringify(payload)}`);
+                functions.logger.debug(`Successfully created Listing. Returning it: ${JSON.stringify(payload)}`);
                 return response.status(201).send(createdItem);
             }
             default: {
@@ -89,7 +90,7 @@ app.delete("/listings/:id", ensureAuthenticated, async (request, response) => {
             }
 
             // Doesn't own character
-            if (!ownsCharacter(listing.seller.region, listing.seller.realm, listing.seller.characterName, request.headers["authorization"])) {
+            if (!await ownsCharacter(listing.seller.region, listing.seller.realm, listing.seller.characterName, request.headers["authorization"])) {
                 return response.status(400).send([{ message: "You do not own that character." }]);
             }
 
@@ -112,6 +113,7 @@ app.get("/:region/listings", ensureAuthenticated, async (request, response) => {
             const characters = await getCharacters(request.params.region, request.headers["authorization"]);
 
             const listings = await getCharacterListings(characters);
+            functions.logger.debug("Successfully retrieved listings: " + JSON.stringify(listings));
             return response.status(200).send(listings);
         }
         default: {
@@ -129,7 +131,7 @@ app.get("/:region/:realm/items", async (request, response) => {
                 return listing.seller.region === request.params.region &&
                     listing.seller.realm === request.params.realm;
             });
-            functions.logger.debug(`Successfully retrieved Listings for ${request.params.region}/${request.params.realm}: ${JSON.stringify(result)}`);
+            functions.logger.debug(`Successfully retrieved listings: ${request.params.region}/${request.params.realm}: ${JSON.stringify(result)}`);
             return response.status(200).send(result);
         }
         default: {
@@ -148,7 +150,7 @@ app.get("/:region/:realm/item/:itemId", async (request, response) => {
                     listing.seller.realm === request.params.realm &&
                     listing.itemId === parseInt(request.params.itemId);
             });
-            functions.logger.debug(`Successfully retrieved Listings for ${request.params.region}/${request.params.realm} w/ Item ID${request.params.itemId}: ${JSON.stringify(result)}`);
+            functions.logger.debug(`Successfully retrieved listings for ${request.params.region}/${request.params.realm} w/ Item ID${request.params.itemId}: ${JSON.stringify(result)}`);
             return response.send(result);
         }
         default: {
@@ -157,4 +159,5 @@ app.get("/:region/:realm/item/:itemId", async (request, response) => {
     }
 });
 
+app.use(logResponseBody);
 exports.app = functions.region("us-central1").https.onRequest(app);

@@ -12,9 +12,10 @@ export function SetRegionRealmView() {
             <Form.Control as="select" value={context.region} onChange={(e) => {
                 context.setRegion(e.target.value); // Error checking done in the context function
             }}>
-                <option value={REGIONS.EN}>EN (Americas)</option>
+                <option value={REGIONS.US}>US (Americas)</option>
+                <option value={REGIONS.EU}>EU (Europe)</option>
             </Form.Control>
-            <Form.Text muted>Europe will be added before too long!</Form.Text>
+            <Form.Text muted>Currently, only the Americas & Europe are supported.</Form.Text>
         </Col>
         <Col>
             <Form.Label>Realm</Form.Label>

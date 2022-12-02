@@ -3,15 +3,19 @@ import { Listing } from "../types/types";
 import Script from "next/script";
 import { Card, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { ListingView } from "./ListingView";
-import { commissionSort } from "../util/utils";
+import { dateSort } from "../util/utils";
 import { useContext, useEffect, useState } from "react";
 import { RegionRealmContext } from "../pages/_app";
 import { ITEMS } from "../data/items";
-import Link from "next/link";
 import { refreshWowheadLinks } from "../pages";
+import Image from "next/image";
 
 export function totalMoneyValue(gold: number | undefined, silver: number | undefined, copper: number | undefined) {
     return (gold ?? 0) * 10000 + (silver ?? 0) * 100 + (copper ?? 0);
+}
+
+const fuzzyIncludes = (s1: string, s2: string) => {
+    return s1.toLowerCase().replaceAll(" ", "").includes(s2.toLowerCase().replaceAll(" ", ""));
 }
 
 // TODO: Only show each item once, with its lowest commission
@@ -22,22 +26,20 @@ export default function ListingsList() {
     useEffect(refreshWowheadLinks, [search]);
 
     if (error) return <div>Failed to load listings. Please try and refresh the page.</div>
-    if (!data) return <div>Loading...</div>
+    if (!data) return <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>
     if (data && !data.length) return <div>No listings found.</div>
 
 
     return <div>
         <Form style={{ width: "100%" }}>
             <Row className={"my-4"}>
-                <h4>Item Settings</h4>
                 <Col md={12}>
                     <InputGroup>
                         <Form.Control type="text" value={search}
                                       onChange={(e) => {
                                           setSearch(e.target.value);
-                                      }} placeholder="Alacritous Alchemist Stone"/>
+                                      }} placeholder="Filter by Name..."/>
                     </InputGroup>
-                    <Link href={`https://www.wowhead.com/item=${search}`}/>
                 </Col>
             </Row>
         </Form>
@@ -45,7 +47,7 @@ export default function ListingsList() {
             {data
                 .filter(() => { // Filter by search query
                     if (search === "") return true;
-                    return ITEMS.find(item => item.name.toLowerCase().replace(" ", "").includes(search.toLowerCase().replace(" ", "")));
+                    return ITEMS.find(item => fuzzyIncludes(item.name, search));
                 })
                 .filter((listing: Listing) => { // Filter by whether it's the lowest commission for the item
                     const otherListings = data.filter((otherListing: Listing) => {
@@ -55,7 +57,7 @@ export default function ListingsList() {
                         return totalMoneyValue(otherListing.commission.gold, otherListing.commission.silver, otherListing.commission.copper) >= totalMoneyValue(listing.commission.gold, listing.commission.silver, listing.commission.copper);
                     });
                 })
-                .sort(commissionSort) // TODO: Should probably sort primarily by newest to oldest, once I have a timestamp here
+                .sort(dateSort) // TODO: Should probably sort primarily by newest to oldest, once I have a timestamp here
                 .map((listing: Listing) => (
                     <div
                         key={listing.id}

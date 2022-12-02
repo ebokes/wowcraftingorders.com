@@ -13,8 +13,10 @@ import { REALM_LIST } from "../data/realms";
 export let ROOT_URL: string;
 if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
     ROOT_URL = 'http://localhost:5001/wowtrade/us-central1/app';
+} else if (process.env.NODE_ENV === 'test') {
+    ROOT_URL = 'https://us-central1-wowtrade.cloudfunctions.net/app-test';
 } else {
-    ROOT_URL = 'https://wowtrade.web.app';
+    ROOT_URL = 'https://us-central1-wowtrade.cloudfunctions.net/app-prod';
 }
 
 export const RegionRealmContext = createContext({

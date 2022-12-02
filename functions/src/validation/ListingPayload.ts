@@ -52,11 +52,11 @@ export const ListingSchema: JSONSchemaType<ListingPayload> = {
     required: ["itemId", "commission", "seller", "quality"],
     errorMessage: {
         required: {
-            itemId: "Item ID is required.",
+            itemId: "Item is required.",
             commission: "Commission is required.",
         },
         properties: {
-            itemId: "Item ID must be a valid Item ID.",
+            itemId: "Item is not valid.",
         },
     }
 };

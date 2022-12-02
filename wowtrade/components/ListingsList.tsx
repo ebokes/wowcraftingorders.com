@@ -30,13 +30,12 @@ export default function ListingsList() {
     return <div>
         <Form style={{ width: "100%" }}>
             <Row className={"my-4"}>
-                <h4>Item Settings</h4>
                 <Col md={12}>
                     <InputGroup>
                         <Form.Control type="text" value={search}
                                       onChange={(e) => {
                                           setSearch(e.target.value);
-                                      }} placeholder="Alacritous Alchemist Stone"/>
+                                      }} placeholder="Filter Items..."/>
                     </InputGroup>
                     <Link href={`https://www.wowhead.com/item=${search}`}/>
                 </Col>

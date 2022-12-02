@@ -3,7 +3,7 @@ import { Listing } from "../types/types";
 import Script from "next/script";
 import { Card, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { ListingView } from "./ListingView";
-import { commissionSort } from "../util/utils";
+import { dateSort } from "../util/utils";
 import { useContext, useEffect, useState } from "react";
 import { RegionRealmContext } from "../pages/_app";
 import { ITEMS } from "../data/items";
@@ -55,7 +55,7 @@ export default function ListingsList() {
                         return totalMoneyValue(otherListing.commission.gold, otherListing.commission.silver, otherListing.commission.copper) >= totalMoneyValue(listing.commission.gold, listing.commission.silver, listing.commission.copper);
                     });
                 })
-                .sort(commissionSort) // TODO: Should probably sort primarily by newest to oldest, once I have a timestamp here
+                .sort(dateSort) // TODO: Should probably sort primarily by newest to oldest, once I have a timestamp here
                 .map((listing: Listing) => (
                     <div
                         key={listing.id}

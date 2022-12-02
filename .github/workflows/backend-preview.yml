@@ -3,7 +3,6 @@
 
 name: Deploy Backend - Preview
 'on':
-
   pull_request:
     paths:
       - 'functions/**'

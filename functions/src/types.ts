@@ -29,6 +29,12 @@ export interface Character {
     characterName: string;
 }
 
+export interface Item {
+    id: number; // Wowhead ID
+    name: string;
+    itemLevel: number;
+}
+
 export interface BattleNetProfileDataResponse {
     _links: {
         self: {

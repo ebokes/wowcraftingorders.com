@@ -18,8 +18,9 @@ import {
 } from "./persistence";
 import * as timeout from "connect-timeout";
 
-import { getCharacters, itemExists, ownsCharacter } from "./validation/blizzard";
+import { getCharacters, ownsCharacter } from "./validation/blizzard";
 import { ensureAuthenticated } from "./middleware";
+import { ITEMS } from "./items";
 
 const haltOnTimedOut: RequestHandler = (req, res, next) => {
     if (!req.timedout) next();
@@ -27,7 +28,7 @@ const haltOnTimedOut: RequestHandler = (req, res, next) => {
 const cors = require('cors')({ origin: true });
 
 const app = express();
-app.use(timeout(5000));
+app.use(timeout(15000));
 app.use(haltOnTimedOut);
 app.use(cors);
 
@@ -49,9 +50,8 @@ app.post("/listings", ensureAuthenticated,
                 }
 
                 // Item doesn't exist
-                const exists = await itemExists(payload.itemId, request.headers["authorization"]);
-                if (!exists) {
-                    return response.status(400).send([{ message: "Item does not exist or is no longer obtainable." }]);
+                if (!ITEMS.find(item => item.id === payload.itemId)) {
+                    return response.status(400).send([{ message: "Sale of this item is not supported." }]);
                 }
 
                 // Doesn't own character

@@ -1,34 +1,51 @@
 import useSWR from "swr";
 import { Listing } from "../types/types";
 import Script from "next/script";
-import { Card, Row } from "react-bootstrap";
+import { Card, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { ListingView } from "./ListingView";
 import { commissionSort } from "../util/utils";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { RegionRealmContext } from "../pages/_app";
-
-interface Props {
-    search: string;
-}
+import { ITEMS } from "../data/items";
+import Link from "next/link";
+import { refreshWowheadLinks } from "../pages";
 
 export function totalMoneyValue(gold: number | undefined, silver: number | undefined, copper: number | undefined) {
     return (gold ?? 0) * 10000 + (silver ?? 0) * 100 + (copper ?? 0);
 }
 
 // TODO: Only show each item once, with its lowest commission
-export default function ListingsList({ search }: Props) {
+export default function ListingsList() {
     const context = useContext(RegionRealmContext);
     const { data, error } = useSWR(`/${context.region}/${context.realm}/items`);
+    const [search, setSearch] = useState("");
+    useEffect(refreshWowheadLinks, [search]);
+
     if (error) return <div>Failed to load listings. Please try and refresh the page.</div>
     if (!data) return <div>Loading...</div>
     if (data && !data.length) return <div>No listings found.</div>
 
+
     return <div>
+        <Form style={{ width: "100%" }}>
+            <Row className={"my-4"}>
+                <h4>Item Settings</h4>
+                <Col md={12}>
+                    <InputGroup>
+                        <Form.Control type="text" value={search}
+                                      onChange={(e) => {
+                                          setSearch(e.target.value);
+                                      }} placeholder="Alacritous Alchemist Stone"/>
+                    </InputGroup>
+                    <Link href={`https://www.wowhead.com/item=${search}`}/>
+                </Col>
+            </Row>
+        </Form>
         <Row sm={1} lg={2} xxl={3} className="card-deck">
             {data
-                .filter((listing: Listing) => { // Filter by item ID
+                .filter(() => { // Filter by search query
                     if (search === "") return true;
-                    return listing.itemId.toString() === search;
+                    return ITEMS.find(item => item.name.toLowerCase().replace(" ", "").includes(search.toLowerCase().replace(" ", "")));
                 })
                 .filter((listing: Listing) => { // Filter by whether it's the lowest commission for the item
                     const otherListings = data.filter((otherListing: Listing) => {
@@ -38,7 +55,7 @@ export default function ListingsList({ search }: Props) {
                         return totalMoneyValue(otherListing.commission.gold, otherListing.commission.silver, otherListing.commission.copper) >= totalMoneyValue(listing.commission.gold, listing.commission.silver, listing.commission.copper);
                     });
                 })
-                .sort(commissionSort)
+                .sort(commissionSort) // TODO: Should probably sort primarily by newest to oldest, once I have a timestamp here
                 .map((listing: Listing) => (
                     <div
                         key={listing.id}

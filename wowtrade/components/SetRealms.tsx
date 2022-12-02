@@ -14,7 +14,7 @@ export function SetRegionRealmView() {
             }}>
                 <option value={REGIONS.EN}>EN (Americas)</option>
             </Form.Control>
-            <Form.Text muted>Will be adding more regions soon!</Form.Text>
+            <Form.Text muted>Europe will be added before too long!</Form.Text>
         </Col>
         <Col>
             <Form.Label>Realm</Form.Label>

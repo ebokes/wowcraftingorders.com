@@ -7,6 +7,8 @@ import { useSession } from "next-auth/react";
 import { SetRegionRealmView } from "../components/SetRealms";
 import { ListingView } from "../components/ListingView";
 import Script from "next/script";
+import { ITEMS } from "../data/items";
+import ReactSelect from "react-select";
 
 export default function Sell() {
 
@@ -16,7 +18,7 @@ export default function Sell() {
 
     // Form input
     const [qualityGuarantee, setQualityGuarantee] = useState<string>("Rank 1");
-    const [search, setSearch] = useState<string>("");
+    const [itemId, setItemId] = useState<string>(); // Item ID
     const [characterName, setCharacterName] = useState<string>("");
     const [discordTag, setDiscordTag] = useState<string>("");
     const [battleNetTag, setBattleNetTag] = useState<string>("");
@@ -55,7 +57,7 @@ export default function Sell() {
         return () => {
             inlineScript.remove();
         };
-    }, [context.region, context.realm, search, characterName, discordTag, battleNetTag, gold, silver, copper]);
+    }, [context.region, context.realm, itemId, characterName, discordTag, battleNetTag, gold, silver, copper]);
 
     // Retrieve listings for user
     useEffect(() => {
@@ -88,7 +90,7 @@ export default function Sell() {
         const errors = [];
         if (!context.region) errors.push("Region is required.");
         if (!context.realm) errors.push("Realm is required.");
-        if (!search) errors.push("Item ID is required.");
+        if (!itemId) errors.push("Item ID is required.");
         if (!characterName) errors.push("Character name is required.");
         if (gold === "" && silver === "" && copper === "") errors.push("Commission must be nonzero.");
         setErrors(errors);
@@ -100,8 +102,14 @@ export default function Sell() {
         setErrors([]);
         setSuccess(false);
 
+        if (!isValid()) {
+            setSubmitting(false);
+            return;
+        }
+        if (!itemId) return;
+
         const payload = {
-            itemId: parseInt(search),
+            itemId: parseInt(itemId),
             quality: qualityGuarantee,
             commission: {
                 gold: parseInt(gold),
@@ -116,10 +124,6 @@ export default function Sell() {
                 battleNetTag: battleNetTag === "" ? undefined : battleNetTag,
             }
         } as ListingPayload;
-        if (!isValid()) {
-            setSubmitting(false);
-            return;
-        }
 
         try {
             const response = await fetch(`${ROOT_URL}/listings`, {
@@ -147,7 +151,7 @@ export default function Sell() {
                         break;
                     }
                     case 409: {
-                        setErrors(["This character already has a listing for this item."]);
+                        setErrors(["This character already has a listing for this itemId."]);
                         break;
                     }
                     default: {
@@ -202,15 +206,23 @@ export default function Sell() {
                     <Form.Group>
                         <Row>
                             <Col md={8}>
-                                <Form.Label>Item ID</Form.Label>
-                                <InputGroup>
-                                    <InputGroup.Text id="basic-addon1">https://www.wowhead.com/item=</InputGroup.Text>
-                                    <Form.Control type="number" value={search}
-                                                  onChange={(e) => setSearch(e.target.value)
-                                                  } placeholder="199686"/>
-                                </InputGroup>
-                                <Link href={`https://www.wowhead.com/item=${search}`}/>
-
+                                <Form.Label>Item</Form.Label>
+                                <ReactSelect defaultValue={{ value: -1, label: "No Item Selected" }}
+                                             onChange={(newValue) => {
+                                                 if (!newValue) return;
+                                                 setItemId(newValue.value.toString());
+                                             }} options={ITEMS
+                                    .sort((a, b) => a.name.localeCompare(b.name))
+                                    .map(item => {
+                                        return {
+                                            value: item.id,
+                                            label: item.name
+                                        }
+                                    })
+                                    .concat([{ value: -1, label: "No Item Selected" }])
+                                }/>
+                                {itemId && <Link data-wowhead={`https://www.wowhead.com/item=${itemId}`}
+                                                 href="#"></Link>}
                             </Col>
                             <Col md={4}>
                                 <Form.Label>Quality Guarantee</Form.Label>
@@ -222,7 +234,8 @@ export default function Sell() {
                                     <option value={"Rank 4"}>Rank 4</option>
                                     <option value={"Rank 5"}>Rank 5 (Best)</option>
                                 </Form.Control>
-
+                                <Form.Text muted>Sellers will be able to supply more information in the
+                                    future.</Form.Text>
                             </Col>
                         </Row>
                     </Form.Group>
@@ -269,7 +282,7 @@ export default function Sell() {
                 <ListGroup.Item variant="success">Successfully submitted listing!</ListGroup.Item>
             </ListGroup>}
 
-            <h3 className={"mt-3"}>Existing Listings</h3>
+            <h3 className={"mt-3"}>Your Listings</h3>
             <Row sm={1} lg={2} xxl={3} className="card-deck">
                 {userListings && userListings.map((listing) => (
                     <div
@@ -294,7 +307,8 @@ export default function Sell() {
             </Row>
 
             {userListings === undefined && <p>Loading...</p>}
-            {userListings && userListings.length === 0 && <p>You have no listings.</p>}
+            {userListings && userListings.length === 0 &&
+                <p>You haven't listed anything yet. Submit the form above and something will show up here!</p>}
             {userListings && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
         </main>
     </div>

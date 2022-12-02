@@ -21,4 +21,11 @@ export interface ListingPayload {
 
 export interface Listing extends ListingPayload {
     id: string;
+    timestamp: number;
+}
+
+export interface Item {
+    id: number; // Wowhead ID
+    name: string;
+    itemLevel: number;
 }

@@ -13,7 +13,7 @@ import { REALM_LIST } from "../data/realms";
 export let ROOT_URL: string;
 if (!process.env.NEXT_PUBLIC_VERCEL_ENV || process.env.NEXT_PUBLIC_VERCEL_ENV === 'development') {
     ROOT_URL = 'http://localhost:5001/wowtrade/us-central1/app';
-} else if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'test') {
+} else if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview') {
     ROOT_URL = 'https://us-central1-wowtrade.cloudfunctions.net/app-test';
 } else {
     ROOT_URL = 'https://us-central1-wowtrade.cloudfunctions.net/app-prod';

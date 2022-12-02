@@ -1,7 +1,27 @@
 import * as admin from "firebase-admin";
 import { Character, Listing, ListingPayload } from "./types";
 
-const LISTINGS_COLLECTION = "listings";
+let COLLECTIONS_SUFFIX;
+switch (process.env.APP_ENV) {
+    case undefined:
+    case "development": {
+        COLLECTIONS_SUFFIX = "_dev";
+        break;
+    }
+    case "test": {
+        COLLECTIONS_SUFFIX = "_test";
+        break;
+    }
+    case "production": {
+        COLLECTIONS_SUFFIX = "_prod";
+        break;
+    }
+    default: {
+        throw new Error(`Unknown environment: ${process.env.APP_ENV}`);
+    }
+}
+
+const LISTINGS_COLLECTION = "listings" + COLLECTIONS_SUFFIX;
 export const getListings = async () => {
     const db = admin.firestore();
     return (await db.collection(LISTINGS_COLLECTION).get()).docs.map((doc) => {

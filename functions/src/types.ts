@@ -60,7 +60,7 @@ interface Account {
     characters: BNetCharacter[];
 }
 
-interface BNetCharacter {
+export interface BNetCharacter {
     character: {
         href: string;
     };

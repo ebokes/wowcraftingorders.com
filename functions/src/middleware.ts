@@ -8,3 +8,11 @@ export const ensureAuthenticated: RequestHandler = (request, response, next) => 
     }
     return next();
 }
+
+export const logRequest: RequestHandler = (request, response, next) => {
+    functions.logger.debug(`Request to url ${request.url}`);
+    if (request.body) {
+        functions.logger.debug(`Request body: ${JSON.stringify(request.body)}`);
+    }
+    return next();
+}

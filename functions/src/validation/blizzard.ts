@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BattleNetProfileDataResponse, Character } from "../types";
+import { BattleNetProfileDataResponse, BNetCharacter, Character } from "../types";
 
 const blizzardApiRequest = async (url: string, namespace: string, token: string): Promise<BattleNetProfileDataResponse | object> => {
     const config = {
@@ -26,6 +26,6 @@ export const ownsCharacter = async (region: string, realm: string, characterName
     const data = await blizzardApiRequest(`https://${region}.api.blizzard.com/profile/user/wow`, `profile-${region}`, token) as BattleNetProfileDataResponse;
     const charactersInRealm = data["wow_accounts"]
         .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])
-        .filter((character: any) => character.realm.name.toLowerCase() === realm.toLowerCase() && character.name.toLowerCase() === characterName.toLowerCase());
+        .filter((character: BNetCharacter) => character.realm.name.toLowerCase() === realm.toLowerCase() && character.name.toLowerCase() === characterName.toLowerCase());
     return charactersInRealm.length !== 0;
 }

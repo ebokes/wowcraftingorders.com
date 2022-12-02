@@ -24,7 +24,7 @@ jobs:
       - id: "deploy"
         uses: 'google-github-actions/deploy-cloud-functions@v1'
         with:
-          name: "app"
+          name: "app-prod"
           entry_point: "app"
           region: "us-central1"
           runtime: "nodejs16"

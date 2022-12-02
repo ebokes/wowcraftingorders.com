@@ -24,7 +24,7 @@ import * as timeout from "connect-timeout";
 
 import { getCharacters, ownsCharacter } from "./validation/blizzard";
 import { ensureAuthenticated, logRequest, logResponseBody } from "./middleware";
-import { ITEMS } from "./items";
+import { ITEMS } from "./data/items";
 
 initializeApp(functions.config().firebase);
 

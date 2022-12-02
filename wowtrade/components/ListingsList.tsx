@@ -9,6 +9,7 @@ import { RegionRealmContext } from "../pages/_app";
 import { ITEMS } from "../data/items";
 import Link from "next/link";
 import { refreshWowheadLinks } from "../pages";
+import Image from "next/image";
 
 export function totalMoneyValue(gold: number | undefined, silver: number | undefined, copper: number | undefined) {
     return (gold ?? 0) * 10000 + (silver ?? 0) * 100 + (copper ?? 0);
@@ -22,7 +23,7 @@ export default function ListingsList() {
     useEffect(refreshWowheadLinks, [search]);
 
     if (error) return <div>Failed to load listings. Please try and refresh the page.</div>
-    if (!data) return <div>Loading...</div>
+    if (!data) return <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>
     if (data && !data.length) return <div>No listings found.</div>
 
 

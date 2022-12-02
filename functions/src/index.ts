@@ -2,12 +2,16 @@
 // TODO: Write unit tests https://firebase.google.com/docs/functions/unit-testing
 // TODO: Delete endpoint and (less importantly) update endpoint
 
-import * as functions from "firebase-functions";
+// Needs to happen before persistence layer gets imported
 import { initializeApp } from "firebase-admin/app";
+import * as functions from "firebase-functions";
+
 import { ListingPayload } from "./types";
 import type { RequestHandler } from "express";
 import * as express from "express";
 import { validateListing } from "./validation/ListingPayload";
+
+
 import {
     addListing,
     deleteListing,
@@ -22,6 +26,8 @@ import { getCharacters, ownsCharacter } from "./validation/blizzard";
 import { ensureAuthenticated, logRequest, logResponseBody } from "./middleware";
 import { ITEMS } from "./items";
 
+initializeApp(functions.config().firebase);
+
 const haltOnTimedOut: RequestHandler = (req, res, next) => {
     if (!req.timedout) next();
 };
@@ -33,7 +39,6 @@ app.use(haltOnTimedOut);
 app.use(cors);
 app.use(logRequest);
 
-initializeApp(functions.config().firebase);
 
 // 1. Create Listing - <region, server, item, character, commission> tuple
 // TODO: This is a god function that needs simplified.

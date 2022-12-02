@@ -2,7 +2,10 @@ import { Listing } from "../types/types";
 import { Button } from "react-bootstrap";
 import Link from "next/link";
 import Script from "next/script";
-import format from "date-fns/format";
+import differenceInMinutes from "date-fns/differenceInMinutes";
+import differenceInHours from "date-fns/differenceInHours";
+import differenceInDays from "date-fns/differenceInDays";
+
 
 interface Props {
     listing: Listing;
@@ -38,7 +41,20 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
     } catch (err) {
         console.error(`Error parsing timestamp for listing ${JSON.stringify(listing)}`);
         console.error(err);
+        throw new Error(`Error parsing timestamp for listing ${JSON.stringify(listing)}`);
     }
+
+    const timeText = [];
+    if (differenceInDays(new Date(), postTimestamp) > 0) {
+        timeText.push(`${differenceInDays(new Date(), postTimestamp)}d`);
+    }
+    if (differenceInHours(new Date(), postTimestamp) > 0) {
+        timeText.push(`${differenceInHours(new Date(), postTimestamp) % 24}h`);
+    }
+    if (differenceInMinutes(new Date(), postTimestamp) > 0) {
+        timeText.push(`${differenceInMinutes(new Date(), postTimestamp) % 60 % 24}m`);
+    }
+    const deltaTimeText = "Posted " + timeText.join(" ") + " ago.";
 
     return <div>
         {includeItem && <b><Link style={{ fontSize: "18px" }}
@@ -58,7 +74,7 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.battleNetTag}</p>}
         {includeDelete && deleteUserListing &&
             <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>}
-        {postTimestamp && <p><b>Posted:</b> {format(postTimestamp, "EEEE, LLL d, h:mm aaa")}</p>}
+        {postTimestamp && <p><b>Posted</b>{" " + deltaTimeText}</p>}
         {listing && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
     </div>
 }

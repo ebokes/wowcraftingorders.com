@@ -8,8 +8,8 @@ concurrency:
 
 'on':
   pull_request:
-    paths:
-      - 'functions/**'
+    ignore-paths:
+      - 'wowtrade/**'
     branches:
       - master
 

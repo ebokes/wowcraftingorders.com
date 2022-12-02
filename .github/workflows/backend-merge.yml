@@ -8,8 +8,8 @@ concurrency:
 
 'on':
   push:
-    paths:
-      - 'functions/**'
+    ignore-paths:
+      - 'wowtrade/**'
     branches:
       - backend
 jobs:

@@ -6,3 +6,8 @@ export const commissionSort = (a: Listing, b: Listing) => {
     const bCommission = totalMoneyValue(b.commission.gold, b.commission.silver, b.commission.copper);
     return aCommission - bCommission;
 };
+
+// Most recent come last
+export const dateSort = (a: Listing, b: Listing) => {
+    return b.timestampSeconds - a.timestampSeconds;
+}

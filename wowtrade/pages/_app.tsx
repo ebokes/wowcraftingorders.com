@@ -20,7 +20,7 @@ if (!process.env.NEXT_PUBLIC_VERCEL_ENV || process.env.NEXT_PUBLIC_VERCEL_ENV ==
 }
 
 export const RegionRealmContext = createContext({
-    region: REGIONS.EN,
+    region: REGIONS.US,
     setRegion: (_: string) => {
     },
     realm: REALM_LIST[0],
@@ -30,7 +30,7 @@ export const RegionRealmContext = createContext({
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     const [realm, setRealm] = useState(REALM_LIST[0]);
-    const [region, setRegion] = useState(REGIONS.EN);
+    const [region, setRegion] = useState(REGIONS.US);
     return <div>
 
         {/* TODO: Update measurement ID once I choose a domain */}
@@ -64,8 +64,13 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
             <RegionRealmContext.Provider value={{
                 region: region,
                 setRegion: (region: string) => {
-                    if (region === "en") setRegion(REGIONS.EN);
-                    throw new Error("Unrecognized region " + region);
+                    if (region === "us") {
+                        setRegion(REGIONS.US);
+                    } else if (region === "eu") {
+                        setRegion(REGIONS.EU);
+                    } else {
+                        throw new Error("Unrecognized region " + region);
+                    }
                 }, realm: realm,
                 setRealm: (realm: string) => {
                     setRealm(realm);

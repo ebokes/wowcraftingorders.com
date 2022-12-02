@@ -1,32 +1,78 @@
 import { Item } from "../types";
 
 import {
+    ADAMANT_SCALES,
+    AIRY_SOUL,
+    ALEXSTRASZITE,
     ARCLIGHT_CAPACITOR,
     AWAKENED_AIR,
     AWAKENED_DECAY,
     AWAKENED_FIRE,
     AWAKENED_FROST,
+    AWAKENED_ORDER,
+    AZUREWEAVE_BOLT,
+    CACOPHONOUS_THUNDERSCALE,
+    CENTAURS_TROPHY_NECKLACE,
     CHILLED_RUNE,
+    CHRONOCLOTH_BOLT,
     COSMIC_INK,
+    CRYSTALSPINE_FUR,
+    DARKMOON_DECK_DANCE,
+    DARKMOON_DECK_INFERNO,
+    DARKMOON_DECK_RIME,
+    DENSE_HIDE,
+    EARTHEN_SOUL,
     EARTHSHINE_SCALES,
     ELEMENTAL_HARMONY,
     EVERBURNING_BLASTING_POWDER,
+    FIERY_SOUL,
+    FIRE_INFUSED_HIDE,
     FLAWLESS_PROTO_DRAGON_SCALE,
     FRAMELESS_LENS,
+    FROSTBITE_SCALES,
+    FROSTFIRE_ALLOY,
+    FROSTY_SOUL,
+    FROZEN_SPELLTHREAD,
+    GLITTERING_PARCHMENT,
+    GLOSSY_STONE,
+    GLOWING_TITAN_ORB,
+    GREASED_UP_GEARS,
     ILLIMITED_DIAMOND,
+    INFURIOUS_ALLOY,
+    INFURIOUS_HIDE,
+    INFURIOUS_SCALES,
+    LARGE_STURDY_FEMUR,
+    MALYGITE,
     MIRESLUSH_HIDE,
+    NELTHARITE,
     OBSIDIAN_SEARED_ALLOY,
+    PHIAL_OF_ELEMENTAL_CHAOS,
+    PHIAL_OF_TEPID_VERSATILITY,
     PRIMAL_CHAOS,
     PRIMAL_CONVERGENT,
     PRIMAL_MOLTEN_ALLOY,
+    PRISTINE_VORQUIN_HORN,
     REINFORCED_MACHINE_CHASSIS,
     RESILIENT_LEATHER,
+    RESONANT_CRYSTAL,
+    ROCKFANG_LEATHER,
     RUNED_WRITHEBARK,
+    SALAMANTHER_SCALES,
     SHIMMERING_CLASP,
+    SILKEN_GEMDUST,
     SPARK_OF_INGENUITY,
+    SPOOL_OF_WILDERTHREAD,
+    STONECRUST_HIDE,
+    TALLSTRIDER_SINEW,
+    TEMPORAL_SPELLTHREAD,
+    TUFT_OF_PRIMAL_WOOL,
+    VIBRANT_SHARD,
+    VIBRANT_WILDERCLOTH_BOLT,
     WINDSONG_PLUMAGE,
-    WRITHEBARK
+    WRITHEBARK,
+    YSEMERALD
 } from "./reagents";
+
 
 export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "itemLevel": 350 }, {
     "id": 190516,
@@ -215,7 +261,7 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
         { count: 60, reagent: PRIMAL_CHAOS },
         { count: 1, reagent: DARKMOON_DECK_RIME },
         { count: 10, reagent: AWAKENED_FROST },
-        { count: 10 reagent: WRITHEBARK },
+        { count: 10, reagent: WRITHEBARK },
         { count: 12, reagent: COSMIC_INK },
     ]
 }, {
@@ -229,10 +275,9 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "id": 193408, "name": "Life-Bound Trousers", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 4, reagent: CACOPHONOUS_THUNDERSCALE },
+        { count: 15, reagent: STONECRUST_HIDE },
+        { count: 150, reagent: RESILIENT_LEATHER },
     ]
 }, {
     "id": 190523,
@@ -240,10 +285,9 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
+        { count: 1, reagent: FROSTY_SOUL },
         { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 16, reagent: FROSTFIRE_ALLOY },
     ]
 }, {
     "id": 190522,
@@ -251,19 +295,18 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 2, reagent: OBSIDIAN_SEARED_ALLOY },
+        { count: 20, reagent: INFURIOUS_ALLOY },
     ]
 }, {
     "id": 198324, "name": "Peripheral Vision Projectors", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 2, reagent: AWAKENED_ORDER },
+        { count: 4, reagent: STONECRUST_HIDE },
+        { count: 2, reagent: FRAMELESS_LENS },
+        { count: 2, reagent: ARCLIGHT_CAPACITOR },
+        { count: 1, reagent: REINFORCED_MACHINE_CHASSIS },
     ]
 }, {
     "id": 193000,
@@ -281,19 +324,19 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "name": "Infurious Footwraps of Indemnity",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 30, reagent: PRIMAL_CHAOS },
+        { count: 2, reagent: SHIMMERING_CLASP },
+        { count: 1, reagent: ILLIMITED_DIAMOND },
+        { count: 1, reagent: ELEMENTAL_HARMONY },
+        { count: 3, reagent: SILKEN_GEMDUST },
     ]
 }, {
     "id": 193496, "name": "Witherrot Tome", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 15, reagent: AWAKENED_DECAY },
+        { count: 2, reagent: TALLSTRIDER_SINEW },
+        { count: 14, reagent: STONECRUST_HIDE },
         { count: 100, reagent: RESILIENT_LEATHER },
     ]
 }, {
@@ -301,60 +344,52 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "name": "Signet of Titanic Insight",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 30, reagent: PRIMAL_CHAOS },
+        { count: 2, reagent: SHIMMERING_CLASP },
+        { count: 1, reagent: ELEMENTAL_HARMONY },
+        { count: 1, reagent: YSEMERALD },
     ]
 }, {
     "id": 193422, "name": "Flame-Touched Chainmail", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 4, reagent: FLAWLESS_PROTO_DRAGON_SCALE },
+        { count: 15, reagent: STONECRUST_HIDE },
+        { count: 150, reagent: ADAMANT_SCALES },
     ]
 }, {
     "id": 190508,
     "name": "Primal Molten Warglaive",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 80, reagent: PRIMAL_CHAOS },
+        { count: 17, reagent: PRIMAL_MOLTEN_ALLOY },
     ]
 }, {
     "id": 191985, "name": "Infurious Warboots of Impunity", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 2, reagent: LARGE_STURDY_FEMUR },
+        { count: 2, reagent: OBSIDIAN_SEARED_ALLOY },
+        { count: 16, reagent: INFURIOUS_ALLOY },
     ]
 }, {
     "id": 193421,
     "name": "Flame-Touched Treads",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 4, reagent: CRYSTALSPINE_FUR },
+        { count: 13, reagent: EARTHSHINE_SCALES },
+        { count: 150, reagent: ADAMANT_SCALES },
     ]
 }, {
     "id": 201759, "name": "Torc of Passed Time", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 30, reagent: PRIMAL_CHAOS },
+        { count: 2, reagent: SHIMMERING_CLASP },
+        { count: 1, reagent: ELEMENTAL_HARMONY },
+        { count: 1, reagent: MALYGITE },
     ]
 }, {
     "id": 198325,
@@ -362,99 +397,89 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 2, reagent: AWAKENED_ORDER },
+        { count: 4, reagent: FROSTBITE_SCALES },
+        { count: 2, reagent: FRAMELESS_LENS },
+        { count: 2, reagent: ARCLIGHT_CAPACITOR },
+        { count: 1, reagent: REINFORCED_MACHINE_CHASSIS },
     ]
 }, {
     "id": 193423, "name": "Flame-Touched Helmet", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 4, reagent: CACOPHONOUS_THUNDERSCALE },
+        { count: 4, reagent: STONECRUST_HIDE },
+        { count: 4, reagent: ADAMANT_SCALES },
     ]
 }, {
     "id": 190495, "name": "Primal Molten Breastplate", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 16, reagent: PRIMAL_MOLTEN_ALLOY },
     ]
 }, {
     "id": 193451,
     "name": "Slimy Expulsion Boots",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 10, reagent: SALAMANTHER_SCALES },
+        { count: 18, reagent: STONECRUST_HIDE },
+        { count: 150, reagent: RESILIENT_LEATHER },
     ]
 }, {
     "id": 193424,
     "name": "Flame-Touched Spaulders",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 4, reagent: WINDSONG_PLUMAGE },
+        { count: 13, reagent: EARTHSHINE_SCALES },
+        { count: 150, reagent: ADAMANT_SCALES },
     ]
 }, {
     "id": 193406, "name": "Life-Bound Shoulderpads", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 4, reagent: FIRE_INFUSED_HIDE },
+        { count: 13, reagent: STONECRUST_HIDE },
+        { count: 150, reagent: RESILIENT_LEATHER },
     ]
 }, {
     "id": 193466, "name": "Acidic Hailstone Treads", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 12, reagent: ROCKFANG_LEATHER },
+        { count: 18, reagent: FROSTBITE_SCALES },
+        { count: 150, reagent: ADAMANT_SCALES },
     ]
 }, {
     "id": 191623,
     "name": "Unstable Frostfire Belt",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 1, reagent: FROSTY_SOUL },
         { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 13, reagent: FROSTFIRE_ALLOY },
     ]
 }, {
     "id": 193398, "name": "Life-Bound Boots", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 4, reagent: CRYSTALSPINE_FUR },
+        { count: 13, reagent: FROSTBITE_SCALES },
+        { count: 150, reagent: RESILIENT_LEATHER },
     ]
 }, {
     "id": 193407,
     "name": "Life-Bound Belt",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 4, reagent: PRISTINE_VORQUIN_HORN },
+        { count: 13, reagent: EARTHSHINE_SCALES },
+        { count: 150, reagent: RESILIENT_LEATHER },
     ]
 }, {
     "id": 198481,
@@ -470,80 +495,70 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
 }, {
     "id": 193452, "name": "Toxic Thorn Footwraps", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 6, reagent: CACOPHONOUS_THUNDERSCALE },
+        { count: 18, reagent: FROSTBITE_SCALES },
+        { count: 150, reagent: RESILIENT_LEATHER },
     ]
 }, {
     "id": 200642,
     "name": "Torch of Primal Awakening",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 120, reagent: PRIMAL_CHAOS },
+        { count: 2, reagent: VIBRANT_SHARD },
+        { count: 3, reagent: RESONANT_CRYSTAL },
+        { count: 2, reagent: RUNED_WRITHEBARK },
+        { count: 2, reagent: PRIMAL_MOLTEN_ALLOY },
     ]
 }, {
     "id": 190503, "name": "Primal Molten Defender", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 15, reagent: PRIMAL_MOLTEN_ALLOY },
     ]
 }, {
     "id": 193460, "name": "Venom-Steeped Stompers", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 6, reagent: CACOPHONOUS_THUNDERSCALE },
+        { count: 18, reagent: STONECRUST_HIDE },
+        { count: 150, reagent: ADAMANT_SCALES },
     ]
 }, {
     "id": 193461,
     "name": "Infurious Boots of Reprieve",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 1, reagent: CENTAURS_TROPHY_NECKLACE },
+        { count: 16, reagent: INFURIOUS_HIDE },
+        { count: 100, reagent: ADAMANT_SCALES },
     ]
 }, {
     "id": 193520, "name": "Azureweave Mantle", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 1, reagent: FROZEN_SPELLTHREAD },
+        { count: 3, reagent: AZUREWEAVE_BOLT },
     ]
 }, {
     "id": 193003,
     "name": "Idol of the Lifebinder",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
+        { count: 60, reagent: PRIMAL_CHAOS },
         { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 1, reagent: ALEXSTRASZITE },
+        { count: 1, reagent: ILLIMITED_DIAMOND },
+        { count: 10, reagent: GLOSSY_STONE },
     ]
 }, {
     "id": 193516, "name": "Vibrant Wildercloth Girdle", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 6, reagent: SPOOL_OF_WILDERTHREAD },
+        { count: 10, reagent: VIBRANT_WILDERCLOTH_BOLT },
     ]
 }, {
     "id": 198323,
@@ -551,39 +566,38 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 2, reagent: AWAKENED_ORDER },
+        { count: 2, reagent: FRAMELESS_LENS },
+        { count: 2, reagent: ARCLIGHT_CAPACITOR },
+        { count: 1, reagent: REINFORCED_MACHINE_CHASSIS },
+        { count: 2, reagent: VIBRANT_WILDERCLOTH_BOLT },
     ]
 }, {
     "id": 194898, "name": "Illuminating Pillar of the Isles", "itemLevel": 350, reagents: [
-        { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 2, reagent: SPARK_OF_INGENUITY },
+        { count: 160, reagent: PRIMAL_CHAOS },
+        { count: 6, reagent: COSMIC_INK },
+        { count: 10, reagent: RUNED_WRITHEBARK },
+        { count: 8, reagent: CHILLED_RUNE },
     ]
 }, {
     "id": 193526,
     "name": "Amice of the Blue",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 1, reagent: FROSTY_SOUL },
+        { count: 1, reagent: FROZEN_SPELLTHREAD },
+        { count: 3, reagent: AZUREWEAVE_BOLT },
     ]
 }, {
     "id": 193006, "name": "Idol of the Earth Warder", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 60, reagent: PRIMAL_CHAOS },
+        { count: 1, reagent: EARTHEN_SOUL },
+        { count: 1, reagent: NELTHARITE },
+        { count: 1, reagent: ILLIMITED_DIAMOND },
+        { count: 10, reagent: GLOSSY_STONE },
     ]
 }, {
     "id": 193523,
@@ -591,77 +605,65 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 10, reagent: SPOOL_OF_WILDERTHREAD },
+        { count: 12, reagent: VIBRANT_WILDERCLOTH_BOLT },
     ]
 }, {
     "id": 190513, "name": "Obsidian Seared Facesmasher", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 80, reagent: PRIMAL_CHAOS },
+        { count: 6, reagent: OBSIDIAN_SEARED_ALLOY },
+        { count: 6, reagent: PRIMAL_MOLTEN_ALLOY },
     ]
 }, {
     "id": 193463, "name": "Wind Spirit's Lasso", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 10, reagent: AWAKENED_AIR },
+        { count: 16, reagent: MIRESLUSH_HIDE },
+        { count: 150, reagent: ADAMANT_SCALES },
     ]
 }, {
     "id": 198327,
     "name": "Needlessly Complex Wristguards",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 30, reagent: PRIMAL_CHAOS },
+        { count: 5, reagent: DENSE_HIDE },
+        { count: 1, reagent: REINFORCED_MACHINE_CHASSIS },
+        { count: 3, reagent: GREASED_UP_GEARS },
+        { count: 3, reagent: ARCLIGHT_CAPACITOR },
     ]
 }, {
     "id": 193511, "name": "Vibrant Wildercloth Shawl", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 30, reagent: PRIMAL_CHAOS },
+        { count: 6, reagent: SPOOL_OF_WILDERTHREAD },
+        { count: 8, reagent: VIBRANT_WILDERCLOTH_BOLT },
     ]
 }, {
     "id": 190500, "name": "Primal Molten Pauldrons", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 15, reagent: PRIMAL_MOLTEN_ALLOY },
     ]
 }, {
     "id": 193508,
     "name": "Vibrant Wildercloth Shoulderspikes",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 8, reagent: SPOOL_OF_WILDERTHREAD },
+        { count: 10, reagent: VIBRANT_WILDERCLOTH_BOLT },
     ]
 }, {
     "id": 198333, "name": "Difficult Wrist Protectors", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 30, reagent: PRIMAL_CHAOS },
+        { count: 2, reagent: OBSIDIAN_SEARED_ALLOY },
+        { count: 1, reagent: REINFORCED_MACHINE_CHASSIS },
+        { count: 3, reagent: GREASED_UP_GEARS },
+        { count: 3, reagent: ARCLIGHT_CAPACITOR },
     ]
 }, {
     "id": 193509,
@@ -669,50 +671,40 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 10, reagent: SPOOL_OF_WILDERTHREAD },
+        { count: 12, reagent: VIBRANT_WILDERCLOTH_BOLT },
     ]
 }, {
     "id": 193462, "name": "Infurious Chainhelm Protector", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 1, reagent: CENTAURS_TROPHY_NECKLACE },
+        { count: 20, reagent: INFURIOUS_SCALES },
+        { count: 100, reagent: ADAMANT_SCALES },
     ]
 }, {
     "id": 190505,
     "name": "Primal Molten Shortblade",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 80, reagent: PRIMAL_CHAOS },
+        { count: 17, reagent: PRIMAL_MOLTEN_ALLOY },
     ]
 }, {
     "id": 190498, "name": "Primal Molten Helm", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 16, reagent: PRIMAL_MOLTEN_ALLOY },
     ]
 }, {
     "id": 193459,
     "name": "Ancestor's Dew Drippers",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 10, reagent: CRYSTALSPINE_FUR },
+        { count: 18, reagent: MIRESLUSH_HIDE },
+        { count: 150, reagent: ADAMANT_SCALES },
     ]
 }, {
     "id": 193536, "name": "Azureweave Robe", "itemLevel": 350, reagents: [
@@ -729,10 +721,8 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 1, reagent: FROZEN_SPELLTHREAD },
+        { count: 4, reagent: AZUREWEAVE_BOLT },
     ]
 }, {
     "id": 194897, "name": "Kinetic Pillar of the Isles", "itemLevel": 350, reagents: [
@@ -747,12 +737,11 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "id": 190502,
     "name": "Primal Molten Vambraces",
     "itemLevel": 350, reagents: [
-        { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 2, reagent: SPARK_OF_INGENUITY },
+        { count: 160, reagent: PRIMAL_CHAOS },
+        { count: 6, reagent: COSMIC_INK },
+        { count: 10, reagent: RUNED_WRITHEBARK },
+        { count: 8, reagent: CHILLED_RUNE },
     ]
 }, {
     "id": 193453, "name": "Allied Heartwarming Fur Coat", "itemLevel": 350, reagents: [
@@ -769,10 +758,10 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 10, reagent: FIRE_INFUSED_HIDE },
+        { count: 3, reagent: TUFT_OF_PRIMAL_WOOL },
+        { count: 20, reagent: FROSTBITE_SCALES },
+        { count: 150, reagent: RESILIENT_LEATHER },
     ]
 }, {
     "id": 190512,
@@ -788,31 +777,26 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
 }, {
     "id": 193464, "name": "Allied Legguards of Sansok Khan", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 120, reagent: PRIMAL_CHAOS },
+        { count: 6, reagent: OBSIDIAN_SEARED_ALLOY },
+        { count: 6, reagent: PRIMAL_MOLTEN_ALLOY },
     ]
 }, {
     "id": 190517,
     "name": "Obsidian Seared Invoker",
     "itemLevel": 350, reagents: [
-        { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 2, reagent: SPARK_OF_INGENUITY },
+        { count: 160, reagent: PRIMAL_CHAOS },
+        { count: 7, reagent: OBSIDIAN_SEARED_ALLOY },
+        { count: 5, reagent: PRIMAL_MOLTEN_ALLOY },
     ]
 }, {
     "id": 193425, "name": "Flame-Touched Chain", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 4, reagent: CRYSTALSPINE_FUR },
+        { count: 14, reagent: EARTHSHINE_SCALES },
+        { count: 150, reagent: ADAMANT_SCALES },
     ]
 }, {
     "id": 190519,
@@ -831,28 +815,24 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 1, reagent: CENTAURS_TROPHY_NECKLACE },
+        { count: 10, reagent: OBSIDIAN_SEARED_ALLOY },
     ]
 }, {
     "id": 193456, "name": "Infurious Spirit's Hood", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
+        { count: 8, reagent: FIRE_INFUSED_HIDE },
+        { count: 20, reagent: INFURIOUS_HIDE },
         { count: 100, reagent: RESILIENT_LEATHER },
     ]
 }, {
     "id": 193532, "name": "Blue Dragon Soles", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 1, reagent: FROSTY_SOUL },
+        { count: 1, reagent: FROZEN_SPELLTHREAD },
+        { count: 3, reagent: AZUREWEAVE_BOLT },
     ]
 }, {
     "id": 193005,
@@ -868,20 +848,18 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
 }, {
     "id": 193527, "name": "Chronocloth Gloves", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 60, reagent: PRIMAL_CHAOS },
+        { count: 1, reagent: AIRY_SOUL },
+        { count: 1, reagent: YSEMERALD },
+        { count: 1, reagent: ILLIMITED_DIAMOND },
+        { count: 10, reagent: GLOSSY_STONE },
     ]
 }, {
     "id": 193537, "name": "Chronocloth Leggings", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 1, reagent: TEMPORAL_SPELLTHREAD },
+        { count: 4, reagent: CHRONOCLOTH_BOLT },
     ]
 }, {
     "id": 193426,
@@ -889,19 +867,19 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 4, reagent: CACOPHONOUS_THUNDERSCALE },
+        { count: 15, reagent: STONECRUST_HIDE },
+        { count: 150, reagent: ADAMANT_SCALES },
     ]
 }, {
     "id": 194879, "name": "Crackling Codex of the Isles", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 5, reagent: AWAKENED_AIR },
+        { count: 20, reagent: GLITTERING_PARCHMENT },
+        { count: 10, reagent: COSMIC_INK },
+        { count: 5, reagent: RUNED_WRITHEBARK },
+        { count: 5, reagent: CHILLED_RUNE },
     ]
 }, {
     "id": 193458, "name": "Snowball Makers", "itemLevel": 350, reagents: [
@@ -917,11 +895,10 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "name": "Hood of Surging Time",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 10, reagent: CRYSTALSPINE_FUR },
+        { count: 20, reagent: FROSTBITE_SCALES },
+        { count: 150, reagent: RESILIENT_LEATHER },
     ]
 }, {
     "id": 193418, "name": "Life-Bound Gloves", "itemLevel": 350, reagents: [
@@ -937,11 +914,10 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "name": "Infurious Binding of Gesticulation",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 4, reagent: SALAMANTHER_SCALES },
+        { count: 13, reagent: FROSTBITE_SCALES },
+        { count: 150, reagent: RESILIENT_LEATHER },
     ]
 }, {
     "id": 190506, "name": "Primal Molten Spellblade", "itemLevel": 350, reagents: [
@@ -957,11 +933,8 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "name": "Chronocloth Sash",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 120, reagent: PRIMAL_CHAOS },
+        { count: 17, reagent: PRIMAL_MOLTEN_ALLOY },
     ]
 }, {
     "id": 190496, "name": "Primal Molten Sabatons", "itemLevel": 350, reagents: [
@@ -977,11 +950,8 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "name": "Infurious Legwraps of Possibility",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 14, reagent: PRIMAL_MOLTEN_ALLOY },
     ]
 }, {
     "id": 193428, "name": "Flame-Touched Cuffs", "itemLevel": 350, reagents: [
@@ -997,62 +967,55 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "name": "Vibrant Wildercloth Wristwraps",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 30, reagent: PRIMAL_CHAOS },
+        { count: 4, reagent: WINDSONG_PLUMAGE },
+        { count: 10, reagent: EARTHSHINE_SCALES },
+        { count: 150, reagent: ADAMANT_SCALES },
     ]
 }, {
     "id": 193465, "name": "Scale Rein Grips", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 12, reagent: SALAMANTHER_SCALES },
+        { count: 18, reagent: EARTHSHINE_SCALES },
+        { count: 150, reagent: ADAMANT_SCALES },
     ]
 }, {
     "id": 198322,
     "name": "Overengineered Sleeve Extenders",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 30, reagent: PRIMAL_CHAOS },
+        { count: 4, reagent: VIBRANT_WILDERCLOTH_BOLT },
+        { count: 1, reagent: REINFORCED_MACHINE_CHASSIS },
+        { count: 2, reagent: GREASED_UP_GEARS },
+        { count: 2, reagent: ARCLIGHT_CAPACITOR },
     ]
 }, {
     "id": 193427,
     "name": "Flame-Touched Handguards",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 4, reagent: ROCKFANG_LEATHER },
+        { count: 13, reagent: EARTHSHINE_SCALES },
+        { count: 150, reagent: ADAMANT_SCALES },
     ]
 }, {
     "id": 193525, "name": "Azureweave Slippers", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 1, reagent: FROZEN_SPELLTHREAD },
+        { count: 3, reagent: AZUREWEAVE_BOLT },
     ]
 }, {
     "id": 193504,
     "name": "Vibrant Wildercloth Handwraps",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 8, reagent: SPOOL_OF_WILDERTHREAD },
+        { count: 10, reagent: VIBRANT_WILDERCLOTH_BOLT },
     ]
 }, {
     "id": 190499, "name": "Primal Molten Legplates", "itemLevel": 350, reagents: [
@@ -1069,78 +1032,64 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 16, reagent: PRIMAL_MOLTEN_ALLOY },
     ]
 }, {
     "id": 193457, "name": "String of Spiritual Knick-Knacks", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 10, reagent: SALAMANTHER_SCALES },
+        { count: 20, reagent: MIRESLUSH_HIDE },
+        { count: 150, reagent: RESILIENT_LEATHER },
     ]
 }, {
     "id": 193004,
     "name": "Idol of the Spell-Weaver",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 60, reagent: PRIMAL_CHAOS },
+        { count: 1, reagent: FROSTY_SOUL },
+        { count: 1, reagent: MALYGITE },
+        { count: 1, reagent: ILLIMITED_DIAMOND },
+        { count: 10, reagent: GLOSSY_STONE },
     ]
 }, {
     "id": 193530, "name": "Allied Wristguards of Time Dilation", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 30, reagent: PRIMAL_CHAOS },
+        { count: 1, reagent: CENTAURS_TROPHY_NECKLACE },
+        { count: 1, reagent: TEMPORAL_SPELLTHREAD },
+        { count: 2, reagent: CHRONOCLOTH_BOLT },
     ]
 }, {
     "id": 190526,
     "name": "Allied Wristguard of Companionship",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 30, reagent: PRIMAL_CHAOS },
+        { count: 1, reagent: CENTAURS_TROPHY_NECKLACE },
+        { count: 8, reagent: OBSIDIAN_SEARED_ALLOY },
     ]
 }, {
     "id": 193519, "name": "Vibrant Wildercloth Slippers", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 8, reagent: SPOOL_OF_WILDERTHREAD },
+        { count: 10, reagent: VIBRANT_WILDERCLOTH_BOLT },
     ]
 }, {
     "id": 190497,
     "name": "Primal Molten Gauntlets",
     "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 40, reagent: PRIMAL_CHAOS },
+        { count: 14, reagent: PRIMAL_MOLTEN_ALLOY },
     ]
 }, {
     "id": 193518, "name": "Vibrant Wildercloth Slacks", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
         { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 10, reagent: SPOOL_OF_WILDERTHREAD },
+        { count: 12, reagent: VIBRANT_WILDERCLOTH_BOLT },
     ]
 }] as Item[];

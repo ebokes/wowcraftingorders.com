@@ -5,6 +5,12 @@ export const SPARK_OF_INGENUITY: Reagent = {
     itemId: 190453, buyerProvides: true
 }
 export const PRIMAL_CHAOS: Reagent = { itemId: 190454, buyerProvides: true }
+export const FROSTY_SOUL: Reagent = { itemId: 193360, buyerProvides: true }
+export const FIERY_SOUL: Reagent = { itemId: 193362, buyerProvides: true }
+export const AIRY_SOUL: Reagent = { itemId: 193921, buyerProvides: true }
+export const EARTHEN_SOUL: Reagent = { itemId: 193920, buyerProvides: true }
+export const CENTAURS_TROPHY_NECKLACE: Reagent = { itemId: 193360, buyerProvides: true }
+
 
 // Buyer OR Seller
 
@@ -16,6 +22,23 @@ export const AWAKENED_FIRE: Reagent = { itemId: 190321 }
 export const AWAKENED_AIR: Reagent = { itemId: 190327 }
 export const AWAKENED_FROST: Reagent = { itemId: 190329 }
 export const RUNED_WRITHEBARK: Reagent = { itemId: 194862 }
+
+export const SPOOL_OF_WILDERTHREAD: Reagent = { itemId: 192096 }
+export const TEMPORAL_SPELLTHREAD: Reagent = { itemId: 194014 }
+export const FROZEN_SPELLTHREAD: Reagent = { itemId: 194012 }
+export const GLITTERING_PARCHMENT: Reagent = { itemId: 194784 }
+export const TUFT_OF_PRIMAL_WOOL: Reagent = { itemId: 201405 }
+export const CACOPHENOUS_THUNDERSCALE: Reagent = { itemId: 193253 }
+export const GLOWING_TITAN_ORB: Reagent = { itemId: 201406 }
+export const AWAKENED_ORDER: Reagent = { itemId: 190324 }
+export const TALLSTRIDER_SINEW: Reagent = { itemId: 201404 }
+export const DARKMOON_DECK_INFERNO: Reagent = { itemId: 198086 }
+export const DARKMOON_DECK_DANCE: Reagent = { itemId: 198088 }
+export const DARKMOON_DECK_RIME: Reagent = { itemId: 198087 }
+export const PHIAL_OF_TEPID_VERSATILITY: Reagent = { itemId: 191339 }
+export const PHIAL_OF_ELEMENTAL_CHAOS: Reagent = { itemId: 191357 }
+export const LARGE_STURDY_FEMUR: Reagent = { itemId: 201402 }
+
 
 // Alchemy
 export const HOCHENBLUME: Reagent = { itemId: 191462 }

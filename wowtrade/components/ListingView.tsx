@@ -32,6 +32,14 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
         throw new Error("You must either provide a callback to delete the listing, or set includeDelete to false.");
     }
 
+    let postTimestamp;
+    try {
+        postTimestamp = new Date(listing.timestampSeconds * 1000);
+    } catch (err) {
+        console.error(`Error parsing timestamp for listing ${JSON.stringify(listing)}`);
+        console.error(err);
+    }
+
     return <div>
         {includeItem && <b><Link style={{ fontSize: "18px" }}
                                  href={`/${listing.seller.region}/${listing.seller.realm}/item/${listing.itemId}`}
@@ -50,7 +58,7 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.battleNetTag}</p>}
         {includeDelete && deleteUserListing &&
             <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>}
-        <p><b>Posted: {format(new Date(listing.timestampSeconds * 1000), "EEEE, LLL d")}</b></p>
+        {postTimestamp && <p><b>Posted: {format(postTimestamp, "EEEE, LLL d")}</b></p>}
         {listing && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
     </div>
 }

@@ -30,4 +30,4 @@ jobs:
           runtime: "nodejs16"
           source_dir: "functions"
           project_id: "wowtrade"
-          env_vars: APP_ENV=prod
+          env_vars: APP_ENV=production

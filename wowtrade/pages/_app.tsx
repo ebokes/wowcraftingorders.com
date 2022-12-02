@@ -11,9 +11,9 @@ import { REGIONS } from "../data/regions";
 import { REALM_LIST } from "../data/realms";
 
 export let ROOT_URL: string;
-if (!process.env.APP_ENV || process.env.APP_ENV === 'local') {
+if (!process.env.VERCEL_ENV || process.env.VERCEL_ENV === 'development') {
     ROOT_URL = 'http://localhost:5001/wowtrade/us-central1/app';
-} else if (process.env.APP_ENV === 'test') {
+} else if (process.env.VERCEL_ENV === 'test') {
     ROOT_URL = 'https://us-central1-wowtrade.cloudfunctions.net/app-test';
 } else {
     ROOT_URL = 'https://us-central1-wowtrade.cloudfunctions.net/app-prod';

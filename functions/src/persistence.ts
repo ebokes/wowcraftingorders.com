@@ -43,7 +43,7 @@ export const deleteListing = async (listingId: string) => {
 export const addListing = async (listing: ListingPayload): Promise<Listing> => {
     const db = admin.firestore();
     const data = await db.collection(LISTINGS_COLLECTION).add(listing);
-    return { id: data.id, ...listing } as Listing;
+    return { id: data.id, timestampSeconds: Date.now() / 1000, ...listing } as Listing;
 };
 
 export const getCharacterListings = async (characters: Character[]): Promise<Listing[]> => {

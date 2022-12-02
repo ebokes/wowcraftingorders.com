@@ -2,6 +2,7 @@ import { Listing } from "../types/types";
 import { Button } from "react-bootstrap";
 import Link from "next/link";
 import Script from "next/script";
+import format from "date-fns/format";
 
 interface Props {
     listing: Listing;
@@ -49,6 +50,7 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.battleNetTag}</p>}
         {includeDelete && deleteUserListing &&
             <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>}
+        <p><b>Posted: {format(new Date(listing.timestampSeconds * 1000), "EEEE, LLL d")}</b></p>
         {listing && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
     </div>
 }

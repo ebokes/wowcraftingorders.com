@@ -54,9 +54,11 @@ app.post("/listings", ensureAuthenticated,
                     return response.status(400).send([{ message: "Sale of this item is not supported." }]);
                 }
 
-                // Doesn't own character
-                if (!await ownsCharacter(payload.seller.region, payload.seller.realm, payload.seller.characterName, request.headers["authorization"])) {
-                    return response.status(400).send([{ message: "You do not own that character." }]);
+                // Doesn't own character; skip validation if running locally
+                if (process.env.APP_ENV) {
+                    if (!await ownsCharacter(payload.seller.region, payload.seller.realm, payload.seller.characterName, request.headers["authorization"])) {
+                        return response.status(400).send([{ message: "You do not own that character." }]);
+                    }
                 }
 
                 // Already has listing

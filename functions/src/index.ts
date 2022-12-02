@@ -19,7 +19,7 @@ import {
 import * as timeout from "connect-timeout";
 
 import { getCharacters, ownsCharacter } from "./validation/blizzard";
-import { ensureAuthenticated, logRequest } from "./middleware";
+import { ensureAuthenticated, logRequest, logResponseBody } from "./middleware";
 import { ITEMS } from "./items";
 
 const haltOnTimedOut: RequestHandler = (req, res, next) => {
@@ -159,4 +159,5 @@ app.get("/:region/:realm/item/:itemId", async (request, response) => {
     }
 });
 
+app.use(logResponseBody);
 exports.app = functions.region("us-central1").https.onRequest(app);

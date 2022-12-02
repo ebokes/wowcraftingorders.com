@@ -16,3 +16,31 @@ export const logRequest: RequestHandler = (request, response, next) => {
     }
     return next();
 }
+
+export const logResponseBody: RequestHandler = (req, res, next) => {
+    const oldWrite = res.write,
+        oldEnd = res.end;
+
+    const chunks: any[] = [];
+
+    res.write = function (chunk) {
+        chunks.push(chunk);
+
+        // @ts-ignore
+        return oldWrite.apply(res, arguments);
+    };
+
+    // @ts-ignore
+    res.end = function (chunk) {
+        if (chunk)
+            chunks.push(chunk);
+
+        const body = Buffer.concat(chunks).toString('utf8');
+        console.log(req.path, body);
+
+        // @ts-ignore
+        oldEnd.apply(res, arguments);
+    };
+
+    next();
+}

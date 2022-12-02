@@ -7,12 +7,15 @@ import { dateSort } from "../util/utils";
 import { useContext, useEffect, useState } from "react";
 import { RegionRealmContext } from "../pages/_app";
 import { ITEMS } from "../data/items";
-import Link from "next/link";
 import { refreshWowheadLinks } from "../pages";
 import Image from "next/image";
 
 export function totalMoneyValue(gold: number | undefined, silver: number | undefined, copper: number | undefined) {
     return (gold ?? 0) * 10000 + (silver ?? 0) * 100 + (copper ?? 0);
+}
+
+const fuzzyIncludes = (s1: string, s2: string) => {
+    return s1.toLowerCase().replaceAll(" ", "").includes(s2.toLowerCase().replaceAll(" ", ""));
 }
 
 // TODO: Only show each item once, with its lowest commission
@@ -35,9 +38,8 @@ export default function ListingsList() {
                         <Form.Control type="text" value={search}
                                       onChange={(e) => {
                                           setSearch(e.target.value);
-                                      }} placeholder="Filter Items..."/>
+                                      }} placeholder="Filter by Name..."/>
                     </InputGroup>
-                    <Link href={`https://www.wowhead.com/item=${search}`}/>
                 </Col>
             </Row>
         </Form>
@@ -45,7 +47,7 @@ export default function ListingsList() {
             {data
                 .filter(() => { // Filter by search query
                     if (search === "") return true;
-                    return ITEMS.find(item => item.name.toLowerCase().replace(" ", "").includes(search.toLowerCase().replace(" ", "")));
+                    return ITEMS.find(item => fuzzyIncludes(item.name, search));
                 })
                 .filter((listing: Listing) => { // Filter by whether it's the lowest commission for the item
                     const otherListings = data.filter((otherListing: Listing) => {

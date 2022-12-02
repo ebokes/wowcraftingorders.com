@@ -30,11 +30,10 @@ export default function Home() {
             </Head>
 
             <main className={"p-3"}>
-                <h3>What Is This?</h3>
+                <h3>Overview</h3>
                 <p>WoWCraftingOrders.com connects buyers and sellers of private work orders, especially high-quality
-                    ones. Public work orders don't guarantee a quality, so this site
-                    is intended to give people additional flexiblity without needing
-                    to spam trade chat.</p>
+                    ones. Finding skilled crafters can often be complicated, and trade chat doesn't really solve the
+                    problem, which is where this site comes in..</p>n
                 <Form style={{ width: "100%" }}>
                     <SetRegionRealmView/>
                 </Form>

@@ -2,7 +2,10 @@
 # https://github.com/firebase/firebase-tools
 
 name: Deploy Backend - Merge
-concurrency: backend-merge
+concurrency:
+  group: backend-merge
+  cancel-in-progress: true
+
 'on':
   push:
     paths:

@@ -58,7 +58,7 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.battleNetTag}</p>}
         {includeDelete && deleteUserListing &&
             <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>}
-        {postTimestamp && <p><b>Posted: {format(postTimestamp, "EEEE, LLL d")}</b></p>}
+        {postTimestamp && <p><b>Posted:</b> {format(postTimestamp, "EEEE, LLL d, h:mm aaa")}</p>}
         {listing && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
     </div>
 }

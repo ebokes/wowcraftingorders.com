@@ -2,6 +2,7 @@ import axios from "axios";
 import { BattleNetProfileDataResponse, BNetCharacter, Character } from "../types";
 
 const blizzardApiRequest = async (url: string, namespace: string, token: string): Promise<BattleNetProfileDataResponse | object> => {
+    console.log("Requesting Blizzard API with url: " + url);
     const config = {
         headers: {
             "Authorization": token,
@@ -9,9 +10,11 @@ const blizzardApiRequest = async (url: string, namespace: string, token: string)
         },
         params: {
             "namespace": `${namespace}`,
+            "locale": "en_US",
         }
     };
     const response = await axios.get<BattleNetProfileDataResponse>(url, config);
+    console.log("Response from Blizzard API: " + JSON.stringify(response.data));
     return response.data;
 }
 

@@ -74,9 +74,9 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.discordTag}</p>}
         {listing.seller.battleNetTag &&
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.battleNetTag}</p>}
+        {postTimestamp && <p><b>Posted</b>{" " + deltaTimeText}</p>}
         {includeDelete && deleteUserListing &&
             <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>}
-        {postTimestamp && <p><b>Posted</b>{" " + deltaTimeText}</p>}
         {listing && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
     </div>
 }

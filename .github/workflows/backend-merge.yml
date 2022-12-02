@@ -11,7 +11,7 @@ concurrency:
     ignore-paths:
       - 'wowtrade/**'
     branches:
-      - backend
+      - master
 jobs:
   deploy-functions:
     runs-on: ubuntu-latest

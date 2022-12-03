@@ -1,6 +1,6 @@
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import { Form, ListGroup } from "react-bootstrap";
+import { Card, Form, Row } from "react-bootstrap";
 import { Listing } from "../../../types/types";
 import Script from "next/script";
 import { totalMoneyValue } from "../../../components/ListingsList";
@@ -50,7 +50,7 @@ export default function itemPage() {
                 </Form.Control>
             </Form.Group>
         </Form>
-        <ListGroup>
+        <Row sm={1} lg={2} xxl={3} className="card-deck">
             {data && data
                 .filter((listing: Listing) => { // Filter
                     if (quality === "All") return true;
@@ -62,9 +62,25 @@ export default function itemPage() {
                     return aCommission - bCommission;
                 })
                 .map((listing: Listing) => (
-                    <ListingView listing={listing} includeSeller includeTimestamp includeDelete={false}/>
+                    <div
+                        key={listing.id}
+                        className="p-2"
+                        style={{ alignItems: "stretch" }}
+                    >
+                        <Card
+                            style={{
+                                boxShadow: "rgba(140, 140, 140, 0.2) 0px 0px 4px 3px",
+                                padding: "20px",
+                                minHeight: "100%",
+                                paddingBottom: "40px",
+                            }}
+                        >
+                            <ListingView listing={listing} includeItem={false} includeSeller includeTimestamp
+                                         includeDelete={false}/>
+                        </Card>
+                    </div>
                 ))}
-        </ListGroup>
+        </Row>
         {data && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
     </div>
 }

@@ -69,7 +69,7 @@ export default function ListingsList() {
                                 boxShadow: "rgba(140, 140, 140, 0.2) 0px 0px 4px 3px",
                                 padding: "20px",
                                 minHeight: "100%",
-                                paddingBottom: "20px",
+                                paddingBottom: "40px",
                             }}
                         >
                             <ListingView listing={listing} includeDelete={false} key={listing.id}/>

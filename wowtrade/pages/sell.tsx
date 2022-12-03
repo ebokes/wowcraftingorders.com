@@ -8,7 +8,6 @@ import { SetRegionRealmView } from "../components/SetRealms";
 import Script from "next/script";
 import { ITEMS } from "../data/items";
 import ReactSelect from "react-select";
-import Image from "next/image";
 
 export default function Sell() {
 
@@ -110,7 +109,7 @@ export default function Sell() {
                         break;
                     }
                     case 409: {
-                        setErrors(["This character already has a listing for this itemId."]);
+                        setErrors(["This character already has a listing for this item."]);
                         break;
                     }
                     default: {
@@ -296,10 +295,6 @@ export default function Sell() {
             {success && <ListGroup>
                 <ListGroup.Item variant="success">Successfully submitted listing!</ListGroup.Item>
             </ListGroup>}
-
-            {userListings === undefined && <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>}
-            {userListings && userListings.length === 0 &&
-                <p>You haven't listed anything yet. Submit the form above and something will show up here!</p>}
             {userListings && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
         </main>
     </div>

@@ -108,7 +108,7 @@ export default function Sell() {
         // Workaround for payload keeping its initial values for context
         const updatedPayload = {
             ...payload, seller: {
-                ...seller, region: context.region, realm: context.realm
+                ...payload.seller, region: context.region, realm: context.realm
             }
         }
 

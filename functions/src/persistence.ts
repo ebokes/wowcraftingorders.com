@@ -47,6 +47,15 @@ export const addListing = async (listing: ListingPayload): Promise<Listing> => {
     return { id: data.id, timestampSeconds: Date.now() / 1000, ...listing } as Listing;
 };
 
+export const updateListing = async (id: string, payload: ListingPayload): Promise<Listing> => {
+    const db = admin.firestore();
+    await db.collection(LISTINGS_COLLECTION).doc(id).update({
+        ...payload,
+        timestampSeconds: Date.now() / 1000
+    });
+    return { id, timestampSeconds: Date.now() / 1000, ...payload } as Listing;
+}
+
 export const getCharacterListings = async (characters: Character[]): Promise<Listing[]> => {
     const db = admin.firestore();
     const listings: Listing[] = [];

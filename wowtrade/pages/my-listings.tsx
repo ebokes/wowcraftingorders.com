@@ -7,6 +7,7 @@ import { useContext, useEffect, useState } from "react";
 import { RegionRealmContext, ROOT_URL } from "./_app";
 import { Listing } from "../types/types";
 import Link from "next/link";
+import { dateSort } from "../util/utils";
 
 export default function MyListings() {
     const session = useSession();
@@ -62,27 +63,29 @@ export default function MyListings() {
     return <div>
         <h3 className={"mt-3"}>My Listings</h3>
         <Row sm={1} lg={2} xxl={3} className="card-deck">
-            {userListings && userListings.map((listing) => (
-                <div
-                    key={listing.id}
-                    className="p-2"
-                    style={{ alignItems: "stretch" }}
-                >
-                    <Card
-                        style={{
-                            boxShadow: "rgba(140, 140, 140, 0.2) 0px 0px 4px 3px",
-                            height: "100%",
-                            minHeight: "100%",
-                            padding: "20px",
-                            paddingBottom: "50px"
-                        }}
+            {userListings && [...userListings]
+                .sort(dateSort)
+                .map((listing) => (
+                    <div
+                        key={listing.id}
+                        className="p-2"
+                        style={{ alignItems: "stretch" }}
                     >
-                        <ListingView listing={listing} includeSeller={false} includeDelete={true} includeTimestamp
-                                     deleteUserListing={deleteUserListing}/>
-                    </Card>
-                </div>
+                        <Card
+                            style={{
+                                boxShadow: "rgba(140, 140, 140, 0.2) 0px 0px 4px 3px",
+                                height: "100%",
+                                minHeight: "100%",
+                                padding: "20px",
+                                paddingBottom: "50px"
+                            }}
+                        >
+                            <ListingView listing={listing} includeSeller={true} includeDelete={true} includeTimestamp
+                                         deleteUserListing={deleteUserListing}/>
+                        </Card>
+                    </div>
 
-            ))}
+                ))}
         </Row>
         {errors && <ListGroup>
             {errors.map((error) => (

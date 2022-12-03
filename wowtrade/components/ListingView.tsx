@@ -77,7 +77,7 @@ export function ListingView({
                                  data-wowhead={`item=${listing.itemId}`}>Loading
             Tooltip...</Link></b>}
         {includeSeller && <p className={"m-0"}><b>Seller:</b> {listing.seller.characterName}</p>}
-        <p className={"m-0"}><b>Min. Quality: </b>{listing.quality + "/5"}
+        <p className={"mb-2"}><b>Minimum Quality: </b>{listing.quality + "/5"}
         </p>
         <p className={"m-0"}><b>Commission:</b>{" "}
             {listing.commission.gold}<span style={{ color: "#D4A017" }}><b>g</b></span>{" "}
@@ -95,8 +95,8 @@ export function ListingView({
             </ul>
         </p>}
         {includeTimestamp && <div style={{ position: "absolute", bottom: "20px", right: "20px" }}>
-            {postTimestamp && deltaTimeText !== "Posted ago." && <p>{deltaTimeText}</p>}
-            {postTimestamp && deltaTimeText === "Posted ago." && <p>Posted just now.</p>}
+            {postTimestamp && deltaTimeText !== "Posted ago." && <p className={"mb-0"}>{deltaTimeText}</p>}
+            {postTimestamp && deltaTimeText === "Posted ago." && <p className={"mb-0"}>Posted just now.</p>}
         </div>}
         {includeDelete && deleteUserListing && <div style={{ position: "absolute", bottom: "20px", left: "20px" }}>
             <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>

@@ -60,7 +60,7 @@ export default function MyListings() {
     }
 
     return <div>
-        <h3 className={"mt-3"}>Your Listings</h3>
+        <h3 className={"mt-3"}>My Listings</h3>
         <Row sm={1} lg={2} xxl={3} className="card-deck">
             {userListings && userListings.map((listing) => (
                 <div
@@ -74,7 +74,7 @@ export default function MyListings() {
                             height: "100%",
                             minHeight: "100%",
                             padding: "20px",
-                            paddingBottom: "20px"
+                            paddingBottom: "50px"
                         }}
                     >
                         <ListingView listing={listing} includeSeller={false} includeDelete={true} includeTimestamp

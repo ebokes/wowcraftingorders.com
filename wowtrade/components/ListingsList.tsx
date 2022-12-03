@@ -27,7 +27,9 @@ export default function ListingsList() {
 
     if (error) return <div>Failed to load listings. Please try and refresh the page.</div>
     if (!data) return <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>
-    if (data && !data.length) return <div>No listings found.</div>
+    if (data && !data.length) return <div>No listings have been submitted yet for this server. Try selecting another
+        from the above
+        menu.</div>
 
 
     return <div>

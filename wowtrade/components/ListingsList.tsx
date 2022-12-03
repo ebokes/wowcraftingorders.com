@@ -49,9 +49,15 @@ export default function ListingsList() {
             that item!</p>
         <Row sm={1} lg={2} xxl={3} className="card-deck">
             {data
-                .filter(() => { // Filter by search query
+                .filter((listing: Listing) => { // Filter by search query
                     if (search === "") return true;
-                    return ITEMS.find(item => fuzzyIncludes(item.name, search));
+
+                    // Get item name from item id
+                    const item = ITEMS.find(i => i.id === listing.itemId);
+                    if (!item) {
+                        throw new Error(`Item with id ${listing.itemId} not found in ITEMS`);
+                    }
+                    return fuzzyIncludes(item.name, search);
                 })
                 .filter((listing: Listing) => { // Filter by whether it's the lowest commission for the item
                     const otherListings = data.filter((otherListing: Listing) => {

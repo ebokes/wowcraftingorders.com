@@ -62,7 +62,7 @@ app.post("/listings", ensureAuthenticated,
 
                 // Doesn't own character; skip validation if running locally
                 if (process.env.APP_ENV) {
-                    if (!await ownsCharacter(payload.seller.region, payload.seller.realm, payload.seller.characterName, request.headers["authorization"])) {
+                    if (!(await ownsCharacter(payload.seller.region, payload.seller.realm, payload.seller.characterName, request.headers["authorization"]))) {
                         return response.status(400).send([{ message: "You do not own that character." }]);
                     }
                 }

@@ -1,11 +1,11 @@
 // Buyer ONLY
-import { Reagent } from "../types";
+import { Reagent } from "../types/types";
 
 export const SPARK_OF_INGENUITY: Reagent = {
     itemId: 190453, buyerProvides: true
 }
 export const PRIMAL_CHAOS: Reagent = { itemId: 190454, buyerProvides: true }
-export const FROSTY_SOUL: Reagent = { itemId: 193919, buyerProvides: true }
+export const FROSTY_SOUL: Reagent = { itemId: 193360, buyerProvides: true }
 export const FIERY_SOUL: Reagent = { itemId: 193362, buyerProvides: true }
 export const AIRY_SOUL: Reagent = { itemId: 193921, buyerProvides: true }
 export const EARTHEN_SOUL: Reagent = { itemId: 193920, buyerProvides: true }

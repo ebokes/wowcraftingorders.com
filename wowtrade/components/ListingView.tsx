@@ -80,6 +80,13 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.discordTag}</p>}
         {listing.seller.battleNetTag &&
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.battleNetTag}</p>}
+        {!!listing.providedReagents && <p><b>Seller-Provided Reagents:</b>
+            <ul>
+                {listing.providedReagents.map((reagent, i) => <li key={i}>
+                    {reagent.count}{"x "}<Link href={`https://www.wowhead.com/item=${reagent.reagent.itemId}`}></Link>
+                </li>)}
+            </ul>
+        </p>}
         {postTimestamp && deltaTimeText !== "Posted ago." && <p><b>Posted</b>{" " + deltaTimeText}</p>}
         {postTimestamp && deltaTimeText === "Posted ago." && <p><b>Posted just now.</b></p>}
         {includeDelete && deleteUserListing &&

@@ -19,7 +19,7 @@ export default function Sell() {
 
     // Form input
     // TODO: Should probably model the state as an actual payload object
-    const [payload, setPayload] = useState<ListingPayload>({
+    let [payload, setPayload] = useState<ListingPayload>({
         itemId: 0,
         commission: {
             copper: 0,
@@ -105,6 +105,13 @@ export default function Sell() {
         setErrors([]);
         setSuccess(false);
 
+        // Workaround for payload keeping its initial values for context
+        const updatedPayload = {
+            ...payload, seller: {
+                ...seller, region: context.region, realm: context.realm
+            }
+        }
+
         const isValid = () => {
             const errors = [];
             if (!context.region) errors.push("Region is required.");
@@ -129,7 +136,7 @@ export default function Sell() {
                     // @ts-ignore
                     "Authorization": `Bearer ${session.data.accessToken}`
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(updatedPayload)
             });
             if (response.ok) {
                 const responseJson = await response.json();

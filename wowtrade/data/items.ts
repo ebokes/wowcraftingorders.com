@@ -1,5 +1,4 @@
 import { Item } from "../types/types";
-
 import {
     ADAMANT_SCALES,
     AIRY_SOUL,
@@ -72,6 +71,14 @@ import {
     WRITHEBARK,
     YSEMERALD
 } from "./reagents";
+
+export const itemFromItemId = (itemId: number): Item => {
+    const item = ITEMS.find(i => i.id === itemId);
+    if (!item) {
+        throw new Error(`Lookup failure: Item with id ${itemId} not found in ITEMS`);
+    }
+    return item;
+}
 
 
 export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "itemLevel": 350 }, {

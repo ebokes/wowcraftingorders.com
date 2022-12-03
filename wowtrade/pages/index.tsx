@@ -6,20 +6,13 @@ import { Form } from "react-bootstrap";
 import { RegionRealmContext } from "./_app";
 import { SetRegionRealmView } from "../components/SetRealms";
 import Link from "next/link";
-
-export const refreshWowheadLinks = () => {
-    const inlineScript = document.createElement('script');
-    inlineScript.innerHTML = 'window.$WowheadPower.refreshLinks();';
-    document.body.append(inlineScript);
-
-    return () => {
-        inlineScript.remove();
-    };
-};
+import useSWR from "swr";
+import { refreshWowheadLinks } from "../util/wowhead";
 
 export default function Home() {
     const context = useContext(RegionRealmContext);
     useEffect(refreshWowheadLinks, [context.region, context.realm]);
+    const { data: listings, error } = useSWR(`/${context.region}/${context.realm}/items`);
 
     return (
         <div className={styles.container}>
@@ -42,7 +35,7 @@ export default function Home() {
                 </Form>
 
                 <h3 className={"mt-4 mb-0"}>Search Results</h3>
-                <ListingsList/>
+                <ListingsList listings={listings} error={error}/>
             </main>
         </div>
     )

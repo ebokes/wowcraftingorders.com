@@ -1,73 +1,81 @@
-import useSWR from "swr";
 import { Listing } from "../types/types";
 import Script from "next/script";
 import { Card, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { ListingView } from "./ListingView";
-import { dateSort } from "../util/utils";
-import { useContext, useEffect, useState } from "react";
-import { RegionRealmContext } from "../pages/_app";
-import { ITEMS } from "../data/items";
-import { refreshWowheadLinks } from "../pages";
+import { useEffect, useState } from "react";
+import { refreshWowheadLinks } from "../util/wowhead";
 import Image from "next/image";
+import { dateSort } from "../util/sort";
+import { data } from "browserslist";
+import { filterBySearch } from "../util/filter";
 
-export function totalMoneyValue(gold: number | undefined, silver: number | undefined, copper: number | undefined) {
-    return (gold ?? 0) * 10000 + (silver ?? 0) * 100 + (copper ?? 0);
+
+const SORT_TYPES = {
+    TIME_POSTED_NEW_TO_OLD: "Time Posted - New to Old",
 }
 
-const fuzzyIncludes = (s1: string, s2: string) => {
-    return s1.toLowerCase().replaceAll(" ", "").includes(s2.toLowerCase().replaceAll(" ", ""));
+interface Props {
+    listings: Listing[];
+    error: any;
 }
 
-// TODO: Only show each item once, with its lowest commission
-export default function ListingsList() {
-    const context = useContext(RegionRealmContext);
-    const { data, error } = useSWR(`/${context.region}/${context.realm}/items`);
+/**
+ * Generic component for rendering a list of listings along with a search box and selection of sorts and filters.
+ */
+export default function ListingsList({ listings, error }: Props) {
+
+    // Errors shouldn't be fatal, but should be hidden from users
+    if (error) console.error(error);
+
+    // State
     const [search, setSearch] = useState("");
+    const [sortMethod, setSortMethod] = useState<string>(SORT_TYPES.TIME_POSTED_NEW_TO_OLD);
+
+    // Hooks
     useEffect(refreshWowheadLinks, [search]);
 
-    if (error) return <div>Failed to load listings. Please try and refresh the page.</div>
-    if (!data) return <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>
-    if (data && !data.length) return <div>No listings have been submitted yet for this server. Try selecting another
-        from the above
-        menu.</div>
-
+    switch (sortMethod) {
+        case SORT_TYPES.TIME_POSTED_NEW_TO_OLD:
+            listings = listings.sort(dateSort);
+            break;
+        default:
+            throw new Error(`Attempted to sort by unrecognized sort method: ${sortMethod}`);
+    }
 
     return <div>
         <Form style={{ width: "100%" }}>
             <Row className={"my-4"}>
-                <Col md={12}>
+                <Col md={8}>
                     <InputGroup>
+                        <Form.Label>Filter by Name</Form.Label>
                         <Form.Control type="text" value={search}
                                       onChange={(e) => {
                                           setSearch(e.target.value);
-                                      }} placeholder="Filter by Name..."/>
+                                      }} placeholder="Item Name"/>
+                    </InputGroup>
+                </Col>
+                <Col md={4}>
+                    <InputGroup>
+                        <Form.Label>Sort Method</Form.Label>
+                        <Form.Control as={"select"} value={sortMethod}
+                                      onChange={(e) => {
+                                          setSortMethod(e.target.value);
+                                      }}>
+                            {Object.keys(SORT_TYPES).map((sortType: string) => {
+                                return <option value={sortType}>{sortType}</option>
+                            })}
+                        </Form.Control>
                     </InputGroup>
                 </Col>
             </Row>
         </Form>
-        <p>This screen shows the lowest-commission option for each item. Click on an item name to view all listings for
-            that item!</p>
-        <Row sm={1} lg={2} xxl={3} className="card-deck">
-            {data
-                .filter((listing: Listing) => { // Filter by search query
-                    if (search === "") return true;
+        {!listings && <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>}
+        {listings && listings.length === 0 && <div>No listings found.</div>}
+        {error && <div>Error fetching data. Please refresh and try again.</div>}
 
-                    // Get item name from item id
-                    const item = ITEMS.find(i => i.id === listing.itemId);
-                    if (!item) {
-                        throw new Error(`Item with id ${listing.itemId} not found in ITEMS`);
-                    }
-                    return fuzzyIncludes(item.name, search);
-                })
-                .filter((listing: Listing) => { // Filter by whether it's the lowest commission for the item
-                    const otherListings = data.filter((otherListing: Listing) => {
-                        return otherListing.itemId === listing.itemId;
-                    });
-                    return otherListings.every((otherListing: Listing) => {
-                        return totalMoneyValue(otherListing.commission.gold, otherListing.commission.silver, otherListing.commission.copper) >= totalMoneyValue(listing.commission.gold, listing.commission.silver, listing.commission.copper);
-                    });
-                })
-                .sort(dateSort)
+        <Row sm={1} lg={2} xxl={3} className="card-deck">
+            {listings
+                .filter(filterBySearch(search))
                 .map((listing: Listing) => (
                     <div
                         key={listing.id}

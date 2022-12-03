@@ -43,6 +43,8 @@ export default function ListingsList() {
                 </Col>
             </Row>
         </Form>
+        <p>This screen shows the lowest-commission option for each item. Click on an item name to view all listings for
+            that item!</p>
         <Row sm={1} lg={2} xxl={3} className="card-deck">
             {data
                 .filter(() => { // Filter by search query

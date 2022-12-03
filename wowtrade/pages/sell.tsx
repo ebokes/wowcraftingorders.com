@@ -109,7 +109,7 @@ export default function Sell() {
                         break;
                     }
                     case 409: {
-                        setErrors(["This character already has a listing for this item."]);
+                        setErrors(["This character already has a listing for this item. Please delete and re-list if you need to change it."]);
                         break;
                     }
                     default: {

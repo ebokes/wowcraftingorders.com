@@ -61,7 +61,7 @@ export default function ListingsList() {
                         return totalMoneyValue(otherListing.commission.gold, otherListing.commission.silver, otherListing.commission.copper) >= totalMoneyValue(listing.commission.gold, listing.commission.silver, listing.commission.copper);
                     });
                 })
-                .sort(dateSort) // TODO: Should probably sort primarily by newest to oldest, once I have a timestamp here
+                .sort(dateSort)
                 .map((listing: Listing) => (
                     <div
                         key={listing.id}

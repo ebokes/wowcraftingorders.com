@@ -7,6 +7,7 @@ import { totalMoneyValue } from "../../../components/ListingsList";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { ListingView } from "../../../components/ListingView";
 
 export default function itemPage() {
 
@@ -61,19 +62,7 @@ export default function itemPage() {
                     return aCommission - bCommission;
                 })
                 .map((listing: Listing) => (
-                    <ListGroup.Item key={listing.itemId}>
-                        <p className={"m-0"}><b>Seller:</b> {listing.seller.characterName}</p>
-                        <p className={"m-0"}><b>Minimum Quality: </b>{listing.quality + " " + "(1 = Worst, 5 = Best)"}
-                        </p>
-                        <p className={"m-0"}><b>Commission:</b>{" "}
-                            {listing.commission.gold}<span style={{ color: "#D4A017" }}>g</span>{" "}
-                            {listing.commission.silver}<span style={{ color: "#C0C0C0" }}>s</span>{" "}
-                            {listing.commission.copper}<span style={{ color: "#B87333" }}>c</span></p>
-                        {listing.seller.discordTag &&
-                            <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.discordTag}</p>}
-                        {listing.seller.battleNetTag &&
-                            <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.battleNetTag}</p>}
-                    </ListGroup.Item>
+                    <ListingView listing={listing}/>
                 ))}
         </ListGroup>
         {data && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}

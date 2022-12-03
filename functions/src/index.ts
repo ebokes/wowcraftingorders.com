@@ -18,7 +18,8 @@ import {
     getCharacterListings,
     getListing,
     getListings,
-    isDuplicateListing
+    isDuplicateListing,
+    updateListing
 } from "./persistence";
 import * as timeout from "connect-timeout";
 
@@ -75,6 +76,42 @@ app.post("/listings", ensureAuthenticated,
                 const createdItem = await addListing(payload);
                 functions.logger.debug(`Successfully created Listing. Returning it: ${JSON.stringify(createdItem)}`);
                 return response.status(201).send(createdItem);
+            }
+            default: {
+                return response.sendStatus(405);
+            }
+        }
+    });
+
+// Update listing
+app.put("/listings/:id", ensureAuthenticated,
+    async (request, response) => {
+        switch (request.method) {
+            case "PUT": {
+                request.headers["authorization"] = request.headers["authorization"] as string;
+
+                // Payload is missing fields
+                const payload = request.body as ListingPayload;
+                const validationErrors = validateListing(payload);
+                if (validationErrors.length) {
+                    return response.status(400).send(validationErrors);
+                }
+
+                // Item doesn't exist
+                if (!ITEMS.find(item => item.id === payload.itemId)) {
+                    return response.status(400).send([{ message: "Sale of this item is not supported." }]);
+                }
+
+                // Doesn't own character; skip validation if running locally
+                if (process.env.APP_ENV) {
+                    if (!(await ownsCharacter(payload.seller.region, payload.seller.realm, payload.seller.characterName, request.headers["authorization"]))) {
+                        return response.status(400).send([{ message: "You do not own that character." }]);
+                    }
+                }
+
+                const updatedItem = await updateListing(request.params.id, payload);
+                functions.logger.debug(`Successfully updated Listing. Returning it: ${JSON.stringify(updatedItem)}`);
+                return response.status(200).send(updatedItem);
             }
             default: {
                 return response.sendStatus(405);

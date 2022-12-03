@@ -87,8 +87,8 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
                 </li>)}
             </ul>
         </p>}
-        {postTimestamp && deltaTimeText !== "Posted ago." && <p><b>Posted</b>{" " + deltaTimeText}</p>}
-        {postTimestamp && deltaTimeText === "Posted ago." && <p><b>Posted just now.</b></p>}
+        {postTimestamp && deltaTimeText !== "Posted ago." && <p>{deltaTimeText}</p>}
+        {postTimestamp && deltaTimeText === "Posted ago." && <p>Posted just now.</p>}
         {includeDelete && deleteUserListing &&
             <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>}
         {listing && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}

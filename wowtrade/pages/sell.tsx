@@ -31,8 +31,6 @@ export default function Sell() {
             region: context.region,
             realm: context.realm,
             characterName: "",
-            discordTag: "",
-            battleNetTag: ""
         },
         providedReagents: []
     });
@@ -216,7 +214,7 @@ export default function Sell() {
                                              onChange={(newValue) => {
                                                  if (!newValue) return;
                                                  setPayload({ ...payload, itemId: newValue.value })
-                                             }} options={ITEMS
+                                             }} options={[...ITEMS]
                                     .sort((a, b) => a.name.localeCompare(b.name))
                                     .map(item => {
                                         return {

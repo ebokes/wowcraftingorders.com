@@ -20,6 +20,8 @@ export default function BasicNavbar() {
                     <Nav className="me-auto">
                         <Link href="/" className={"navbar-text me-3"} style={{ textDecoration: "none" }}>Buy</Link>
                         <Link href="/sell" className={"navbar-text me-3"} style={{ textDecoration: "none" }}>Sell</Link>
+                        <Link href="/my-listings" className={"navbar-text me-3"} style={{ textDecoration: "none" }}>My
+                            Listings</Link>
                         {/*<Nav.Link href="#link">Link</Nav.Link>*/}
                         {/*<NavDropdown title="Dropdown" id="basic-nav-dropdown">*/}
                         {/*    <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>*/}

@@ -1,12 +1,13 @@
 import { useRouter } from "next/router";
 import useSWR from "swr";
-import { Form, ListGroup } from "react-bootstrap";
+import { Card, Form, Row } from "react-bootstrap";
 import { Listing } from "../../../types/types";
 import Script from "next/script";
 import { totalMoneyValue } from "../../../components/ListingsList";
 import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { ListingView } from "../../../components/ListingView";
 
 export default function itemPage() {
 
@@ -49,7 +50,7 @@ export default function itemPage() {
                 </Form.Control>
             </Form.Group>
         </Form>
-        <ListGroup>
+        <Row sm={1} lg={2} xxl={3} className="card-deck">
             {data && data
                 .filter((listing: Listing) => { // Filter
                     if (quality === "All") return true;
@@ -61,21 +62,25 @@ export default function itemPage() {
                     return aCommission - bCommission;
                 })
                 .map((listing: Listing) => (
-                    <ListGroup.Item key={listing.itemId}>
-                        <p className={"m-0"}><b>Seller:</b> {listing.seller.characterName}</p>
-                        <p className={"m-0"}><b>Minimum Quality: </b>{listing.quality + " " + "(1 = Worst, 5 = Best)"}
-                        </p>
-                        <p className={"m-0"}><b>Commission:</b>{" "}
-                            {listing.commission.gold}<span style={{ color: "#D4A017" }}>g</span>{" "}
-                            {listing.commission.silver}<span style={{ color: "#C0C0C0" }}>s</span>{" "}
-                            {listing.commission.copper}<span style={{ color: "#B87333" }}>c</span></p>
-                        {listing.seller.discordTag &&
-                            <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.discordTag}</p>}
-                        {listing.seller.battleNetTag &&
-                            <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.battleNetTag}</p>}
-                    </ListGroup.Item>
+                    <div
+                        key={listing.id}
+                        className="p-2"
+                        style={{ alignItems: "stretch" }}
+                    >
+                        <Card
+                            style={{
+                                boxShadow: "rgba(140, 140, 140, 0.2) 0px 0px 4px 3px",
+                                padding: "20px",
+                                minHeight: "100%",
+                                paddingBottom: "40px",
+                            }}
+                        >
+                            <ListingView listing={listing} includeItem={false} includeSeller includeTimestamp
+                                         includeDelete={false}/>
+                        </Card>
+                    </div>
                 ))}
-        </ListGroup>
+        </Row>
         {data && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
     </div>
 }

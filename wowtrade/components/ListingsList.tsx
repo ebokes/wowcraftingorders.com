@@ -27,7 +27,9 @@ export default function ListingsList() {
 
     if (error) return <div>Failed to load listings. Please try and refresh the page.</div>
     if (!data) return <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>
-    if (data && !data.length) return <div>No listings found.</div>
+    if (data && !data.length) return <div>No listings have been submitted yet for this server. Try selecting another
+        from the above
+        menu.</div>
 
 
     return <div>
@@ -43,6 +45,8 @@ export default function ListingsList() {
                 </Col>
             </Row>
         </Form>
+        <p>This screen shows the lowest-commission option for each item. Click on an item name to view all listings for
+            that item!</p>
         <Row sm={1} lg={2} xxl={3} className="card-deck">
             {data
                 .filter(() => { // Filter by search query
@@ -69,10 +73,12 @@ export default function ListingsList() {
                                 boxShadow: "rgba(140, 140, 140, 0.2) 0px 0px 4px 3px",
                                 padding: "20px",
                                 minHeight: "100%",
-                                paddingBottom: "20px",
+                                paddingBottom: "40px",
                             }}
                         >
-                            <ListingView listing={listing} includeDelete={false} key={listing.id}/>
+                            <ListingView listing={listing} includeItem includeSeller includeTimestamp={false}
+                                         includeDelete={false}
+                                         key={listing.id}/>
                         </Card>
                     </div>
                 ))}

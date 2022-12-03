@@ -1,15 +1,13 @@
-import { Button, Card, Col, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
+import { Button, Col, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { Listing, ListingPayload, ReagentStack } from "../types/types";
 import { RegionRealmContext, ROOT_URL } from "./_app";
 import { useSession } from "next-auth/react";
 import { SetRegionRealmView } from "../components/SetRealms";
-import { ListingView } from "../components/ListingView";
 import Script from "next/script";
 import { ITEMS } from "../data/items";
 import ReactSelect from "react-select";
-import Image from "next/image";
 
 export default function Sell() {
 
@@ -38,29 +36,6 @@ export default function Sell() {
     const [errors, setErrors] = useState<string[]>([]);
     const [success, setSuccess] = useState<boolean>(false);
 
-    // const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    //
-    // }
-
-    const deleteUserListing = async (id: string) => {
-        setSuccess(false);
-        setErrors([]);
-        const response = await fetch(ROOT_URL + `/listings/${id}`, {
-            method: "DELETE",
-            headers: {
-                // TODO: Proper way to not need to ignore this is to extend the Session type
-                // @ts-ignore
-                "Authorization": `Bearer ${session.data.accessToken}`
-            }
-        });
-        if (response.ok) {
-            setSuccess(true);
-            setUserListings(userListings ? userListings.filter((listing) => listing.id !== id) : []);
-        } else {
-            setErrors(["Error deleting listing. Please try again."])
-        }
-    }
-
     // Wowhead tooltips
     useEffect(() => {
         const inlineScript = document.createElement('script');
@@ -71,25 +46,6 @@ export default function Sell() {
             inlineScript.remove();
         };
     }, [context.region, context.realm, payload]);
-
-    // Retrieve listings for user
-    useEffect(() => {
-        const fetchData = async () => {
-            if (!session.data) return;
-            const listings = await fetch(`${ROOT_URL}/${context.region}/listings`, {
-                method: "GET",
-                headers: {
-                    // TODO: Proper way to not need to ignore this is to extend the Session type
-                    // @ts-ignore
-                    "Authorization": `Bearer ${session.data.accessToken}`
-                }
-            })
-            const listingsJson: Listing[] = await listings.json();
-            setUserListings(listingsJson);
-        }
-
-        fetchData().catch();
-    }, [session, context.region, context.realm]);
 
     if (session.status !== "authenticated" && !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development')) {
         return (
@@ -153,7 +109,7 @@ export default function Sell() {
                         break;
                     }
                     case 409: {
-                        setErrors(["This character already has a listing for this itemId."]);
+                        setErrors(["This character already has a listing for this item. Please delete and re-list if you need to change it."]);
                         break;
                     }
                     default: {
@@ -339,34 +295,6 @@ export default function Sell() {
             {success && <ListGroup>
                 <ListGroup.Item variant="success">Successfully submitted listing!</ListGroup.Item>
             </ListGroup>}
-
-            <h3 className={"mt-3"}>Your Listings</h3>
-            <Row sm={1} lg={2} xxl={3} className="card-deck">
-                {userListings && userListings.map((listing) => (
-                    <div
-                        key={listing.id}
-                        className="p-2"
-                        style={{ alignItems: "stretch" }}
-                    >
-                        <Card
-                            style={{
-                                boxShadow: "rgba(140, 140, 140, 0.2) 0px 0px 4px 3px",
-                                height: "100%",
-                                minHeight: "100%",
-                                padding: "20px",
-                                paddingBottom: "20px"
-                            }}
-                        >
-                            <ListingView listing={listing} deleteUserListing={deleteUserListing}/>
-                        </Card>
-                    </div>
-
-                ))}
-            </Row>
-
-            {userListings === undefined && <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>}
-            {userListings && userListings.length === 0 &&
-                <p>You haven't listed anything yet. Submit the form above and something will show up here!</p>}
             {userListings && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
         </main>
     </div>

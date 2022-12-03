@@ -94,12 +94,14 @@ export function ListingView({
                 </li>)}
             </ul>
         </p>}
-        {includeTimestamp && <div style={{ position: "absolute", bottom: "10px", left: "10px" }}>
+        {includeTimestamp && <div style={{ position: "absolute", bottom: "20px", right: "20px" }}>
             {postTimestamp && deltaTimeText !== "Posted ago." && <p>{deltaTimeText}</p>}
             {postTimestamp && deltaTimeText === "Posted ago." && <p>Posted just now.</p>}
         </div>}
-        {includeDelete && deleteUserListing &&
-            <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>}
+        {includeDelete && deleteUserListing && <div style={{ position: "absolute", bottom: "20px", left: "20px" }}>
+            <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>
+        </div>
+        }
         {listing && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
     </div>
 }

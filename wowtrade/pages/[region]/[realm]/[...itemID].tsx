@@ -62,7 +62,7 @@ export default function itemPage() {
                     return aCommission - bCommission;
                 })
                 .map((listing: Listing) => (
-                    <ListingView listing={listing} includeSeller includeTimestamp/>
+                    <ListingView listing={listing} includeSeller includeTimestamp includeDelete={false}/>
                 ))}
         </ListGroup>
         {data && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}

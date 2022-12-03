@@ -34,6 +34,18 @@ export interface Item {
     id: number; // Wowhead ID
     name: string;
     itemLevel: number;
+    reagents: ReagentStack[];
+}
+
+export interface ReagentStack {
+    count: number;
+    reagent: Reagent;
+}
+
+export interface Reagent {
+    itemId: number; // Used to look up Wowhead tooltips
+    required?: boolean; // If set to true, required. Otherwise, or if missing, optional.
+    buyerProvides?: boolean; // If set to true, only buyer can provide. If false or missing, crafter can also provide.
 }
 
 export interface BattleNetProfileDataResponse {

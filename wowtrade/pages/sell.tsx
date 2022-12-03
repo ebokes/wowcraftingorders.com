@@ -1,7 +1,7 @@
 import { Button, Card, Col, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
-import { Listing, ListingPayload } from "../types/types";
+import { Listing, ListingPayload, ReagentStack } from "../types/types";
 import { RegionRealmContext, ROOT_URL } from "./_app";
 import { useSession } from "next-auth/react";
 import { SetRegionRealmView } from "../components/SetRealms";
@@ -18,17 +18,29 @@ export default function Sell() {
     const [userListings, setUserListings] = useState<Listing[] | undefined>(undefined);
 
     // Form input
-    const [qualityGuarantee, setQualityGuarantee] = useState<string>("Rank 1");
-    const [itemId, setItemId] = useState<string>(); // Item ID
-    const [characterName, setCharacterName] = useState<string>("");
-    const [discordTag, setDiscordTag] = useState<string>("");
-    const [battleNetTag, setBattleNetTag] = useState<string>("");
-    const [gold, setGold] = useState<string>("0");
-    const [silver, setSilver] = useState<string>("0");
-    const [copper, setCopper] = useState<string>("0");
+    // TODO: Should probably model the state as an actual payload object
+    let [payload, setPayload] = useState<ListingPayload>({
+        itemId: 0,
+        commission: {
+            copper: 0,
+            silver: 0,
+            gold: 0
+        },
+        quality: "Rank 1",
+        seller: {
+            region: context.region,
+            realm: context.realm,
+            characterName: "",
+        },
+        providedReagents: []
+    });
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [errors, setErrors] = useState<string[]>([]);
     const [success, setSuccess] = useState<boolean>(false);
+
+    // const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    //
+    // }
 
     const deleteUserListing = async (id: string) => {
         setSuccess(false);
@@ -58,7 +70,7 @@ export default function Sell() {
         return () => {
             inlineScript.remove();
         };
-    }, [context.region, context.realm, itemId, characterName, discordTag, battleNetTag, gold, silver, copper]);
+    }, [context.region, context.realm, payload]);
 
     // Retrieve listings for user
     useEffect(() => {
@@ -87,46 +99,35 @@ export default function Sell() {
     }
 
 
-    const isValid = () => {
-        const errors = [];
-        if (!context.region) errors.push("Region is required.");
-        if (!context.realm) errors.push("Realm is required.");
-        if (!itemId) errors.push("Item ID is required.");
-        if (!characterName) errors.push("Character name is required.");
-        if (gold === "" && silver === "" && copper === "") errors.push("Commission must be nonzero.");
-        setErrors(errors);
-        return errors.length === 0;
-    }
     const handleSubmit = async (e: any) => {
         e.preventDefault();
         setSubmitting(true);
         setErrors([]);
         setSuccess(false);
 
+        // Workaround for payload keeping its initial values for context
+        const updatedPayload = {
+            ...payload, seller: {
+                ...payload.seller, region: context.region, realm: context.realm
+            }
+        }
+
+        const isValid = () => {
+            const errors = [];
+            if (!context.region) errors.push("Region is required.");
+            if (!context.realm) errors.push("Realm is required.");
+            if (!payload.itemId) errors.push("Item ID is required.");
+            if (!payload.seller.characterName) errors.push("Character name is required.");
+            if (payload.commission.gold === 0 && payload.commission.silver === 0 && payload.commission.copper === 0) errors.push("Commission must be nonzero.");
+            setErrors(errors);
+            return errors.length === 0;
+        }
         if (!isValid()) {
             setSubmitting(false);
             return;
         }
-        if (!itemId) return;
-
-        const payload = {
-            itemId: parseInt(itemId),
-            quality: qualityGuarantee,
-            commission: {
-                gold: parseInt(gold),
-                silver: parseInt(silver),
-                copper: parseInt(copper),
-            },
-            seller: {
-                region: context.region,
-                realm: context.realm,
-                characterName,
-                discordTag: discordTag === "" ? undefined : discordTag,
-                battleNetTag: battleNetTag === "" ? undefined : battleNetTag,
-            }
-        } as ListingPayload;
-
         try {
+            console.log(`Sending payload`, payload);
             const response = await fetch(`${ROOT_URL}/listings`, {
                 method: "POST",
                 mode: "cors",
@@ -135,7 +136,7 @@ export default function Sell() {
                     // @ts-ignore
                     "Authorization": `Bearer ${session.data.accessToken}`
                 },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(updatedPayload)
             });
             if (response.ok) {
                 const responseJson = await response.json();
@@ -163,6 +164,7 @@ export default function Sell() {
             }
         } catch (err) {
             setErrors(["Unknown error. Please verify all fields are filled out and correct then try again."]);
+            console.error(err);
             setSubmitting(false);
         }
         setSubmitting(false);
@@ -178,15 +180,21 @@ export default function Sell() {
                     <Col md={4}>
                         <Form.Group>
                             <Form.Label>Character Name</Form.Label>
-                            <Form.Control type="text" value={characterName}
-                                          onChange={(e) => setCharacterName(e.target.value)
+                            <Form.Control type="text" value={payload.seller.characterName}
+                                          onChange={(e) => setPayload({
+                                              ...payload,
+                                              seller: { ...payload.seller, characterName: e.target.value }
+                                          })
                                           }/>
                         </Form.Group>
                     </Col>
                     <Col md={4}>
                         <Form.Group>
                             <Form.Label>Discord Tag</Form.Label>
-                            <Form.Control type="text" value={discordTag} onChange={(e) => setDiscordTag(e.target.value)
+                            <Form.Control type="text" value={payload.seller.discordTag} onChange={(e) => setPayload({
+                                ...payload,
+                                seller: { ...payload.seller, discordTag: e.target.value }
+                            })
                             }/>
                             <Form.Text muted>Optional, but recommended.</Form.Text>
                         </Form.Group>
@@ -194,9 +202,10 @@ export default function Sell() {
                     <Col md={4}>
                         <Form.Group>
                             <Form.Label>Battle.net Tag</Form.Label>
-                            <Form.Control type="text" value={battleNetTag}
-                                          onChange={(e) => setBattleNetTag(e.target.value)
-                                          }/>
+                            <Form.Control type="text" value={payload.seller.battleNetTag} onChange={(e) => setPayload({
+                                ...payload,
+                                seller: { ...payload.seller, battleNetTag: e.target.value }
+                            })}/>
                             <Form.Text muted>Optional.</Form.Text>
                         </Form.Group>
                     </Col>
@@ -211,8 +220,8 @@ export default function Sell() {
                                 <ReactSelect defaultValue={{ value: -1, label: "No Item Selected" }}
                                              onChange={(newValue) => {
                                                  if (!newValue) return;
-                                                 setItemId(newValue.value.toString());
-                                             }} options={ITEMS
+                                                 setPayload({ ...payload, itemId: newValue.value })
+                                             }} options={[...ITEMS]
                                     .sort((a, b) => a.name.localeCompare(b.name))
                                     .map(item => {
                                         return {
@@ -222,21 +231,56 @@ export default function Sell() {
                                     })
                                     .concat([{ value: -1, label: "No Item Selected" }])
                                 }/>
-                                {itemId && <Link data-wowhead={`https://www.wowhead.com/item=${itemId}`}
-                                                 href="#"></Link>}
+                                {!!payload.itemId &&
+                                    <Link data-wowhead={`https://www.wowhead.com/item=${payload.itemId}`}
+                                          href="#"></Link>}
+                                {!!payload.itemId && <div>
+                                    <Form>
+                                        <ul>
+                                            {ITEMS.find(item => item.id === payload.itemId)?.reagents.map(reagent => {
+                                                return <li key={reagent.reagent.itemId}>{reagent.count}{"x "}<Link
+                                                    href={`https://www.wowhead.com/item=${reagent.reagent.itemId}`}></Link>
+                                                    {!!reagent.reagent.buyerProvides &&
+                                                        <span>{" (Buyer-Provided)"}</span>}
+                                                    {!reagent.reagent.buyerProvides &&
+                                                        <Form.Check onChange={() => {
+                                                            payload.providedReagents.find((iterationReagent: ReagentStack) => iterationReagent.reagent.itemId === reagent.reagent.itemId)
+                                                                ? setPayload({
+                                                                    ...payload,
+                                                                    providedReagents: payload.providedReagents.filter((iterationReagent: ReagentStack) => iterationReagent.reagent.itemId !== reagent.reagent.itemId)
+                                                                }) : setPayload({
+                                                                    ...payload,
+                                                                    providedReagents: [
+                                                                        ...payload.providedReagents,
+                                                                        reagent
+                                                                    ]
+                                                                })
+                                                        }} type={"checkbox"}
+                                                                    id={`reagent-${reagent.reagent.itemId}`}
+                                                                    label={"I will provide this!"}/>}
+                                                </li>
+                                            })}
+                                        </ul>
+                                    </Form>
+                                </div>}
                             </Col>
                             <Col md={4}>
-                                <Form.Label>Quality Guarantee</Form.Label>
-                                <Form.Control as={"select"} value={qualityGuarantee}
-                                              onChange={(e) => setQualityGuarantee(e.target.value)}>
+                                <Form.Label>Minimum Quality</Form.Label>
+                                <Form.Control as={"select"} value={payload.quality}
+                                              onChange={(e) => {
+                                                  const value = e.target.value;
+                                                  if (value === "Rank 1" || value === "Rank 2" || value === "Rank 3" || value === "Rank 4" || value === "Rank 5") {
+                                                      setPayload({ ...payload, quality: value })
+                                                  } else {
+                                                      throw new Error(`Invalid quality ${e.target.value}`);
+                                                  }
+                                              }}>
                                     <option value={"Rank 1"}>Rank 1 (Worst)</option>
                                     <option value={"Rank 2"}>Rank 2</option>
                                     <option value={"Rank 3"}>Rank 3</option>
                                     <option value={"Rank 4"}>Rank 4</option>
                                     <option value={"Rank 5"}>Rank 5 (Best)</option>
                                 </Form.Control>
-                                <Form.Text muted>Sellers will be able to supply more information in the
-                                    future.</Form.Text>
                             </Col>
                         </Row>
                     </Form.Group>
@@ -245,22 +289,35 @@ export default function Sell() {
                     <h4>Commission</h4>
                     <Col md={4}>
                         <InputGroup>
-                            <Form.Control type="number" value={gold} onChange={(e) => setGold(e.target.value)
-                            }/>
+                            <Form.Control type="number" value={payload.commission.gold}
+                                          onChange={(e) => setPayload({
+                                              ...payload, commission: {
+                                                  ...payload.commission, gold: parseInt(e.target.value)
+                                              }
+                                          })
+                                          }/>
                             <InputGroup.Text id="basic-addon1">gold</InputGroup.Text>
                         </InputGroup>
                     </Col>
                     <Col md={4}>
                         <InputGroup>
-                            <Form.Control type="number" value={silver} onChange={(e) => setSilver(e.target.value)
-                            }/>
+                            <Form.Control type="number" value={payload.commission.silver}
+                                          onChange={(e) => setPayload({
+                                              ...payload, commission: {
+                                                  ...payload.commission, silver: parseInt(e.target.value)
+                                              }
+                                          })}/>
                             <InputGroup.Text id="basic-addon1">silver</InputGroup.Text>
                         </InputGroup>
                     </Col>
                     <Col md={4}>
                         <InputGroup>
-                            <Form.Control type="number" value={copper} onChange={(e) => setCopper(e.target.value)
-                            }/>
+                            <Form.Control type="number" value={payload.commission.copper}
+                                          onChange={(e) => setPayload({
+                                              ...payload, commission: {
+                                                  ...payload.commission, copper: parseInt(e.target.value)
+                                              }
+                                          })}/>
                             <InputGroup.Text id="basic-addon1">copper</InputGroup.Text>
                         </InputGroup>
                     </Col>

@@ -63,7 +63,7 @@ export default function itemPage() {
                 .map((listing: Listing) => (
                     <ListGroup.Item key={listing.itemId}>
                         <p className={"m-0"}><b>Seller:</b> {listing.seller.characterName}</p>
-                        <p className={"m-0"}><b>Quality Guarantee: </b>{listing.quality + " " + "(1 = Worst, 5 = Best)"}
+                        <p className={"m-0"}><b>Minimum Quality: </b>{listing.quality + " " + "(1 = Worst, 5 = Best)"}
                         </p>
                         <p className={"m-0"}><b>Commission:</b>{" "}
                             {listing.commission.gold}<span style={{ color: "#D4A017" }}>g</span>{" "}

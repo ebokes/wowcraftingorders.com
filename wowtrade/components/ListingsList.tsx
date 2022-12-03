@@ -74,7 +74,9 @@ export default function ListingsList() {
                                 paddingBottom: "40px",
                             }}
                         >
-                            <ListingView listing={listing} includeDelete={false} key={listing.id}/>
+                            <ListingView listing={listing} includeItem includeSeller includeTimestamp={false}
+                                         includeDelete={false}
+                                         key={listing.id}/>
                         </Card>
                     </div>
                 ))}

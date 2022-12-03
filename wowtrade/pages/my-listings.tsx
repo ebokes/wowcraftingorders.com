@@ -77,7 +77,8 @@ export default function MyListings() {
                             paddingBottom: "20px"
                         }}
                     >
-                        <ListingView listing={listing} deleteUserListing={deleteUserListing}/>
+                        <ListingView listing={listing} includeSeller={false} includeDelete={true} includeTimestamp
+                                     deleteUserListing={deleteUserListing}/>
                     </Card>
                 </div>
 

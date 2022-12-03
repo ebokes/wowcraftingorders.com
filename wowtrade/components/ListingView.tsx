@@ -13,6 +13,7 @@ interface Props {
     includeItem?: boolean;
     includeSeller?: boolean;
     includeDelete?: boolean;
+    includeTimestamp?: boolean;
 }
 
 /**
@@ -22,9 +23,17 @@ interface Props {
  * @param includeItem Whether to include a link to the item itself.
  * @param includeSeller Whether to include who's selling it.
  * @param includeDelete Whether to include a button to delete the listing.
+ * @param includeTimestamp Whether to include a timestamp of when the listing was created.
  * @constructor
  */
-export function ListingView({ listing, deleteUserListing, includeItem, includeSeller, includeDelete }: Props) {
+export function ListingView({
+                                listing,
+                                deleteUserListing,
+                                includeItem,
+                                includeSeller,
+                                includeDelete,
+                                includeTimestamp
+                            }: Props) {
 
     // Assumed to be true unless set otherwise
     if (includeItem === undefined) includeItem = true;
@@ -43,8 +52,6 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
         console.error(err);
         throw new Error(`Error parsing timestamp for listing ${JSON.stringify(listing)}`);
     }
-    console.log("listing.timestampSeconds", listing.timestampSeconds);
-    console.log("postTimestamp: ", postTimestamp);
 
     const timeText = [];
     if (differenceInDays(new Date(), postTimestamp) > 0) {
@@ -87,10 +94,10 @@ export function ListingView({ listing, deleteUserListing, includeItem, includeSe
                 </li>)}
             </ul>
         </p>}
-        <div style={{ position: "absolute", bottom: "10px", left: "10px" }}>
+        {includeTimestamp && <div style={{ position: "absolute", bottom: "10px", left: "10px" }}>
             {postTimestamp && deltaTimeText !== "Posted ago." && <p>{deltaTimeText}</p>}
             {postTimestamp && deltaTimeText === "Posted ago." && <p>Posted just now.</p>}
-        </div>
+        </div>}
         {includeDelete && deleteUserListing &&
             <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>}
         {listing && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}

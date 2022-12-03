@@ -86,7 +86,7 @@ export function ListingView({
         {listing.seller.discordTag &&
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.discordTag}</p>}
         {listing.seller.battleNetTag &&
-            <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.battleNetTag}</p>}
+            <p className={"m-0"}><b>Battle.net Tag:</b> {listing.seller.battleNetTag}</p>}
         {!!listing.providedReagents && <p><b>Seller-Provided Reagents:</b>
             <ul>
                 {listing.providedReagents.map((reagent, i) => <li key={i}>

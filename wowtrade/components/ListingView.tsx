@@ -39,7 +39,7 @@ export function ListingView({
     if (includeSeller === undefined) includeSeller = true;
     if (includeDelete === undefined) includeDelete = true;
 
-    if (includeDelete && !deleteUserListing || !includeDelete && deleteUserListing) {
+    if (includeDelete && !deleteUserListing) {
         throw new Error("You must either provide a callback to delete the listing, or set includeDelete to false.");
     }
 

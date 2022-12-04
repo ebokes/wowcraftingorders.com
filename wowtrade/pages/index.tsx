@@ -23,7 +23,7 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico"/>
             </Head>
 
-            <main className={"p-3"}>
+            <main className={"p-3"} style={{ height: "100%" }}>
                 <h3 className={"mt-4"}>Overview</h3>
                 <p>WoWCraftingOrders.com connects buyers and sellers of private work orders, especially high-quality
                     ones. Finding skilled crafters can often be complicated, and trade chat doesn't really solve the

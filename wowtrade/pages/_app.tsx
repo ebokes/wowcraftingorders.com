@@ -37,7 +37,8 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
           body,
           body > div:first-child,
           div#__next,
-          div#__next > div {
+          div#__next > div,
+          * {
             height: 100%;
           }
         `}</style>

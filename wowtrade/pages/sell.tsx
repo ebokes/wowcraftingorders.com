@@ -289,7 +289,7 @@ export default function Sell() {
                                 })
                                 }/>
                             <InputGroup.Text
-                                id="basic-addon1">gold</InputGroup.Text>
+                                className={"bg-dark"} id="basic-addon1">gold</InputGroup.Text>
                         </InputGroup>
                     </Col>
                     <Col md={4}>
@@ -303,7 +303,7 @@ export default function Sell() {
                                     }
                                 })}/>
                             <InputGroup.Text
-                                id="basic-addon1">silver</InputGroup.Text>
+                                className={"bg-dark"} id="basic-addon1">silver</InputGroup.Text>
                         </InputGroup>
                     </Col>
                     <Col md={4}>
@@ -317,7 +317,7 @@ export default function Sell() {
                                     }
                                 })}/>
                             <InputGroup.Text
-                                id="basic-addon1">copper</InputGroup.Text>
+                                className={"bg-dark"} id="basic-addon1">copper</InputGroup.Text>
                         </InputGroup>
                     </Col>
                 </Row>

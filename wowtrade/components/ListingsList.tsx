@@ -121,6 +121,8 @@ export default function ListingsList({ listings, error, setListingsCallback, inc
         {success && <Alert key={"success"}>Listing deleted successfully.</Alert>}
         {errors.length > 0 && <div>{errors.map((error) => <Alert key={"danger"}>{error}</Alert>)}</div>}
 
+        <p>Click on an item to view all listings for that item!</p>
+
         <Row sm={1} lg={2} xxl={3} className="card-deck pb-5" style={{ height: "fit-content" }}>
             {listings && listings
                 .filter(filterBySearch(search))

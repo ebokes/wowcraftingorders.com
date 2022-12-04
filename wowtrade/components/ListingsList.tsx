@@ -131,7 +131,7 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
                         style={{ alignItems: "stretch" }}
                     >
                         <Card
-                            className={"bg-dark text-white"}
+                            className={"bg-black text-white"}
                             style={{
                                 boxShadow: "rgba(140, 140, 140, 0.2) 0px 0px 4px 3px",
                                 padding: "20px",

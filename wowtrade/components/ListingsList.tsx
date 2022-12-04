@@ -15,7 +15,7 @@ const SORT_TYPES = {
 }
 
 interface Props {
-    listings: Listing[];
+    listings: Listing[] | undefined;
     error: any;
     setListingsCallback?: (listings: Listing[]) => void;
 }
@@ -53,7 +53,7 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
         });
         if (response.ok) {
             setSuccess(true);
-            setListingsCallback(listings.filter((listing) => listing.id !== id));
+            if (listings) setListingsCallback(listings.filter((listing) => listing.id !== id));
         } else {
             setErrors(["Error deleting listing. Please try again."])
         }

@@ -1,7 +1,6 @@
 import { Listing } from "../types/types";
 import { Button } from "react-bootstrap";
 import Link from "next/link";
-import Script from "next/script";
 import differenceInMinutes from "date-fns/differenceInMinutes";
 import differenceInHours from "date-fns/differenceInHours";
 import differenceInDays from "date-fns/differenceInDays";
@@ -87,7 +86,7 @@ export function ListingView({
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.discordTag}</p>}
         {listing.seller.battleNetTag &&
             <p className={"m-0"}><b>Battle.net Tag:</b> {listing.seller.battleNetTag}</p>}
-        {!!listing.providedReagents && <p><b>Seller-Provided Reagents:</b>
+        {!!listing.providedReagents && <p><b>{"Seller-Provided Reagents: "}</b>
             {listing.providedReagents.map((reagent, i) => <span key={i}>
                     {reagent.count}{"x "}<Link
                 href={`https://www.wowhead.com/item=${reagent.reagent.itemId}`}></Link>{i !== listing.providedReagents.length - 1 &&
@@ -102,6 +101,5 @@ export function ListingView({
             <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>
         </div>
         }
-        {listing && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
     </div>
 }

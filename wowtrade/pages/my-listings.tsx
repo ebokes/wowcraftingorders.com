@@ -7,7 +7,7 @@ import ListingsList from "../components/ListingsList";
 export default function MyListings() {
     const session = useSession();
     const context = useContext(RegionRealmContext);
-    const [listings, setListings] = useState<Listing[]>([]);
+    const [listings, setListings] = useState<Listing[] | undefined>();
 
     // Retrieve listings for user
     useEffect(() => {

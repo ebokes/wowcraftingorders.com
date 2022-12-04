@@ -75,7 +75,7 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
                 <Col md={8}>
                     <Form.Group>
                         <Form.Label>Filter by Name</Form.Label>
-                        <Form.Control className={"bg-dark text-white"} type="text" value={search}
+                        <Form.Control type="text" value={search}
                                       onChange={(e) => {
                                           setSearch(e.target.value);
                                       }} placeholder="Item Name"/>
@@ -84,7 +84,7 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
                 <Col md={4}>
                     <Form.Group>
                         <Form.Label>Sort Method</Form.Label>
-                        <Form.Control className={"bg-dark text-white"} as={"select"} value={sortMethod}
+                        <Form.Control as={"select"} value={sortMethod}
                                       onChange={(e) => {
                                           setSortMethod(e.target.value);
                                       }}>
@@ -99,7 +99,7 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
                 <Col md={12}>
                     <Form.Group controlId={"quality"}>
                         <Form.Label>Minimum Quality</Form.Label>
-                        <Form.Control className={"bg-dark text-white"} as={"select"}
+                        <Form.Control as={"select"}
                                       onChange={(e) => setQuality(e.target.value)}>
                             <option value={"All"}>All</option>
                             <option value={"Rank 1"}>Rank 1 (Worst)</option>
@@ -127,7 +127,7 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
                 .map((listing: Listing) => (
                     <div
                         key={listing.id}
-                        className="p-2 text-white bg-dark"
+                        className="p-2"
                         style={{ alignItems: "stretch" }}
                     >
                         <Card
@@ -137,7 +137,7 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
                                 minHeight: "100%",
                                 paddingBottom: "50px",
                             }}
-                            className={"bg-dark text-white"}
+
                         >
                             <ListingView key={listing.id} listing={listing} includeItem includeSeller
                                          includeTimestamp={false}

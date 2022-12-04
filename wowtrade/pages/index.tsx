@@ -1,5 +1,4 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
 import { useContext, useEffect } from "react";
 import ListingsList from "../components/ListingsList";
 import { Form } from "react-bootstrap";
@@ -15,7 +14,7 @@ export default function Home() {
     const { data: listings, error } = useSWR(`/${context.region}/${context.realm}/items`);
 
     return (
-        <div className={styles.container}>
+        <div>
             <Head>
                 <title>WoW Trade</title>
                 <meta name="description"

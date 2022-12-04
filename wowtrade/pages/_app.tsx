@@ -1,7 +1,9 @@
-import '../styles/globals.css'
+// import 'bootstrap/dist/css/bootstrap.min.css';
+import "../styles/custom.scss";
+
 import type { AppProps } from 'next/app'
 import Script from "next/script";
-import 'bootstrap/dist/css/bootstrap.min.css';
+
 import { SWRConfig } from "swr";
 import CustomNavbar from "../components/CustomNavbar";
 import Container from "react-bootstrap/Container";
@@ -31,8 +33,8 @@ export const RegionRealmContext = createContext({
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     const [realm, setRealm] = useState(REALM_LIST[0]);
     const [region, setRegion] = useState(REGIONS.US);
-    return <div className={"text-white"}
-                style={{ height: "fit-content", backgroundColor: "#232323" }}>
+    return <div
+        style={{ height: "fit-content" }}>
         <style global jsx>{`
           html,
           body {

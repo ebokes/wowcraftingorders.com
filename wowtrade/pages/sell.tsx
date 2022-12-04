@@ -135,36 +135,36 @@ export default function Sell() {
                     <h4>Seller Details</h4>
                     <Col md={4}>
                         <Form.Group>
-                            <Form.Label>Character Name</Form.Label>
-                            <Form.Control className={"text-white"}
-                                          type="text"
-                                          value={payload.seller.characterName}
-                                          onChange={(e) => setPayload({
-                                              ...payload,
-                                              seller: { ...payload.seller, characterName: e.target.value }
-                                          })
-                                          }/>
+                            <Form.Label>Character Name</Form.Label>`
+                            <Form.Control
+                                type="text"
+                                value={payload.seller.characterName}
+                                onChange={(e) => setPayload({
+                                    ...payload,
+                                    seller: { ...payload.seller, characterName: e.target.value }
+                                })
+                                }/>
                         </Form.Group>
                     </Col>
                     <Col md={4}>
                         <Form.Group>
                             <Form.Label>Discord Tag</Form.Label>
-                            <Form.Control className={"text-white"}
-                                          type="text" value={payload.seller.discordTag}
-                                          onChange={(e) => setPayload({
-                                              ...payload,
-                                              seller: { ...payload.seller, discordTag: e.target.value }
-                                          })
-                                          }/>
+                            <Form.Control
+                                type="text" value={payload.seller.discordTag}
+                                onChange={(e) => setPayload({
+                                    ...payload,
+                                    seller: { ...payload.seller, discordTag: e.target.value }
+                                })
+                                }/>
                             <Form.Text muted>Optional, but recommended.</Form.Text>
                         </Form.Group>
                     </Col>
                     <Col md={4}>
                         <Form.Group>
                             <Form.Label>Battle.net Tag</Form.Label>
-                            <Form.Control className={"text-white"}
-                                          type="text"
-                                          value={payload.seller.battleNetTag} onChange={(e) => setPayload({
+                            <Form.Control
+                                type="text"
+                                value={payload.seller.battleNetTag} onChange={(e) => setPayload({
                                 ...payload,
                                 seller: { ...payload.seller, battleNetTag: e.target.value }
                             })}/>
@@ -256,16 +256,16 @@ export default function Sell() {
                             </Col>
                             <Col md={4}>
                                 <Form.Label>Minimum Quality</Form.Label>
-                                <Form.Control className={"text-white"}
-                                              as={"select"} value={payload.quality}
-                                              onChange={(e) => {
-                                                  const value = e.target.value;
-                                                  if (value === "Rank 1" || value === "Rank 2" || value === "Rank 3" || value === "Rank 4" || value === "Rank 5") {
-                                                      setPayload({ ...payload, quality: value })
-                                                  } else {
-                                                      throw new Error(`Invalid quality ${e.target.value}`);
-                                                  }
-                                              }}>
+                                <Form.Control
+                                    as={"select"} value={payload.quality}
+                                    onChange={(e) => {
+                                        const value = e.target.value;
+                                        if (value === "Rank 1" || value === "Rank 2" || value === "Rank 3" || value === "Rank 4" || value === "Rank 5") {
+                                            setPayload({ ...payload, quality: value })
+                                        } else {
+                                            throw new Error(`Invalid quality ${e.target.value}`);
+                                        }
+                                    }}>
                                     <option value={"Rank 1"}>Rank 1 (Worst)</option>
                                     <option value={"Rank 2"}>Rank 2</option>
                                     <option value={"Rank 3"}>Rank 3</option>
@@ -280,44 +280,44 @@ export default function Sell() {
                     <h4>Commission</h4>
                     <Col md={4}>
                         <InputGroup>
-                            <Form.Control className={"text-white"}
-                                          type="number" value={payload.commission.gold}
-                                          onChange={(e) => setPayload({
-                                              ...payload, commission: {
-                                                  ...payload.commission, gold: parseInt(e.target.value)
-                                              }
-                                          })
-                                          }/>
-                            <InputGroup.Text className={"text-white"}
-                                             id="basic-addon1">gold</InputGroup.Text>
+                            <Form.Control
+                                type="number" value={payload.commission.gold}
+                                onChange={(e) => setPayload({
+                                    ...payload, commission: {
+                                        ...payload.commission, gold: parseInt(e.target.value)
+                                    }
+                                })
+                                }/>
+                            <InputGroup.Text
+                                id="basic-addon1">gold</InputGroup.Text>
                         </InputGroup>
                     </Col>
                     <Col md={4}>
                         <InputGroup>
-                            <Form.Control className={"text-white"}
-                                          type="number"
-                                          value={payload.commission.silver}
-                                          onChange={(e) => setPayload({
-                                              ...payload, commission: {
-                                                  ...payload.commission, silver: parseInt(e.target.value)
-                                              }
-                                          })}/>
-                            <InputGroup.Text className={"text-white"}
-                                             id="basic-addon1">silver</InputGroup.Text>
+                            <Form.Control
+                                type="number"
+                                value={payload.commission.silver}
+                                onChange={(e) => setPayload({
+                                    ...payload, commission: {
+                                        ...payload.commission, silver: parseInt(e.target.value)
+                                    }
+                                })}/>
+                            <InputGroup.Text
+                                id="basic-addon1">silver</InputGroup.Text>
                         </InputGroup>
                     </Col>
                     <Col md={4}>
                         <InputGroup>
-                            <Form.Control className={"text-white"}
-                                          type="number"
-                                          value={payload.commission.copper}
-                                          onChange={(e) => setPayload({
-                                              ...payload, commission: {
-                                                  ...payload.commission, copper: parseInt(e.target.value)
-                                              }
-                                          })}/>
-                            <InputGroup.Text className={"text-white"}
-                                             id="basic-addon1">copper</InputGroup.Text>
+                            <Form.Control
+                                type="number"
+                                value={payload.commission.copper}
+                                onChange={(e) => setPayload({
+                                    ...payload, commission: {
+                                        ...payload.commission, copper: parseInt(e.target.value)
+                                    }
+                                })}/>
+                            <InputGroup.Text
+                                id="basic-addon1">copper</InputGroup.Text>
                         </InputGroup>
                     </Col>
                 </Row>

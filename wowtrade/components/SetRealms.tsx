@@ -9,7 +9,7 @@ export function SetRegionRealmView() {
     return <Row>
         <Col>
             <Form.Label>Region</Form.Label>
-            <Form.Control className={"text-white"} as="select"
+            <Form.Control as="select"
                           value={context.region} onChange={(e) => {
                 context.setRegion(e.target.value); // Error checking done in the context function
             }}>
@@ -20,7 +20,7 @@ export function SetRegionRealmView() {
         </Col>
         <Col>
             <Form.Label>Realm</Form.Label>
-            <Form.Control className={"text-white"} as="select"
+            <Form.Control as="select"
                           value={context.realm} onChange={(e) => {
                 context.setRealm(e.target.value)
             }}

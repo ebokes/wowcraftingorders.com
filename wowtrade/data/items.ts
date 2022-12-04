@@ -1372,7 +1372,7 @@ const EQUIPPABLE_ITEMS: Item[] = [{
     ]
 }];
 
-export const ITEMS = [
+export const ITEMS: Item[] = [
     ...EQUIPPABLE_ITEMS,
     ...CRAFTING_ITEMS
 ]

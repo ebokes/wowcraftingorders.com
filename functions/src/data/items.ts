@@ -85,7 +85,7 @@ import {
 } from "./reagents";
 
 export const itemFromItemId = (itemId: number): Item => {
-    const item = EQUIPPABLE_ITEMS.find(i => i.id === itemId);
+    const item = ITEMS.find(i => i.id === itemId);
     if (!item) {
         throw new Error(`Lookup failure: Item with id ${itemId} not found in ITEMS`);
     }
@@ -1372,7 +1372,7 @@ const EQUIPPABLE_ITEMS: Item[] = [{
     ]
 }];
 
-export const ITEMS = [
+export const ITEMS: Item[] = [
     ...EQUIPPABLE_ITEMS,
     ...CRAFTING_ITEMS
 ]

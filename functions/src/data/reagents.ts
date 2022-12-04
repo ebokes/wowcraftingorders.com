@@ -1,11 +1,11 @@
 // Buyer ONLY
-import { Reagent } from "../types";
+import { Reagent } from "../types/types";
 
 export const SPARK_OF_INGENUITY: Reagent = {
     itemId: 190453, buyerProvides: true
 }
 export const PRIMAL_CHAOS: Reagent = { itemId: 190454, buyerProvides: true }
-export const FROSTY_SOUL: Reagent = { itemId: 193919, buyerProvides: true }
+export const FROSTY_SOUL: Reagent = { itemId: 193360, buyerProvides: true }
 export const FIERY_SOUL: Reagent = { itemId: 193362, buyerProvides: true }
 export const AIRY_SOUL: Reagent = { itemId: 193921, buyerProvides: true }
 export const EARTHEN_SOUL: Reagent = { itemId: 193920, buyerProvides: true }
@@ -38,7 +38,12 @@ export const DARKMOON_DECK_RIME: Reagent = { itemId: 198087 }
 export const PHIAL_OF_TEPID_VERSATILITY: Reagent = { itemId: 191339 }
 export const PHIAL_OF_ELEMENTAL_CHAOS: Reagent = { itemId: 191357 }
 export const LARGE_STURDY_FEMUR: Reagent = { itemId: 201402 }
+export const ELEMENTAL_POTION_OF_POWER: Reagent = { itemId: 191387 }
+export const POTION_OF_FROZEN_FOCUS: Reagent = { itemId: 191363 }
 
+export const CONTOURED_FOWLFEATHER: Reagent = { itemId: 193053 }
+export const RAINBOW_PEARL: Reagent = { itemId: 198397 }
+export const PRIMAL_FLUX: Reagent = { itemId: 190452 }
 
 // Alchemy
 export const HOCHENBLUME: Reagent = { itemId: 191462 }

@@ -26,6 +26,7 @@ export const filterBySearch = (search: string) => {
  */
 export const filterByQuality = (quality: string) => {
     return (listing: Listing) => {
+        if (quality === "All") return true;
         return listing.quality === quality;
     }
 };

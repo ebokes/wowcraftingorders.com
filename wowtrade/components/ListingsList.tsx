@@ -119,7 +119,7 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
         {success && <Alert key={"success"}>Listing deleted successfully.</Alert>}
         {errors.length > 0 && <div>{errors.map((error) => <Alert key={"danger"}>{error}</Alert>)}</div>}
 
-        <Row sm={1} lg={2} xxl={3} className="card-deck">
+        <Row sm={1} lg={2} xxl={3} className="card-deck mt-2">
             {listings && listings
                 .filter(filterBySearch(search))
                 .filter(filterByQuality(quality))

@@ -84,13 +84,14 @@ export function ListingView({
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.discordTag}</p>}
         {listing.seller.battleNetTag &&
             <p className={"m-0"}><b>Battle.net Tag:</b> {listing.seller.battleNetTag}</p>}
-        {!!listing.providedReagents && <p className={"m-0"}><b>{"Seller-Provided Reagents: "}</b>
-            {listing.providedReagents.map((reagent, i) => <span key={i}>
+        {!!listing.providedReagents && !!listing.providedReagents.length &&
+            <p className={"m-0"}><b>{"Seller-Provided Reagents: "}</b>
+                {listing.providedReagents.map((reagent, i) => <span key={i}>
                     {reagent.count}{"x "}<Link
-                href={`https://www.wowhead.com/item=${reagent.reagent.itemId}`}></Link>{i !== listing.providedReagents.length - 1 &&
-                <span>{", "}</span>}
+                    href={`https://www.wowhead.com/item=${reagent.reagent.itemId}`}></Link>{i !== listing.providedReagents.length - 1 &&
+                    <span>{", "}</span>}
                 </span>)}
-        </p>}
+            </p>}
         {<div style={{ position: "absolute", bottom: "20px", right: "20px" }}>
             {postTimestamp && deltaTimeText !== "Posted ago." && <p className={"mb-0"}>{deltaTimeText}</p>}
             {postTimestamp && deltaTimeText === "Posted ago." && <p className={"mb-0"}>Posted just now.</p>}

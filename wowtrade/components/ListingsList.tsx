@@ -2,10 +2,10 @@ import { Listing } from "../types/types";
 import { Alert, Card, Col, Form, Row } from "react-bootstrap";
 import { ListingView } from "./ListingView";
 import { useEffect, useState } from "react";
-import { refreshWowheadLinks } from "../util/wowhead";
+import { refreshWowheadLinks } from "../utils/wowhead";
 import Image from "next/image";
-import { dateSort } from "../util/sort";
-import { filterByQuality, filterBySearch } from "../util/filter";
+import { dateSort } from "../utils/sort";
+import { filterByQuality, filterBySearch } from "../utils/filter";
 import { ROOT_URL } from "../pages/_app";
 import { useSession } from "next-auth/react";
 

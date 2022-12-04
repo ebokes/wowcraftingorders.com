@@ -1,5 +1,5 @@
 import { Listing } from "../types/types";
-import { totalMoneyValue } from "../components/ListingsList";
+import { getTotalValueOfCommission } from "./math";
 
 /**
  * Sort parameters from least to greatest commission.
@@ -7,9 +7,7 @@ import { totalMoneyValue } from "../components/ListingsList";
  * @param b The first listing.
  */
 export const commissionSort = (a: Listing, b: Listing) => {
-    const aCommission = totalMoneyValue(a.commission.gold, a.commission.silver, a.commission.copper);
-    const bCommission = totalMoneyValue(b.commission.gold, b.commission.silver, b.commission.copper);
-    return aCommission - bCommission;
+    return getTotalValueOfCommission(a.commission) - getTotalValueOfCommission(b.commission);
 };
 
 /**

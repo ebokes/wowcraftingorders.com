@@ -7,7 +7,7 @@ import { RegionRealmContext } from "./_app";
 import { SetRegionRealmView } from "../components/SetRealms";
 import Link from "next/link";
 import useSWR from "swr";
-import { refreshWowheadLinks } from "../util/wowhead";
+import { refreshWowheadLinks } from "../utils/wowhead";
 
 export default function Home() {
     const context = useContext(RegionRealmContext);

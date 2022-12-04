@@ -179,7 +179,7 @@ export default function Sell() {
                                     styles={{
                                         control: (baseStyles) => ({
                                             ...baseStyles,
-                                            backgroundColor: "black",
+                                            backgroundColor: "#232323",
 
                                         }),
                                         dropdownIndicator: (baseStyles) => ({
@@ -188,15 +188,15 @@ export default function Sell() {
                                         }),
                                         option: (baseStyles) => ({
                                             ...baseStyles,
-                                            backgroundColor: "black",
+                                            backgroundColor: "#232323",
                                             color: "white",
                                             ":hover": {
-                                                backgroundColor: "#343434",
+                                                backgroundColor: "#454545",
                                             }
                                         }),
                                         menu: (baseStyles) => ({
                                             ...baseStyles,
-                                            backgroundColor: "black"
+                                            backgroundColor: "#232323"
                                         }),
                                         singleValue: (baseStyles) => ({
                                             ...baseStyles,

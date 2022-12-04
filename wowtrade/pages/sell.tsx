@@ -135,7 +135,7 @@ export default function Sell() {
                     <h4>Seller Details</h4>
                     <Col md={4}>
                         <Form.Group>
-                            <Form.Label>Character Name</Form.Label>`
+                            <Form.Label>Character Name</Form.Label>
                             <Form.Control
                                 type="text"
                                 value={payload.seller.characterName}

@@ -1,5 +1,5 @@
 // Buyer ONLY
-import { Reagent } from "../types/types";
+import { Reagent } from "../types";
 
 export const SPARK_OF_INGENUITY: Reagent = {
     itemId: 190453, buyerProvides: true

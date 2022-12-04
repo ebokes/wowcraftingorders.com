@@ -37,7 +37,7 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
     const [success, setSuccess] = useState<boolean>(false);
 
     // Hooks
-    useEffect(refreshWowheadLinks, [search, listings, error]);
+    useEffect(refreshWowheadLinks, [listings, error, setListingsCallback, search, sortMethod, quality, errors, success]);
 
     const deleteUserListing = async (id: string) => {
         if (!setListingsCallback) throw new Error(`Attempting to delete when no setListingCallback was provided.`);

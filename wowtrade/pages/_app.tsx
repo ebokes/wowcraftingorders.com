@@ -31,7 +31,8 @@ export const RegionRealmContext = createContext({
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     const [realm, setRealm] = useState(REALM_LIST[0]);
     const [region, setRegion] = useState(REGIONS.US);
-    return <div className={"text-white bg-dark"} style={{ height: "fit-content" }}>
+    return <div className={"text-white"}
+                style={{ height: "fit-content", backgroundColor: "#232323" }}>
         <style global jsx>{`
           html,
           body {

@@ -19,3 +19,13 @@ export const filterBySearch = (search: string) => {
         return fuzzyIncludes(itemFromItemId(listing.itemId).name, search);
     }
 };
+
+/**
+ * Filter to listings that fit the given search criterion.
+ * @param quality The quality to filter by.
+ */
+export const filterByQuality = (quality: string) => {
+    return (listing: Listing) => {
+        return listing.quality === quality;
+    }
+};

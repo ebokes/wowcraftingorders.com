@@ -120,7 +120,7 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
         {success && <Alert key={"success"}>Listing deleted successfully.</Alert>}
         {errors.length > 0 && <div>{errors.map((error) => <Alert key={"danger"}>{error}</Alert>)}</div>}
 
-        <Row sm={1} lg={2} xxl={3} className="card-deck" style={{ height: "fit-content" }}>
+        <Row sm={1} lg={2} xxl={3} className="card-deck pb-5" style={{ height: "fit-content" }}>
             {listings && listings
                 .filter(filterBySearch(search))
                 .filter(filterByQuality(quality))
@@ -136,8 +136,9 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
                                 padding: "20px",
                                 minHeight: "100%",
                                 paddingBottom: "50px",
+                                width: "rgb(40, 45, 50)",
+                                color: "white"
                             }}
-
                         >
                             <ListingView key={listing.id} listing={listing} includeItem includeSeller
                                          includeTimestamp={false}

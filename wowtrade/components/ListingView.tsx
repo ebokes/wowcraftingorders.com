@@ -70,7 +70,10 @@ export function ListingView({
         deltaTimeText = "Posted " + timeText.join(" ") + " ago.";
     }
 
-    return <div>
+    return <div style={{
+        width: "rgb(40, 45, 50)",
+        color: "white"
+    }}>
         {includeItem && <b><Link style={{ fontSize: "18px" }}
                                  href={`/item/${listing.itemId}`}
                                  data-wowhead={`item=${listing.itemId}`}>Loading

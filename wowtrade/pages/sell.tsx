@@ -182,7 +182,7 @@ export default function Sell() {
                                     styles={{
                                         control: (baseStyles) => ({
                                             ...baseStyles,
-                                            backgroundColor: "#232323",
+                                            backgroundColor: "rgb(20, 25, 30)",
 
                                         }),
                                         dropdownIndicator: (baseStyles) => ({
@@ -191,15 +191,15 @@ export default function Sell() {
                                         }),
                                         option: (baseStyles) => ({
                                             ...baseStyles,
-                                            backgroundColor: "#232323",
+                                            backgroundColor: "rgb(20, 25, 30)",
                                             color: "white",
                                             ":hover": {
-                                                backgroundColor: "#454545",
+                                                backgroundColor: "rgb(40, 45, 50)",
                                             }
                                         }),
                                         menu: (baseStyles) => ({
                                             ...baseStyles,
-                                            backgroundColor: "#232323"
+                                            backgroundColor: "rgb(20, 25, 30)"
                                         }),
                                         singleValue: (baseStyles) => ({
                                             ...baseStyles,

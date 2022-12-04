@@ -34,11 +34,9 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
     return <div className={"text-white bg-dark"} style={{ height: "fit-content" }}>
         <style global jsx>{`
           html,
-          body,
-          body > div:first-child,
-          div#__next,
-          div#__next > div {
+          body {
             height: 100%;
+            min-height: fit-content;
           }
         `}</style>
 

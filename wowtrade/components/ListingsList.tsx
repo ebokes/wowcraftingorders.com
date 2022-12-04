@@ -137,6 +137,7 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
                                 minHeight: "100%",
                                 paddingBottom: "50px",
                             }}
+                            className={"bg-dark text-white"}
                         >
                             <ListingView key={listing.id} listing={listing} includeItem includeSeller
                                          includeTimestamp={false}

@@ -1,5 +1,5 @@
 import { Col, Form, Row } from "react-bootstrap";
-import { REALM_LIST } from "../data/realms";
+import { EU_REALMS, US_REALMS } from "../data/realms";
 import { useContext } from "react";
 import { RegionRealmContext } from "../pages/_app";
 import { REGIONS } from "../data/regions";
@@ -23,11 +23,13 @@ export function SetRegionRealmView() {
             <Form.Control as="select"
                           value={context.realm} onChange={(e) => {
                 context.setRealm(e.target.value)
-            }}
-                          placeholder={REALM_LIST[0]}>
-                {REALM_LIST.sort().map((realm) => (
-                    <option key={realm} value={realm}>{realm}</option>
-                ))}
+            }} placeholder={US_REALMS[0]}>
+                {context.region === REGIONS.US && US_REALMS.sort().map((realm) => {
+                    return <option key={realm} value={realm}>{realm}</option>
+                })}
+                {context.region === REGIONS.EU && EU_REALMS.sort().map((realm) => {
+                    return <option key={realm} value={realm}>{realm}</option>
+                })}
             </Form.Control>
         </Col>
     </Row>

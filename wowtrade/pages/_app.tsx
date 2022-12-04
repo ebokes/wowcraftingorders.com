@@ -10,7 +10,7 @@ import Container from "react-bootstrap/Container";
 import { SessionProvider } from "next-auth/react"
 import { createContext, useState } from "react";
 import { REGIONS } from "../data/regions";
-import { REALM_LIST } from "../data/realms";
+import { US_REALMS } from "../data/realms";
 
 export let ROOT_URL: string;
 if (!process.env.NEXT_PUBLIC_VERCEL_ENV || process.env.NEXT_PUBLIC_VERCEL_ENV === 'development') {
@@ -25,13 +25,13 @@ export const RegionRealmContext = createContext({
     region: REGIONS.US,
     setRegion: (_: string) => {
     },
-    realm: REALM_LIST[0],
+    realm: US_REALMS[0],
     setRealm: (_: string) => {
     },
 })
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-    const [realm, setRealm] = useState(REALM_LIST[0]);
+    const [realm, setRealm] = useState(US_REALMS[0]);
     const [region, setRegion] = useState(REGIONS.US);
     return <div
         style={{ height: "fit-content" }}>

@@ -140,7 +140,7 @@ export default function ListingsList({ listings, error, setListingsCallback, inc
                             }}
                         >
                             <ListingView key={listing.id} listing={listing} includeItem includeSeller
-                                         includeTimestamp={false} includeDelete={includeDelete}
+                                         includeDelete={includeDelete}
                                          deleteUserListing={deleteUserListing}/>
                         </Card>
                     </div>

@@ -114,7 +114,7 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
         </Form>
 
         {!listings && !error && <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>}
-        {listings && listings.length === 0 && <div>No listings found.</div>}
+        {listings && listings.length === 0 && <div>No listings found. Once some are created you'll see them here!</div>}
         {error && <div>Error fetching data. Please refresh and try again.</div>}
 
         {success && <Alert key={"success"}>Listing deleted successfully.</Alert>}

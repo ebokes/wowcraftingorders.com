@@ -19,9 +19,8 @@ export default function itemPage() {
     if (!itemID) return <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>
 
     return <div>
-        {context.region && context.realm &&
-            <h3 className={"mt-3"}>Listings for <Link href={`https://www.wowhead.com/item=${itemID}`}>Loading
-                Tooltip...</Link></h3>}
+        <h3 className={"mt-5"}>Listings for <Link href={`https://www.wowhead.com/item=${itemID}`}>Loading
+            Tooltip...</Link></h3>
         <SetRegionRealmView/>
         <ListingsList listings={listings} error={error} includeDelete={false}/>
     </div>

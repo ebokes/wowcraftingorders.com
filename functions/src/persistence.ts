@@ -55,7 +55,7 @@ export const updateListing = async (id: string, payload: ListingPayload): Promis
 
 export const getListingsForItem = async (region: string, realm: string, itemId: number): Promise<Listing[]> => {
     const db = admin.firestore();
-    return (await db.collection(LISTINGS_COLLECTION).where("item.region", "==", region).where("item.realm", "==", realm).where("item.id", "==", itemId).get()).docs.map((doc) => {
+    return (await db.collection(LISTINGS_COLLECTION).where("seller.region", "==", region).where("seller.realm", "==", realm).where("itemId", "==", itemId).get()).docs.map((doc) => {
         return { id: doc.id, ...doc.data() } as Listing;
     });
 }

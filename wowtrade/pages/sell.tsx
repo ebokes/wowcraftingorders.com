@@ -129,6 +129,7 @@ export default function Sell() {
     return <div>
         <main className={"p-3"}>
             <h3>Create a Listing</h3>
+            <p>To view your current listings, please use the <Link href={"my-listings"}>My Listings</Link> page.</p>
             <Form style={{ width: "100%" }}>
                 <SetRegionRealmView/>
                 <Row className={"my-3"}>

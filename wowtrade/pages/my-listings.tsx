@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { RegionRealmContext, ROOT_URL } from "./_app";
 import { Listing } from "../types/types";
 import ListingsList from "../components/ListingsList";
+import Link from "next/link";
 
 export default function MyListings() {
     const session = useSession();
@@ -36,6 +37,7 @@ export default function MyListings() {
 
     return <div>
         <h3 className={"mt-3"}>My Listings</h3>
+        <p>To create a new listing, please use the <Link href={"/sell"}>Sell</Link> page.</p>
         <ListingsList listings={listings} error={undefined} includeDelete={true} setListingsCallback={setListings}/>
     </div>
 }

@@ -136,7 +136,7 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
                                 border: "2px gray solid",
                                 padding: "20px",
                                 minHeight: "100%",
-                                paddingBottom: "50px",
+                                paddingBottom: "60px",
                             }}
                         >
                             <ListingView key={listing.id} listing={listing} includeItem includeSeller

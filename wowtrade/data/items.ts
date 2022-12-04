@@ -171,9 +171,9 @@ const CRAFTING_ITEMS: Item[] = [{
     }, {
         id: 191888, name: "Khaz'gorite Blacksmith's Hammer", itemLevel: 356, reagents: [
             { count: 225, reagent: ARTISANS_METTLE },
-            { count: 12, reagent: AWAKENED_AIR },
-            { count: 8, reagent: FROSTBITE_SCALES },
-            { count: 80, reagent: RESILIENT_LEATHER },
+            { count: 15, reagent: PRIMAL_FLUX },
+            { count: 40, reagent: KHAZGORITE_ORE },
+            { count: 100, reagent: SEREVITE_ORE },
         ]
     }, {
         id: 193042, name: "Resonant Focus", itemLevel: 356, reagents: [

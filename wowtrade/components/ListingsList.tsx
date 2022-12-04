@@ -136,7 +136,7 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
                                 padding: "20px",
                                 minHeight: "100%",
                                 paddingBottom: "50px",
-                                width: "rgb(40, 45, 50)",
+                                backgroundColor: "rgb(40, 45, 50)",
                                 color: "white"
                             }}
                         >

@@ -71,7 +71,7 @@ export function ListingView({
     }
 
     return <div style={{
-        width: "rgb(40, 45, 50)",
+        backgroundColor: "rgb(40, 45, 50)",
         color: "white"
     }}>
         {includeItem && <b><Link style={{ fontSize: "18px" }}

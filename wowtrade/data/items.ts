@@ -1,5 +1,4 @@
 import { Item } from "../types/types";
-
 import {
     ADAMANT_SCALES,
     AIRY_SOUL,
@@ -24,6 +23,7 @@ import {
     EARTHEN_SOUL,
     EARTHSHINE_SCALES,
     ELEMENTAL_HARMONY,
+    ELEMENTAL_POTION_OF_POWER,
     EVERBURNING_BLASTING_POWDER,
     FIERY_SOUL,
     FIRE_INFUSED_HIDE,
@@ -46,8 +46,10 @@ import {
     MIRESLUSH_HIDE,
     NELTHARITE,
     OBSIDIAN_SEARED_ALLOY,
+    OMNIUM_DRACONIS,
     PHIAL_OF_ELEMENTAL_CHAOS,
     PHIAL_OF_TEPID_VERSATILITY,
+    POTION_OF_FROZEN_FOCUS,
     PRIMAL_CHAOS,
     PRIMAL_CONVERGENT,
     PRIMAL_MOLTEN_ALLOY,
@@ -73,8 +75,25 @@ import {
     YSEMERALD
 } from "./reagents";
 
+export const itemFromItemId = (itemId: number): Item => {
+    const item = ITEMS.find(i => i.id === itemId);
+    if (!item) {
+        throw new Error(`Lookup failure: Item with id ${itemId} not found in ITEMS`);
+    }
+    return item;
+}
 
-export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "itemLevel": 350 }, {
+
+export const ITEMS = [{
+    "id": 191492, "name": "Alacritous Alchemist Stone", "itemLevel": 350, "reagents": [
+        { "count": 1, "reagent": SPARK_OF_INGENUITY },
+        { "count": 60, reagent: PRIMAL_CHAOS },
+        { "count": 1, reagent: GLOWING_TITAN_ORB },
+        { "count": 15, reagent: OMNIUM_DRACONIS },
+        { "count": 12, reagent: ELEMENTAL_POTION_OF_POWER },
+        { "count": 12, reagent: POTION_OF_FROZEN_FOCUS },
+    ]
+}, {
     "id": 190516,
     "name": "Obsidian Seared Crusher",
     "itemLevel": 350,

@@ -4,10 +4,7 @@ import { Character, Listing, ListingPayload } from "./types";
 let COLLECTIONS_SUFFIX;
 switch (process.env.APP_ENV) {
     case undefined:
-    case "development": {
-        COLLECTIONS_SUFFIX = "_dev";
-        break;
-    }
+    case "development":
     case "test": {
         COLLECTIONS_SUFFIX = "_test";
         break;

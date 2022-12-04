@@ -1,28 +1,20 @@
 import Head from 'next/head'
-import styles from '../styles/Home.module.css'
 import { useContext, useEffect } from "react";
 import ListingsList from "../components/ListingsList";
 import { Form } from "react-bootstrap";
 import { RegionRealmContext } from "./_app";
 import { SetRegionRealmView } from "../components/SetRealms";
 import Link from "next/link";
-
-export const refreshWowheadLinks = () => {
-    const inlineScript = document.createElement('script');
-    inlineScript.innerHTML = 'window.$WowheadPower.refreshLinks();';
-    document.body.append(inlineScript);
-
-    return () => {
-        inlineScript.remove();
-    };
-};
+import useSWR from "swr";
+import { refreshWowheadLinks } from "../utils/wowhead";
 
 export default function Home() {
     const context = useContext(RegionRealmContext);
     useEffect(refreshWowheadLinks, [context.region, context.realm]);
+    const { data: listings, error } = useSWR(`/${context.region}/${context.realm}/items`);
 
     return (
-        <div className={styles.container}>
+        <div>
             <Head>
                 <title>WoW Trade</title>
                 <meta name="description"
@@ -30,7 +22,7 @@ export default function Home() {
                 <link rel="icon" href="/favicon.ico"/>
             </Head>
 
-            <main className={"p-3"}>
+            <main className={"p-3"} style={{ height: "100%" }}>
                 <h3 className={"mt-4"}>Overview</h3>
                 <p>WoWCraftingOrders.com connects buyers and sellers of private work orders, especially high-quality
                     ones. Finding skilled crafters can often be complicated, and trade chat doesn't really solve the
@@ -41,8 +33,8 @@ export default function Home() {
                     <SetRegionRealmView/>
                 </Form>
 
-                <h3 className={"mt-4 mb-0"}>Search Results</h3>
-                <ListingsList/>
+                <h3 className={"mt-4 mb-0"}>Recent Listings</h3>
+                <ListingsList listings={listings} error={error} includeDelete={false}/>
             </main>
         </div>
     )

@@ -9,7 +9,8 @@ export function SetRegionRealmView() {
     return <Row>
         <Col>
             <Form.Label>Region</Form.Label>
-            <Form.Control as="select" value={context.region} onChange={(e) => {
+            <Form.Control as="select"
+                          value={context.region} onChange={(e) => {
                 context.setRegion(e.target.value); // Error checking done in the context function
             }}>
                 <option value={REGIONS.US}>US (Americas)</option>
@@ -19,7 +20,8 @@ export function SetRegionRealmView() {
         </Col>
         <Col>
             <Form.Label>Realm</Form.Label>
-            <Form.Control as="select" value={context.realm} onChange={(e) => {
+            <Form.Control as="select"
+                          value={context.realm} onChange={(e) => {
                 context.setRealm(e.target.value)
             }}
                           placeholder={REALM_LIST[0]}>

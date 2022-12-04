@@ -38,6 +38,8 @@ export const DARKMOON_DECK_RIME: Reagent = { itemId: 198087 }
 export const PHIAL_OF_TEPID_VERSATILITY: Reagent = { itemId: 191339 }
 export const PHIAL_OF_ELEMENTAL_CHAOS: Reagent = { itemId: 191357 }
 export const LARGE_STURDY_FEMUR: Reagent = { itemId: 201402 }
+export const ELEMENTAL_POTION_OF_POWER: Reagent = { itemId: 191387 }
+export const POTION_OF_FROZEN_FOCUS: Reagent = { itemId: 191363 }
 
 
 // Alchemy

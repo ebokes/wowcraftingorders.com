@@ -1,0 +1,9 @@
+$body-bg: rgb(20, 25, 30);
+$body-color: white;
+$form-check-input-border: 1px solid white;
+
+@import "node_modules/bootstrap/scss/bootstrap";
+
+a {
+  color: white !important;
+}

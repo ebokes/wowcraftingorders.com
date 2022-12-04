@@ -1,7 +1,6 @@
 import { Listing } from "../types/types";
 import { Button } from "react-bootstrap";
 import Link from "next/link";
-import Script from "next/script";
 import differenceInMinutes from "date-fns/differenceInMinutes";
 import differenceInHours from "date-fns/differenceInHours";
 import differenceInDays from "date-fns/differenceInDays";
@@ -23,7 +22,6 @@ interface Props {
  * @param includeItem Whether to include a link to the item itself.
  * @param includeSeller Whether to include who's selling it.
  * @param includeDelete Whether to include a button to delete the listing.
- * @param includeTimestamp Whether to include a timestamp of when the listing was created.
  * @constructor
  */
 export function ListingView({
@@ -32,7 +30,6 @@ export function ListingView({
                                 includeItem,
                                 includeSeller,
                                 includeDelete,
-                                includeTimestamp
                             }: Props) {
 
     // Assumed to be true unless set otherwise
@@ -40,7 +37,7 @@ export function ListingView({
     if (includeSeller === undefined) includeSeller = true;
     if (includeDelete === undefined) includeDelete = true;
 
-    if (includeDelete && !deleteUserListing || !includeDelete && deleteUserListing) {
+    if (includeDelete && !deleteUserListing) {
         throw new Error("You must either provide a callback to delete the listing, or set includeDelete to false.");
     }
 
@@ -71,9 +68,9 @@ export function ListingView({
         deltaTimeText = "Posted " + timeText.join(" ") + " ago.";
     }
 
-    return <div>
+    return <div className={"bg-black text-white"}>
         {includeItem && <b><Link style={{ fontSize: "18px" }}
-                                 href={`/${listing.seller.region}/${listing.seller.realm}/item/${listing.itemId}`}
+                                 href={`/item/${listing.itemId}`}
                                  data-wowhead={`item=${listing.itemId}`}>Loading
             Tooltip...</Link></b>}
         {includeSeller && <p className={"m-0"}><b>Seller:</b> {listing.seller.characterName}</p>}
@@ -87,21 +84,20 @@ export function ListingView({
             <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.discordTag}</p>}
         {listing.seller.battleNetTag &&
             <p className={"m-0"}><b>Battle.net Tag:</b> {listing.seller.battleNetTag}</p>}
-        {!!listing.providedReagents && <p><b>Seller-Provided Reagents:</b>
-            <ul>
-                {listing.providedReagents.map((reagent, i) => <li key={i}>
-                    {reagent.count}{"x "}<Link href={`https://www.wowhead.com/item=${reagent.reagent.itemId}`}></Link>
-                </li>)}
-            </ul>
+        {!!listing.providedReagents && <p className={"m-0"}><b>{"Seller-Provided Reagents: "}</b>
+            {listing.providedReagents.map((reagent, i) => <span key={i}>
+                    {reagent.count}{"x "}<Link
+                href={`https://www.wowhead.com/item=${reagent.reagent.itemId}`}></Link>{i !== listing.providedReagents.length - 1 &&
+                <span>{", "}</span>}
+                </span>)}
         </p>}
-        {includeTimestamp && <div style={{ position: "absolute", bottom: "20px", right: "20px" }}>
+        {<div style={{ position: "absolute", bottom: "20px", right: "20px" }}>
             {postTimestamp && deltaTimeText !== "Posted ago." && <p className={"mb-0"}>{deltaTimeText}</p>}
             {postTimestamp && deltaTimeText === "Posted ago." && <p className={"mb-0"}>Posted just now.</p>}
         </div>}
         {includeDelete && deleteUserListing && <div style={{ position: "absolute", bottom: "20px", left: "20px" }}>
             <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>
-        </div>
-        }
-        {listing && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
+        </div>}
+        <div style={{ paddingTop: "50px" }}></div>
     </div>
 }

@@ -73,7 +73,7 @@ export function ListingView({
 
     return <div>
         {includeItem && <b><Link style={{ fontSize: "18px" }}
-                                 href={`/${listing.seller.region}/${listing.seller.realm}/item/${listing.itemId}`}
+                                 href={`/item/${listing.itemId}`}
                                  data-wowhead={`item=${listing.itemId}`}>Loading
             Tooltip...</Link></b>}
         {includeSeller && <p className={"m-0"}><b>Seller:</b> {listing.seller.characterName}</p>}

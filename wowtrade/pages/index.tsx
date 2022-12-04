@@ -16,9 +16,9 @@ export default function Home() {
     return (
         <div>
             <Head>
-                <title>WoW Trade</title>
+                <title>WoW Crafting Orders</title>
                 <meta name="description"
-                      content="WoWCraftingOrders.com connects buyers and sellers of private work orders in World of Warcraft (WoW)."/>
+                      content="WoWCraftingOrders.com connects buyers and sellers of high-quality, private work orders in World of Warcraft (WoW)."/>
                 <link rel="icon" href="/favicon.ico"/>
             </Head>
 

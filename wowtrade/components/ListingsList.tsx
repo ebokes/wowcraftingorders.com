@@ -18,12 +18,13 @@ interface Props {
     listings: Listing[] | undefined;
     error: any;
     setListingsCallback?: (listings: Listing[]) => void;
+    includeDelete: boolean;
 }
 
 /**
  * Generic component for rendering a list of listings along with a search box and selection of sorts and filters.
  */
-export default function ListingsList({ listings, error, setListingsCallback }: Props) {
+export default function ListingsList({ listings, error, setListingsCallback, includeDelete }: Props) {
 
     // Errors shouldn't be fatal, but should be thrown silently and a generic error message should be thrown
     if (error) console.error(error);
@@ -140,8 +141,8 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
                             }}
                         >
                             <ListingView key={listing.id} listing={listing} includeItem includeSeller
-                                         includeTimestamp={false}
-                                         includeDelete={true} deleteUserListing={deleteUserListing}/>
+                                         includeTimestamp={false} includeDelete={includeDelete}
+                                         deleteUserListing={deleteUserListing}/>
                         </Card>
                     </div>
                 ))}

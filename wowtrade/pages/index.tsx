@@ -34,7 +34,7 @@ export default function Home() {
                 </Form>
 
                 <h3 className={"mt-4 mb-0"}>Recent Listings</h3>
-                <ListingsList listings={listings} error={error}/>
+                <ListingsList listings={listings} error={error} includeDelete={false}/>
             </main>
         </div>
     )

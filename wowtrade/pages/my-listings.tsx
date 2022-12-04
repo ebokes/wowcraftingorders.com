@@ -36,6 +36,6 @@ export default function MyListings() {
 
     return <div>
         <h3 className={"mt-3"}>My Listings</h3>
-        <ListingsList listings={listings} error={undefined} setListingsCallback={setListings}/>
+        <ListingsList listings={listings} error={undefined} includeDelete={true} setListingsCallback={setListings}/>
     </div>
 }

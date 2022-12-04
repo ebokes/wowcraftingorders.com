@@ -21,6 +21,6 @@ export default function itemPage() {
         <SetRegionRealmView/>
         {context.region && context.realm &&
             <h3 className={"mt-3"}>Listings on {context.region.toUpperCase()} {context.realm}</h3>}
-        <ListingsList listings={listings} error={error}/>
+        <ListingsList listings={listings} error={error} includeDelete={false}/>
     </div>
 }

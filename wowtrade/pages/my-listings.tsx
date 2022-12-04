@@ -1,9 +1,10 @@
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { useContext, useEffect, useState } from "react";
 import { RegionRealmContext, ROOT_URL } from "./_app";
 import { Listing } from "../types/types";
 import ListingsList from "../components/ListingsList";
 import Link from "next/link";
+import { Button } from "react-bootstrap";
 
 export default function MyListings() {
     const session = useSession();
@@ -31,7 +32,10 @@ export default function MyListings() {
 
     if (session.status !== "authenticated" && !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development')) {
         return (
-            <p className={"mt-5"}>Please sign in to view your listings.</p>
+            <div>
+                <p className={"mt-5"}>Please sign in to view your listings.</p>
+                {!session && <Button onClick={() => signIn("battlenet")}>Sign In to Battle.net</Button>}
+            </div>
         );
     }
 

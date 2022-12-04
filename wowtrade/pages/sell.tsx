@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { Listing, ListingPayload, ReagentStack } from "../types/types";
 import { RegionRealmContext, ROOT_URL } from "./_app";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { SetRegionRealmView } from "../components/SetRealms";
 import Script from "next/script";
 import { ITEMS } from "../data/items";
@@ -49,8 +49,11 @@ export default function Sell() {
 
     if (session.status !== "authenticated" && !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development')) {
         return (
-            <p className={"mt-5"}>Please sign in to submit a listing. This ensures people can only post listings for
-                characters they own.</p>
+            <div>
+                <p className={"mt-5"}>Please sign in to submit a listing. This ensures people can only post listings for
+                    characters they own.</p>
+                {!session && <Button onClick={() => signIn("battlenet")}>Sign In to Battle.net</Button>}
+            </div>
         );
     }
 

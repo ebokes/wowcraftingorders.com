@@ -53,6 +53,13 @@ export const updateListing = async (id: string, payload: ListingPayload): Promis
     return { id, timestampSeconds: Date.now() / 1000, ...payload } as Listing;
 }
 
+export const getListingsForItem = async (region: string, realm: string, itemId: number): Promise<Listing[]> => {
+    const db = admin.firestore();
+    return (await db.collection(LISTINGS_COLLECTION).where("item.region", "==", region).where("item.realm", "==", realm).where("item.id", "==", itemId).get()).docs.map((doc) => {
+        return { id: doc.id, ...doc.data() } as Listing;
+    });
+}
+
 export const getCharacterListings = async (characters: Character[]): Promise<Listing[]> => {
     const db = admin.firestore();
     const listings: Listing[] = [];

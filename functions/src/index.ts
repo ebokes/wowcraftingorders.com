@@ -18,6 +18,7 @@ import {
     getCharacterListings,
     getListing,
     getListings,
+    getListingsForItem,
     isDuplicateListing,
     updateListing
 } from "./persistence";
@@ -183,17 +184,12 @@ app.get("/:region/:realm/items", async (request, response) => {
 });
 
 // 3. Get Listings for Item
-app.get("/:region/:realm/item/:itemId", async (request, response) => {
+app.get("/:region/:realm/item/:id", async (request, response) => {
     switch (request.method) {
         case "GET": {
-            const listings = await getListings();
-            const result = listings.filter((listing) => {
-                return listing.seller.region === request.params.region &&
-                    listing.seller.realm === request.params.realm &&
-                    listing.itemId === parseInt(request.params.itemId);
-            });
-            functions.logger.debug(`Successfully retrieved listings for ${request.params.region}/${request.params.realm} w/ Item ID${request.params.itemId}: ${JSON.stringify(result)}`);
-            return response.send(result);
+            const listings = await getListingsForItem(request.params.region, request.params.realm, parseInt(request.params.id));
+            functions.logger.debug(`Successfully retrieved listings for ${request.params.region}/${request.params.realm} w/ Item ID${request.params.id}: ${JSON.stringify(listings)}`);
+            return response.send(listings);
         }
         default: {
             return response.sendStatus(405);

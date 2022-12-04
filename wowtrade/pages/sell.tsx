@@ -136,7 +136,8 @@ export default function Sell() {
                     <Col md={4}>
                         <Form.Group>
                             <Form.Label>Character Name</Form.Label>
-                            <Form.Control type="text" value={payload.seller.characterName}
+                            <Form.Control className={"bg-dark text-white"} type="text"
+                                          value={payload.seller.characterName}
                                           onChange={(e) => setPayload({
                                               ...payload,
                                               seller: { ...payload.seller, characterName: e.target.value }
@@ -147,18 +148,20 @@ export default function Sell() {
                     <Col md={4}>
                         <Form.Group>
                             <Form.Label>Discord Tag</Form.Label>
-                            <Form.Control type="text" value={payload.seller.discordTag} onChange={(e) => setPayload({
-                                ...payload,
-                                seller: { ...payload.seller, discordTag: e.target.value }
-                            })
-                            }/>
+                            <Form.Control className={"bg-dark text-white"} type="text" value={payload.seller.discordTag}
+                                          onChange={(e) => setPayload({
+                                              ...payload,
+                                              seller: { ...payload.seller, discordTag: e.target.value }
+                                          })
+                                          }/>
                             <Form.Text muted>Optional, but recommended.</Form.Text>
                         </Form.Group>
                     </Col>
                     <Col md={4}>
                         <Form.Group>
                             <Form.Label>Battle.net Tag</Form.Label>
-                            <Form.Control type="text" value={payload.seller.battleNetTag} onChange={(e) => setPayload({
+                            <Form.Control className={"bg-dark text-white"} type="text"
+                                          value={payload.seller.battleNetTag} onChange={(e) => setPayload({
                                 ...payload,
                                 seller: { ...payload.seller, battleNetTag: e.target.value }
                             })}/>
@@ -168,16 +171,43 @@ export default function Sell() {
                 </Row>
                 <Row className={"my-3"}>
                     <h4>Item Details</h4>
-
                     <Form.Group>
                         <Row>
                             <Col md={8}>
                                 <Form.Label>Item</Form.Label>
-                                <ReactSelect defaultValue={{ value: -1, label: "No Item Selected" }}
-                                             onChange={(newValue) => {
-                                                 if (!newValue) return;
-                                                 setPayload({ ...payload, itemId: newValue.value })
-                                             }} options={[...ITEMS]
+                                <ReactSelect
+                                    styles={{
+                                        control: (baseStyles) => ({
+                                            ...baseStyles,
+                                            backgroundColor: "black",
+
+                                        }),
+                                        dropdownIndicator: (baseStyles) => ({
+                                            ...baseStyles,
+                                            color: "white"
+                                        }),
+                                        option: (baseStyles) => ({
+                                            ...baseStyles,
+                                            backgroundColor: "black",
+                                            color: "white",
+                                            ":hover": {
+                                                backgroundColor: "#343434",
+                                            }
+                                        }),
+                                        menu: (baseStyles) => ({
+                                            ...baseStyles,
+                                            backgroundColor: "black"
+                                        }),
+                                        singleValue: (baseStyles) => ({
+                                            ...baseStyles,
+                                            color: "white"
+                                        }),
+                                    }}
+                                    defaultValue={{ value: -1, label: "No Item Selected" }}
+                                    onChange={(newValue) => {
+                                        if (!newValue) return;
+                                        setPayload({ ...payload, itemId: newValue.value })
+                                    }} options={[...ITEMS]
                                     .sort((a, b) => a.name.localeCompare(b.name))
                                     .map(item => {
                                         return {
@@ -187,6 +217,7 @@ export default function Sell() {
                                     })
                                     .concat([{ value: -1, label: "No Item Selected" }])
                                 }/>
+
                                 {!!payload.itemId &&
                                     <Link data-wowhead={`https://www.wowhead.com/item=${payload.itemId}`}
                                           href="#"></Link>}
@@ -222,7 +253,7 @@ export default function Sell() {
                             </Col>
                             <Col md={4}>
                                 <Form.Label>Minimum Quality</Form.Label>
-                                <Form.Control as={"select"} value={payload.quality}
+                                <Form.Control className={"bg-dark text-white"} as={"select"} value={payload.quality}
                                               onChange={(e) => {
                                                   const value = e.target.value;
                                                   if (value === "Rank 1" || value === "Rank 2" || value === "Rank 3" || value === "Rank 4" || value === "Rank 5") {
@@ -245,36 +276,38 @@ export default function Sell() {
                     <h4>Commission</h4>
                     <Col md={4}>
                         <InputGroup>
-                            <Form.Control type="number" value={payload.commission.gold}
+                            <Form.Control className={"bg-dark text-white"} type="number" value={payload.commission.gold}
                                           onChange={(e) => setPayload({
                                               ...payload, commission: {
                                                   ...payload.commission, gold: parseInt(e.target.value)
                                               }
                                           })
                                           }/>
-                            <InputGroup.Text id="basic-addon1">gold</InputGroup.Text>
+                            <InputGroup.Text className={"bg-dark text-white"} id="basic-addon1">gold</InputGroup.Text>
                         </InputGroup>
                     </Col>
                     <Col md={4}>
                         <InputGroup>
-                            <Form.Control type="number" value={payload.commission.silver}
+                            <Form.Control className={"bg-dark text-white"} type="number"
+                                          value={payload.commission.silver}
                                           onChange={(e) => setPayload({
                                               ...payload, commission: {
                                                   ...payload.commission, silver: parseInt(e.target.value)
                                               }
                                           })}/>
-                            <InputGroup.Text id="basic-addon1">silver</InputGroup.Text>
+                            <InputGroup.Text className={"bg-dark text-white"} id="basic-addon1">silver</InputGroup.Text>
                         </InputGroup>
                     </Col>
                     <Col md={4}>
                         <InputGroup>
-                            <Form.Control type="number" value={payload.commission.copper}
+                            <Form.Control className={"bg-dark text-white"} type="number"
+                                          value={payload.commission.copper}
                                           onChange={(e) => setPayload({
                                               ...payload, commission: {
                                                   ...payload.commission, copper: parseInt(e.target.value)
                                               }
                                           })}/>
-                            <InputGroup.Text id="basic-addon1">copper</InputGroup.Text>
+                            <InputGroup.Text className={"bg-dark text-white"} id="basic-addon1">copper</InputGroup.Text>
                         </InputGroup>
                     </Col>
                 </Row>

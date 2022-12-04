@@ -75,7 +75,7 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
                 <Col md={8}>
                     <Form.Group>
                         <Form.Label>Filter by Name</Form.Label>
-                        <Form.Control type="text" value={search}
+                        <Form.Control className={"bg-dark text-white"} type="text" value={search}
                                       onChange={(e) => {
                                           setSearch(e.target.value);
                                       }} placeholder="Item Name"/>
@@ -84,12 +84,12 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
                 <Col md={4}>
                     <Form.Group>
                         <Form.Label>Sort Method</Form.Label>
-                        <Form.Control as={"select"} value={sortMethod}
+                        <Form.Control className={"bg-dark text-white"} as={"select"} value={sortMethod}
                                       onChange={(e) => {
                                           setSortMethod(e.target.value);
                                       }}>
                             {Object.values(SORT_TYPES).map((sortType: string) => {
-                                return <option value={sortType}>{sortType}</option>
+                                return <option key={sortType} value={sortType}>{sortType}</option>
                             })}
                         </Form.Control>
                     </Form.Group>
@@ -99,7 +99,8 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
                 <Col md={12}>
                     <Form.Group controlId={"quality"}>
                         <Form.Label>Minimum Quality</Form.Label>
-                        <Form.Control as={"select"} onChange={(e) => setQuality(e.target.value)}>
+                        <Form.Control className={"bg-dark text-white"} as={"select"}
+                                      onChange={(e) => setQuality(e.target.value)}>
                             <option value={"All"}>All</option>
                             <option value={"Rank 1"}>Rank 1 (Worst)</option>
                             <option value={"Rank 2"}>Rank 2</option>

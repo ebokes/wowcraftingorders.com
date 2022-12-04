@@ -31,7 +31,16 @@ export const RegionRealmContext = createContext({
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     const [realm, setRealm] = useState(REALM_LIST[0]);
     const [region, setRegion] = useState(REGIONS.US);
-    return <div>
+    return <div className={"text-white bg-dark"}>
+        <style global jsx>{`
+          html,
+          body,
+          body > div:first-child,
+          div#__next,
+          div#__next > div {
+            height: 100%;
+          }
+        `}</style>
 
         {/* TODO: Update measurement ID once I choose a domain */}
         <Script

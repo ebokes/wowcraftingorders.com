@@ -98,6 +98,6 @@ export function ListingView({
         {includeDelete && deleteUserListing && <div style={{ position: "absolute", bottom: "20px", left: "20px" }}>
             <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>
         </div>}
-        {(includeDelete) && <div style={{ paddingTop: "60px" }}></div>}
+        <div style={{ paddingTop: "50px" }}></div>
     </div>
 }

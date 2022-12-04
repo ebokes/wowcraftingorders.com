@@ -6,7 +6,7 @@ import { RegionRealmContext, ROOT_URL } from "./_app";
 import { signIn, useSession } from "next-auth/react";
 import { SetRegionRealmView } from "../components/SetRealms";
 import Script from "next/script";
-import { ITEMS } from "../data/items";
+import { EQUIPPABLE_ITEMS } from "../data/items";
 import ReactSelect from "react-select";
 
 export default function Sell() {
@@ -214,7 +214,7 @@ export default function Sell() {
                                     onChange={(newValue) => {
                                         if (!newValue) return;
                                         setPayload({ ...payload, itemId: newValue.value })
-                                    }} options={[...ITEMS]
+                                    }} options={[...EQUIPPABLE_ITEMS]
                                     .sort((a, b) => a.name.localeCompare(b.name))
                                     .map(item => {
                                         return {
@@ -231,7 +231,7 @@ export default function Sell() {
                                 {!!payload.itemId && <div>
                                     <Form>
                                         <ul>
-                                            {ITEMS.find(item => item.id === payload.itemId)?.reagents.map(reagent => {
+                                            {EQUIPPABLE_ITEMS.find(item => item.id === payload.itemId)?.reagents.map(reagent => {
                                                 return <li key={reagent.reagent.itemId}>{reagent.count}{"x "}<Link
                                                     href={`https://www.wowhead.com/item=${reagent.reagent.itemId}`}></Link>
                                                     {!!reagent.reagent.buyerProvides &&

@@ -41,6 +41,9 @@ export const LARGE_STURDY_FEMUR: Reagent = { itemId: 201402 }
 export const ELEMENTAL_POTION_OF_POWER: Reagent = { itemId: 191387 }
 export const POTION_OF_FROZEN_FOCUS: Reagent = { itemId: 191363 }
 
+export const CONTOURED_FOWLFEATHER: Reagent = { itemId: 193053 }
+export const RAINBOW_PEARL: Reagent = { itemId: 198397 }
+export const PRIMAL_FLUX: Reagent = { itemId: 190452 }
 
 // Alchemy
 export const HOCHENBLUME: Reagent = { itemId: 191462 }

@@ -1,10 +1,10 @@
-import { Item } from "../types";
-
+import { Item } from "../types/types";
 import {
     ADAMANT_SCALES,
     AIRY_SOUL,
     ALEXSTRASZITE,
     ARCLIGHT_CAPACITOR,
+    ARTISANS_METTLE,
     AWAKENED_AIR,
     AWAKENED_DECAY,
     AWAKENED_FIRE,
@@ -15,15 +15,18 @@ import {
     CENTAURS_TROPHY_NECKLACE,
     CHILLED_RUNE,
     CHRONOCLOTH_BOLT,
+    CONTOURED_FOWLFEATHER,
     COSMIC_INK,
     CRYSTALSPINE_FUR,
     DARKMOON_DECK_DANCE,
     DARKMOON_DECK_INFERNO,
     DARKMOON_DECK_RIME,
     DENSE_HIDE,
+    DRACONIUM_ORE,
     EARTHEN_SOUL,
     EARTHSHINE_SCALES,
     ELEMENTAL_HARMONY,
+    ELEMENTAL_POTION_OF_POWER,
     EVERBURNING_BLASTING_POWDER,
     FIERY_SOUL,
     FIRE_INFUSED_HIDE,
@@ -41,24 +44,32 @@ import {
     INFURIOUS_ALLOY,
     INFURIOUS_HIDE,
     INFURIOUS_SCALES,
+    KHAZGORITE_ORE,
     LARGE_STURDY_FEMUR,
     MALYGITE,
     MIRESLUSH_HIDE,
     NELTHARITE,
+    NOZDORITE,
     OBSIDIAN_SEARED_ALLOY,
+    OMNIUM_DRACONIS,
     PHIAL_OF_ELEMENTAL_CHAOS,
     PHIAL_OF_TEPID_VERSATILITY,
+    POTION_OF_FROZEN_FOCUS,
     PRIMAL_CHAOS,
     PRIMAL_CONVERGENT,
+    PRIMAL_FLUX,
     PRIMAL_MOLTEN_ALLOY,
     PRISTINE_VORQUIN_HORN,
+    RAINBOW_PEARL,
     REINFORCED_MACHINE_CHASSIS,
     RESILIENT_LEATHER,
     RESONANT_CRYSTAL,
     ROCKFANG_LEATHER,
     RUNED_WRITHEBARK,
     SALAMANTHER_SCALES,
+    SEREVITE_ORE,
     SHIMMERING_CLASP,
+    SHOCK_SPRING_COIL,
     SILKEN_GEMDUST,
     SPARK_OF_INGENUITY,
     SPOOL_OF_WILDERTHREAD,
@@ -73,8 +84,275 @@ import {
     YSEMERALD
 } from "./reagents";
 
+export const itemFromItemId = (itemId: number): Item => {
+    const item = EQUIPPABLE_ITEMS.find(i => i.id === itemId);
+    if (!item) {
+        throw new Error(`Lookup failure: Item with id ${itemId} not found in ITEMS`);
+    }
+    return item;
+}
 
-export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "itemLevel": 350 }, {
+const CRAFTING_ITEMS: Item[] = [{
+    id: 198226, name: "Khaz'gorite Fisherfriend", itemLevel: 356, reagents: [
+        { count: 10, reagent: KHAZGORITE_ORE },
+        { count: 4, reagent: GREASED_UP_GEARS },
+        { count: 2, reagent: ARCLIGHT_CAPACITOR },
+        { count: 1, reagent: REINFORCED_MACHINE_CHASSIS },
+    ]
+},
+    {
+        id: 191223, name: "Khaz'gorite Pickaxe", itemLevel: 356, reagents: [
+            { count: 300, reagent: ARTISANS_METTLE },
+            { count: 15, reagent: PRIMAL_FLUX },
+            { count: 45, reagent: KHAZGORITE_ORE },
+            { count: 100, reagent: SEREVITE_ORE },
+        ]
+    }, {
+        id: 191224, name: "Khaz'gorite Sickle", itemLevel: 356, reagents: [
+            { count: 300, reagent: ARTISANS_METTLE },
+            { count: 15, reagent: PRIMAL_FLUX },
+            { count: 40, reagent: KHAZGORITE_ORE },
+            { count: 100, reagent: SEREVITE_ORE },
+        ]
+    }, {
+        id: 194126, name: "Spring-Loaded Khaz'gorite Fabric Cutters", itemLevel: 356, reagents: [
+            { count: 300, reagent: ARTISANS_METTLE },
+            { count: 4, reagent: OBSIDIAN_SEARED_ALLOY },
+            { count: 2, reagent: ARCLIGHT_CAPACITOR },
+            { count: 2, reagent: SHOCK_SPRING_COIL },
+        ]
+    }, {
+        id: 198244, name: "Khaz'gorite Delver's Helmet", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 1, reagent: FRAMELESS_LENS },
+            { count: 4, reagent: OBSIDIAN_SEARED_ALLOY },
+            { count: 2, reagent: ARCLIGHT_CAPACITOR },
+        ]
+    }, {
+        id: 198263, name: "Bottomless Mireslush Ore Satchel", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 6, reagent: MIRESLUSH_HIDE },
+            { count: 5, reagent: FROSTFIRE_ALLOY },
+        ]
+    }, {
+        id: 193613, name: "Flameproof Apron", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 10, reagent: FLAWLESS_PROTO_DRAGON_SCALE },
+            { count: 8, reagent: STONECRUST_HIDE },
+            { count: 80, reagent: ADAMANT_SCALES },
+        ]
+    }, {
+        id: 191231, name: "Alchemist's Brilliant Mixing Rod", itemLevel: 356, reagents: [
+            { count: 300, reagent: ARTISANS_METTLE },
+            { count: 12, reagent: RUNED_WRITHEBARK },
+            { count: 30, reagent: DRACONIUM_ORE },
+        ]
+    }, {
+        id: 193544, name: "Master's Wildercloth Alchemist's Robe", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 5, reagent: SPOOL_OF_WILDERTHREAD },
+            { count: 6, reagent: VIBRANT_WILDERCLOTH_BOLT },
+            { count: 10, reagent: OMNIUM_DRACONIS },
+        ]
+    }, {
+        id: 193542, name: "Master's Wildercloth Gardening Hat", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 5, reagent: SPOOL_OF_WILDERTHREAD },
+            { count: 6, reagent: VIBRANT_WILDERCLOTH_BOLT },
+            { count: 4, reagent: OMNIUM_DRACONIS },
+        ]
+    }, {
+        id: 193493, name: "Expert Alchemist's Hat", itemLevel: 356, reagents: [
+            { count: 300, reagent: ARTISANS_METTLE },
+            { count: 15, reagent: PRIMAL_FLUX },
+            { count: 45, reagent: KHAZGORITE_ORE },
+            { count: 100, reagent: SEREVITE_ORE },
+        ]
+    }, {
+        id: 191888, name: "Khaz'gorite Blacksmith's Hammer", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 12, reagent: AWAKENED_AIR },
+            { count: 8, reagent: FROSTBITE_SCALES },
+            { count: 80, reagent: RESILIENT_LEATHER },
+        ]
+    }, {
+        id: 193042, name: "Resonant Focus", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 2, reagent: RESONANT_CRYSTAL },
+            { count: 2, reagent: VIBRANT_SHARD },
+            { count: 2, reagent: SHIMMERING_CLASP },
+        ]
+    }, {
+        id: 193488, name: "Lavish Floral Pack", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 15, reagent: CRYSTALSPINE_FUR },
+            { count: 10, reagent: MIRESLUSH_HIDE },
+            { count: 60, reagent: RESILIENT_LEATHER },
+            { count: 5, reagent: OMNIUM_DRACONIS },
+        ]
+    }, {
+        id: 198716, name: "Runed Khaz'gorite Rod", itemLevel: 356, reagents: [
+            { count: 300, reagent: ARTISANS_METTLE },
+            { count: 5, reagent: VIBRANT_SHARD },
+            { count: 1, reagent: RESONANT_CRYSTAL },
+            { count: 4, reagent: KHAZGORITE_ORE },
+            { count: 2, reagent: RUNED_WRITHEBARK },
+        ]
+    }, {
+        id: 191225, name: "Khaz'gorite Skinning Knife", itemLevel: 356, reagents: [
+            { count: 300, reagent: ARTISANS_METTLE },
+            { count: 15, reagent: PRIMAL_FLUX },
+            { count: 40, reagent: KHAZGORITE_ORE },
+            { count: 100, reagent: SEREVITE_ORE },
+        ]
+    }, {
+        id: 191230, name: "Khaz'gorite Blacksmith's Toolbox", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 12, reagent: PRIMAL_FLUX },
+            { count: 40, reagent: KHAZGORITE_ORE },
+            { count: 100, reagent: SEREVITE_ORE },
+        ]
+    }, {
+        id: 193545, name: "Master's Wildercloth Chef's Hat", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 6, reagent: SPOOL_OF_WILDERTHREAD },
+            { count: 6, reagent: VIBRANT_WILDERCLOTH_BOLT },
+        ]
+    }, {
+        id: 193492, name: "Masterwork Smock", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 15, reagent: CRYSTALSPINE_FUR },
+            { count: 10, reagent: MIRESLUSH_HIDE },
+            { count: 80, reagent: RESILIENT_LEATHER },
+        ]
+    }, {
+        id: 191227, name: "Khaz'gorite Leatherworker's Knife", itemLevel: 356, reagents: [
+            { count: 300, reagent: ARTISANS_METTLE },
+            { count: 15, reagent: PRIMAL_FLUX },
+            { count: 40, reagent: KHAZGORITE_ORE },
+            { count: 100, reagent: SEREVITE_ORE },
+        ]
+    }, {
+        id: 191232, name: "Chef's Splendid Rolling Pin", itemLevel: 356, reagents: [
+            { count: 12, reagent: RUNED_WRITHEBARK },
+            { count: 30, reagent: DRACONIUM_ORE },
+        ]
+    }, {
+        id: 193041, name: "Alexstraszite Loupes", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 2, reagent: VIBRANT_SHARD },
+            { count: 2, reagent: FRAMELESS_LENS },
+            { count: 5, reagent: SHIMMERING_CLASP },
+            { count: 2, reagent: ALEXSTRASZITE },
+        ]
+    }, {
+        id: 191229, name: "Khaz'gorite Leatherworker's Toolset", itemLevel: 356, reagents: [
+            { count: 300, reagent: ARTISANS_METTLE },
+            { count: 12, reagent: PRIMAL_FLUX },
+            { count: 40, reagent: KHAZGORITE_ORE },
+            { count: 100, reagent: SEREVITE_ORE },
+        ]
+    }, {
+        id: 193533, name: "Master's Wildercloth Enchanter's Hat", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 2, reagent: RESONANT_CRYSTAL },
+            { count: 5, reagent: SPOOL_OF_WILDERTHREAD },
+            { count: 5, reagent: VIBRANT_WILDERCLOTH_BOLT },
+        ]
+    }, {
+        id: 198235, name: "Lapidary's Khaz'gorite Clamps", itemLevel: 356, reagents: [
+            { count: 300, reagent: ARTISANS_METTLE },
+            { count: 20, reagent: KHAZGORITE_ORE },
+            { count: 2, reagent: ARCLIGHT_CAPACITOR },
+            { count: 5, reagent: GREASED_UP_GEARS },
+        ]
+    }, {
+        id: 198205, name: "Khaz'gorite Brainwave Amplifier", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 2, reagent: FRAMELESS_LENS },
+            { count: 10, reagent: KHAZGORITE_ORE },
+            { count: 2, reagent: SHOCK_SPRING_COIL },
+            { count: 3, reagent: GREASED_UP_GEARS },
+            { count: 4, reagent: ARCLIGHT_CAPACITOR },
+        ]
+    }, {
+        id: 194875, name: "Scribe's Resplendent Quill", itemLevel: 356, reagents: [
+            { count: 300, reagent: ARTISANS_METTLE },
+            { count: 1, reagent: CONTOURED_FOWLFEATHER },
+            { count: 12, reagent: RUNED_WRITHEBARK },
+            { count: 4, reagent: COSMIC_INK },
+        ]
+    }, {
+        id: 193543, name: "Master's Wildercloth Fishing Cap", itemLevel: 356, reagents: [
+            { count: 2, reagent: RAINBOW_PEARL },
+            { count: 5, reagent: SPOOL_OF_WILDERTHREAD },
+            { count: 3, reagent: VIBRANT_WILDERCLOTH_BOLT },
+        ]
+    }, {
+        id: 193616, name: "Resplendent Cover", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 20, reagent: SALAMANTHER_SCALES },
+            { count: 10, reagent: STONECRUST_HIDE },
+            { count: 80, reagent: RESILIENT_LEATHER },
+        ]
+    }, {
+        id: 193490, name: "Expert Skinner's Cap", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 4, reagent: WINDSONG_PLUMAGE },
+            { count: 2, reagent: TUFT_OF_PRIMAL_WOOL },
+            { count: 10, reagent: EARTHSHINE_SCALES },
+            { count: 80, reagent: RESILIENT_LEATHER },
+        ]
+    }, {
+        id: 193489, name: "Reinforced Pack", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 15, reagent: PRISTINE_VORQUIN_HORN },
+            { count: 10, reagent: EARTHSHINE_SCALES },
+            { count: 80, reagent: RESILIENT_LEATHER },
+        ]
+    }, {
+        id: 193039, name: "Fine-Print Trifocals", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 2, reagent: VIBRANT_SHARD },
+            { count: 2, reagent: FRAMELESS_LENS },
+            { count: 5, reagent: SHIMMERING_CLASP },
+            { count: 2, reagent: NOZDORITE },
+        ]
+    }, {
+        id: 193491, name: "Shockproof Gloves", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 15, reagent: ROCKFANG_LEATHER },
+            { count: 10, reagent: EARTHSHINE_SCALES },
+            { count: 80, reagent: ADAMANT_SCALES },
+        ]
+    }, {
+        id: 193040, name: "Magnificent Margin Magnifier", itemLevel: 356, reagents: [
+            { count: 225, reagent: ARTISANS_METTLE },
+            { count: 2, reagent: FRAMELESS_LENS },
+            { count: 2, reagent: SHIMMERING_CLASP },
+            { count: 4, reagent: NOZDORITE },
+        ]
+    }, {
+        id: 198246, name: "Khaz'gorite Encased Samophlange", itemLevel: 356, reagents: [
+            { count: 300, reagent: ARTISANS_METTLE },
+            { count: 10, reagent: KHAZGORITE_ORE },
+            { count: 2, reagent: SHOCK_SPRING_COIL },
+            { count: 3, reagent: GREASED_UP_GEARS },
+            { count: 5, reagent: ARCLIGHT_CAPACITOR },
+        ]
+    }];
+
+
+const EQUIPPABLE_ITEMS: Item[] = [{
+    "id": 191492, "name": "Alacritous Alchemist Stone", "itemLevel": 350, "reagents": [
+        { "count": 1, "reagent": SPARK_OF_INGENUITY },
+        { "count": 60, reagent: PRIMAL_CHAOS },
+        { "count": 1, reagent: GLOWING_TITAN_ORB },
+        { "count": 15, reagent: OMNIUM_DRACONIS },
+        { "count": 12, reagent: ELEMENTAL_POTION_OF_POWER },
+        { "count": 12, reagent: POTION_OF_FROZEN_FOCUS },
+    ]
+}, {
     "id": 190516,
     "name": "Obsidian Seared Crusher",
     "itemLevel": 350,
@@ -155,7 +433,7 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
         { count: 2, reagent: ARCLIGHT_CAPACITOR },
         { count: 1, reagent: REINFORCED_MACHINE_CHASSIS },
     ]
-}, { "id": 191228, "name": "Black Dragon Touched Hammer", "itemLevel": 382 }, {
+}, {
     "id": 190510, "name": "Primal Molten Greataxe", "itemLevel": 350, reagents: [
         { count: 2, reagent: SPARK_OF_INGENUITY },
         { count: 160, reagent: PRIMAL_CHAOS },
@@ -1092,4 +1370,9 @@ export const ITEMS = [{ "id": 191492, "name": "Alacritous Alchemist Stone", "ite
         { count: 10, reagent: SPOOL_OF_WILDERTHREAD },
         { count: 12, reagent: VIBRANT_WILDERCLOTH_BOLT },
     ]
-}] as Item[];
+}];
+
+export const ITEMS = [
+    ...EQUIPPABLE_ITEMS,
+    ...CRAFTING_ITEMS
+]

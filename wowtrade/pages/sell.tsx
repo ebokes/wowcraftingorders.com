@@ -245,7 +245,7 @@ export default function Sell() {
                                                                         reagent
                                                                     ]
                                                                 })
-                                                        }} type={"checkbox"}
+                                                        }} type={"checkbox"} style={{ outline: "1px solid white" }}
                                                                     id={`reagent-${reagent.reagent.itemId}`}
                                                                     label={"I will provide this!"}/>}
                                                 </li>

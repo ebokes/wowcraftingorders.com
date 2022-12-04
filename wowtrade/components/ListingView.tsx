@@ -88,11 +88,11 @@ export function ListingView({
         {listing.seller.battleNetTag &&
             <p className={"m-0"}><b>Battle.net Tag:</b> {listing.seller.battleNetTag}</p>}
         {!!listing.providedReagents && <p><b>Seller-Provided Reagents:</b>
-            <ul>
-                {listing.providedReagents.map((reagent, i) => <li key={i}>
-                    {reagent.count}{"x "}<Link href={`https://www.wowhead.com/item=${reagent.reagent.itemId}`}></Link>
-                </li>)}
-            </ul>
+            {listing.providedReagents.map((reagent, i) => <span key={i}>
+                    {reagent.count}{"x "}<Link
+                href={`https://www.wowhead.com/item=${reagent.reagent.itemId}`}></Link>{i !== listing.providedReagents.length - 1 &&
+                <span>{", "}</span>}
+                </span>)}
         </p>}
         {includeTimestamp && <div style={{ position: "absolute", bottom: "20px", right: "20px" }}>
             {postTimestamp && deltaTimeText !== "Posted ago." && <p className={"mb-0"}>{deltaTimeText}</p>}

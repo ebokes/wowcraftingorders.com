@@ -34,7 +34,7 @@ export default function Home() {
                     <SetRegionRealmView/>
                 </Form>
 
-                <h3 className={"mt-4 mb-0"}>Search Results</h3>
+                <h3 className={"mt-4 mb-0"}>Recent Listings</h3>
                 <ListingsList listings={listings} error={error}/>
             </main>
         </div>

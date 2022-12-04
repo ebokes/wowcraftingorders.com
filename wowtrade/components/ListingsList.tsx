@@ -70,7 +70,7 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
     }
 
     return <div>
-        <Form className="mb-2" style={{ width: "100%" }}>
+        <Form className="mb-2 mt-0" style={{ width: "100%" }}>
             <Row className={"my-4"}>
                 <Col md={8}>
                     <Form.Group>
@@ -134,7 +134,7 @@ export default function ListingsList({ listings, error, setListingsCallback }: P
                                 boxShadow: "rgba(140, 140, 140, 0.2) 0px 0px 4px 3px",
                                 padding: "20px",
                                 minHeight: "100%",
-                                paddingBottom: "40px",
+                                paddingBottom: "50px",
                             }}
                         >
                             <ListingView key={listing.id} listing={listing} includeItem includeSeller

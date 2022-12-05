@@ -2,6 +2,7 @@ import * as admin from "firebase-admin";
 import { Character, Listing, ListingPayload } from "./types";
 import { EU_CONNECTED_REALMS, US_CONNECTED_REALMS } from "./data/realms";
 import { REGIONS } from "./data/regions";
+import * as functions from "firebase-functions";
 
 let COLLECTIONS_SUFFIX;
 switch (process.env.APP_ENV) {
@@ -53,7 +54,12 @@ export const getListingsFromRealm = async (region: string, realm: string): Promi
     }
 
     // Not a connected realm
-    if (!realmsToQuery) realmsToQuery = [realm];
+    if (!realmsToQuery) {
+        functions.logger.debug(`Realm ${region} ${realm} is not a connected realm.`);
+        realmsToQuery = [realm];
+    } else {
+        functions.logger.debug(`Realm ${region} ${realm} is part of connected realm group ${JSON.stringify(realmsToQuery)}`);
+    }
 
     return (await db.collection(LISTINGS_COLLECTION)
         .where("seller.region", "==", region)

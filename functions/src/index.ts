@@ -108,6 +108,8 @@ app.put("/listings/:id", ensureAuthenticated,
                     if (!(await ownsCharacter(payload.seller.region, payload.seller.realm, payload.seller.characterName, request.headers["authorization"]))) {
                         return response.status(400).send([{ message: "You do not own that character." }]);
                     }
+                } else {
+                    functions.logger.debug("Running locally; skipping character ownership check.");
                 }
 
                 const updatedItem = await updateListing(request.params.id, payload);

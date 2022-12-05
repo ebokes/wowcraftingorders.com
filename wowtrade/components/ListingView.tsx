@@ -76,6 +76,7 @@ export function ListingView({
         {includeSeller && <p className={"m-0"}><b>Seller:</b> {listing.seller.characterName}-{listing.seller.realm}</p>}
         <p className={"mb-2"}><b>Minimum Quality: </b>{listing.quality + "/5"}
         </p>
+        {listing.details && <p className={"mb-2"}><b>{"Details: "}</b>{listing.details}</p>}
         <p className={"m-0"}><b>Commission:</b>{" "}
             {listing.commission.gold}<span style={{ color: "#D4A017" }}><b>g</b></span>{" "}
             {listing.commission.silver}<span style={{ color: "#909090" }}><b>s</b></span>{" "}

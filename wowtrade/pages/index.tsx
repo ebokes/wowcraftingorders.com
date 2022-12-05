@@ -7,11 +7,29 @@ import { SetRegionRealmView } from "../components/SetRealms";
 import Link from "next/link";
 import useSWR from "swr";
 import { refreshWowheadLinks } from "../utils/wowhead";
+import { REGIONS } from "../data/regions";
+import { EU_CONNECTED_REALMS, US_CONNECTED_REALMS } from "../data/realms";
 
 export default function Home() {
     const context = useContext(RegionRealmContext);
     useEffect(refreshWowheadLinks, [context.region, context.realm]);
     const { data: listings, error } = useSWR(`/${context.region}/${context.realm}/items`);
+
+    let connectedRealms;
+    switch (context.region) {
+        case REGIONS.US: {
+            connectedRealms = US_CONNECTED_REALMS.find((connectedRealmList: string[]) => connectedRealmList.includes(context.realm))
+            break;
+        }
+        // TODO: TypeScript bug is causing this to mark as unreachable https://youtrack.jetbrains.com/issue/WEB-37894
+        case REGIONS.EU: {
+            connectedRealms = EU_CONNECTED_REALMS.find((connectedRealmList: string[]) => connectedRealmList.includes(context.realm))
+            break;
+        }
+        default: {
+            throw new Error(`Invalid region: ${context.region}`);
+        }
+    }
 
     return (
         <div>
@@ -34,6 +52,8 @@ export default function Home() {
                 </Form>
 
                 <h3 className={"mt-4 mb-0"}>Recent Listings</h3>
+                {connectedRealms !== undefined &&
+                    <p className={"mb-3"}>Showing listings from connected realms {connectedRealms.join(", ")}.</p>}
                 <ListingsList listings={listings} error={error} includeDelete={false}/>
             </main>
         </div>

@@ -1,5 +1,8 @@
 import * as admin from "firebase-admin";
 import { Character, Listing, ListingPayload } from "./types";
+import { EU_CONNECTED_REALMS, US_CONNECTED_REALMS } from "./data/realms";
+import { REGIONS } from "./data/regions";
+import * as functions from "firebase-functions";
 
 let COLLECTIONS_SUFFIX;
 switch (process.env.APP_ENV) {
@@ -25,6 +28,45 @@ export const getListings = async () => {
         return { id: doc.id, ...doc.data() } as Listing;
     });
 };
+
+export const getListingsFromRealm = async (region: string, realm: string): Promise<Listing[]> => {
+    const db = admin.firestore();
+
+    let realmsToQuery;
+    switch (region) {
+        case REGIONS.US: {
+            const findQueryResult = US_CONNECTED_REALMS.find((connectedRealmList) => connectedRealmList.includes(realm));
+            if (findQueryResult) {
+                realmsToQuery = findQueryResult
+            }
+            break;
+        }
+        case REGIONS.EU: {
+            const findQueryResult = EU_CONNECTED_REALMS.find((connectedRealmList) => connectedRealmList.includes(realm));
+            if (findQueryResult) {
+                realmsToQuery = findQueryResult
+            }
+            break;
+        }
+        default: {
+            throw new Error(`Unknown region: ${region}`);
+        }
+    }
+
+    // Not a connected realm
+    if (!realmsToQuery) {
+        functions.logger.debug(`Realm ${region} ${realm} is not a connected realm.`);
+        realmsToQuery = [realm];
+    } else {
+        functions.logger.debug(`Realm ${region} ${realm} is part of connected realm group ${JSON.stringify(realmsToQuery)}`);
+    }
+
+    return (await db.collection(LISTINGS_COLLECTION)
+        .where("seller.region", "==", region)
+        .where("seller.realm", "in", realmsToQuery).get()).docs.map((doc) => {
+        return { id: doc.id, ...doc.data() } as Listing;
+    });
+}
 
 export const getListing = async (listingId: string): Promise<Listing | undefined> => {
     const db = admin.firestore();

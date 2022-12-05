@@ -7,11 +7,22 @@ import { SetRegionRealmView } from "../components/SetRealms";
 import Link from "next/link";
 import useSWR from "swr";
 import { refreshWowheadLinks } from "../utils/wowhead";
+import { REGIONS } from "../data/regions";
+import { EU_CONNECTED_REALMS, US_CONNECTED_REALMS } from "../data/realms";
 
 export default function Home() {
     const context = useContext(RegionRealmContext);
     useEffect(refreshWowheadLinks, [context.region, context.realm]);
     const { data: listings, error } = useSWR(`/${context.region}/${context.realm}/items`);
+
+    let connectedRealms;
+    if (context.region === REGIONS.US) {
+        connectedRealms = US_CONNECTED_REALMS.find((connectedRealmList: string[]) => connectedRealmList.includes(context.realm))
+    } else if (context.region === REGIONS.EU) {
+        connectedRealms = EU_CONNECTED_REALMS.find((connectedRealmList: string[]) => connectedRealmList.includes(context.realm))
+    } else {
+        throw new Error(`Invalid region: ${context.region}`);
+    }
 
     return (
         <div>
@@ -34,6 +45,8 @@ export default function Home() {
                 </Form>
 
                 <h3 className={"mt-4 mb-0"}>Recent Listings</h3>
+                {connectedRealms !== undefined &&
+                    <p className={"mb-3"}>Showing listings from connected realms {connectedRealms.join(", ")}.</p>}
                 <ListingsList listings={listings} error={error} includeDelete={false}/>
             </main>
         </div>

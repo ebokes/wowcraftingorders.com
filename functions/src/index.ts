@@ -17,8 +17,8 @@ import {
     deleteListing,
     getCharacterListings,
     getListing,
-    getListings,
     getListingsForItem,
+    getListingsFromRealm,
     isDuplicateListing,
     updateListing
 } from "./persistence";
@@ -108,6 +108,8 @@ app.put("/listings/:id", ensureAuthenticated,
                     if (!(await ownsCharacter(payload.seller.region, payload.seller.realm, payload.seller.characterName, request.headers["authorization"]))) {
                         return response.status(400).send([{ message: "You do not own that character." }]);
                     }
+                } else {
+                    functions.logger.debug("Running locally; skipping character ownership check.");
                 }
 
                 const updatedItem = await updateListing(request.params.id, payload);
@@ -169,13 +171,9 @@ app.get("/:region/listings", ensureAuthenticated, async (request, response) => {
 app.get("/:region/:realm/items", async (request, response) => {
     switch (request.method) {
         case "GET": {
-            const listings = await getListings();
-            const result = listings.filter((listing) => {
-                return listing.seller.region === request.params.region &&
-                    listing.seller.realm === request.params.realm;
-            });
-            functions.logger.debug(`Successfully retrieved listings: ${request.params.region}/${request.params.realm}: ${JSON.stringify(result)}`);
-            return response.status(200).send(result);
+            const listings = await getListingsFromRealm(request.params.region, request.params.realm);
+            functions.logger.debug(`Successfully retrieved listings: ${request.params.region}/${request.params.realm}: ${JSON.stringify(listings)}`);
+            return response.status(200).send(listings);
         }
         default: {
             return response.sendStatus(405);

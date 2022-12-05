@@ -17,8 +17,8 @@ import {
     deleteListing,
     getCharacterListings,
     getListing,
-    getListings,
     getListingsForItem,
+    getListingsFromRealm,
     isDuplicateListing,
     updateListing
 } from "./persistence";
@@ -169,13 +169,9 @@ app.get("/:region/listings", ensureAuthenticated, async (request, response) => {
 app.get("/:region/:realm/items", async (request, response) => {
     switch (request.method) {
         case "GET": {
-            const listings = await getListings();
-            const result = listings.filter((listing) => {
-                return listing.seller.region === request.params.region &&
-                    listing.seller.realm === request.params.realm;
-            });
-            functions.logger.debug(`Successfully retrieved listings: ${request.params.region}/${request.params.realm}: ${JSON.stringify(result)}`);
-            return response.status(200).send(result);
+            const listings = await getListingsFromRealm(request.params.region, request.params.realm);
+            functions.logger.debug(`Successfully retrieved listings: ${request.params.region}/${request.params.realm}: ${JSON.stringify(listings)}`);
+            return response.status(200).send(listings);
         }
         default: {
             return response.sendStatus(405);

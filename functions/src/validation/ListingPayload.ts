@@ -94,7 +94,7 @@ const validateListingBusiness = (payload: ListingPayload): CustomError[] => {
         errors.push({ message: "Commission must be nonzero." });
     }
     if (payload.details) {
-        if (BAD_WORDS.find(word => payload.details && payload.details.includes(word), false)) {
+        if (BAD_WORDS.find(word => payload.details && payload.details.toLowerCase().includes(word), false)) {
             errors.push({ message: "Please do not use inappropriate language in your additional details." });
         }
     }

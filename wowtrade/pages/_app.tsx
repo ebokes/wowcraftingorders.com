@@ -32,8 +32,8 @@ export const RegionRealmContext = createContext({
 
 // TODO: Should properly type the Session object here
 export const updateListingTimestamps = async (session: SessionContextValue<boolean> | { readonly data: null, readonly status: "loading" }, region: string) => {
+    const PING_INTERVAL = 1000 * 60; // Ping every minute
     const ping = async () => {
-        console.log("Pinging...");
         fetch(`${ROOT_URL}/${region}/ping`, {
             method: "GET",
             headers: {
@@ -42,11 +42,10 @@ export const updateListingTimestamps = async (session: SessionContextValue<boole
             }
         }).catch();
     }
-    console.log("session: ", session);
     // @ts-ignore
     if (session && session.status === "authenticated") {
         ping().catch();
-        const interval = setInterval(ping, 20000);
+        const interval = setInterval(ping, PING_INTERVAL);
         return () => clearInterval(interval);
     }
 }

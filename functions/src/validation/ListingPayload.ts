@@ -12,7 +12,7 @@ export const ListingSchema: JSONSchemaType<ListingPayload> = {
     properties: {
         itemId: { type: "number", minimum: 0 },
         quality: { type: "string" },
-        details: { type: "string", nullable: true },
+        details: { type: "string", nullable: true, minLength: 0, maxLength: 200 },
         commission: {
             type: "object",
             properties: {
@@ -77,7 +77,8 @@ export const ListingSchema: JSONSchemaType<ListingPayload> = {
             commission: "Commission is required.",
         },
         properties: {
-            itemId: "Item is not valid.",
+            itemId: "Item ID must be a number greater than zero.",
+            details: "Details must be a valid string <= 200 characters."
         },
     }
 };

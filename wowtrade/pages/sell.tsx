@@ -85,6 +85,9 @@ export default function Sell() {
             if (payload.commission.gold === 0 && payload.commission.silver === 0 && payload.commission.copper === 0) {
                 errors.push("Commission must be nonzero.");
             }
+            if (payload.details && payload.details.length > 200) {
+                errors.push("Details must be <= 200 characters.");
+            }
             if (BAD_WORDS.find(word => payload.details && payload.details.toLowerCase().includes(word), false)) {
                 errors.push("Please do not use inappropriate language in your additional details.");
             }

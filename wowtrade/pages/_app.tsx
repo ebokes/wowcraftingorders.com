@@ -52,7 +52,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
             const interval = setInterval(ping, 20000);
             return () => clearInterval(interval);
         }
-    }, []);
+    }, [session]);
 
     return <div
         style={{ height: "fit-content" }}>

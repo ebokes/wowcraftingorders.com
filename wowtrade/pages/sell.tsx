@@ -8,11 +8,7 @@ import { SetRegionRealmView } from "../components/SetRealms";
 import Script from "next/script";
 import { ITEMS } from "../data/items";
 import ReactSelect from "react-select";
-
-// @ts-ignore
-import list from "badwords-list";
-
-const BAD_WORDS = list.array;
+import { BAD_WORDS } from "../data/badwords";
 
 export default function Sell() {
 
@@ -89,10 +85,8 @@ export default function Sell() {
             if (payload.commission.gold === 0 && payload.commission.silver === 0 && payload.commission.copper === 0) {
                 errors.push("Commission must be nonzero.");
             }
-            if (payload.details) {
-                if (BAD_WORDS.reduce((acc: boolean, word: string) => acc || payload.details && payload.details.includes(word), false)) {
-                    errors.push("Please do not use inappropriate language in your additional details.");
-                }
+            if (BAD_WORDS.find(word => payload.details && payload.details.includes(word), false)) {
+                errors.push("Please do not use inappropriate language in your additional details.");
             }
 
             setErrors(errors);

@@ -1,14 +1,11 @@
 import { ListingPayload } from "../types";
 import Ajv, { JSONSchemaType } from "ajv";
 import { CustomError } from "./common";
-// @ts-ignore
-import list from "badwords-list";
+import { BAD_WORDS } from "../data/badwords";
 
 const ajv = new Ajv({ allErrors: true });
 
 require("ajv-errors")(ajv, { singleError: true });
-
-const BAD_WORDS = list.array;
 
 export const ListingSchema: JSONSchemaType<ListingPayload> = {
     type: "object",
@@ -97,7 +94,7 @@ const validateListingBusiness = (payload: ListingPayload): CustomError[] => {
         errors.push({ message: "Commission must be nonzero." });
     }
     if (payload.details) {
-        if (BAD_WORDS.reduce((acc: boolean, word: string) => acc || payload.details && payload.details.includes(word), false)) {
+        if (BAD_WORDS.find(word => payload.details && payload.details.includes(word), false)) {
             errors.push({ message: "Please do not use inappropriate language in your additional details." });
         }
     }

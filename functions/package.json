@@ -17,7 +17,6 @@
     "ajv": "^8.11.2",
     "ajv-errors": "^3.0.0",
     "axios": "^1.2.0",
-    "badwords-list": "^1.0.0",
     "connect-timeout": "^1.9.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",

@@ -46,6 +46,8 @@ export default function MyListings() {
     return <div>
         <h3 className={"mt-3"}>My Listings</h3>
         <p>To create a new listing, please use the <Link href={"/sell"}>Sell</Link> page.</p>
+        <p>The "Last Active" time on your listings will regularly update anytime you are on the site and logged
+            into Battle.net.</p>
         <ListingsList listings={listings} error={undefined} includeDelete={true} setListingsCallback={setListings}/>
     </div>
 }

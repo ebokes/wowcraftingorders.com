@@ -24,7 +24,8 @@ app.use(haltOnTimedOut);
 app.use(cors);
 app.use(logRequest);
 
-app.use(require("./routes/routes"));
+// Routes need to be here in the middleware
+require("./routes/routes");
 
 app.use(logResponseBody);
 exports.app = functions.region("us-central1").https.onRequest(app);

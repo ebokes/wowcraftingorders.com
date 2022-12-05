@@ -8,6 +8,7 @@ import { SetRegionRealmView } from "../components/SetRealms";
 import Script from "next/script";
 import { ITEMS } from "../data/items";
 import ReactSelect from "react-select";
+import { BAD_WORDS } from "../data/badwords";
 
 export default function Sell() {
 
@@ -81,7 +82,16 @@ export default function Sell() {
             if (!context.realm) errors.push("Realm is required.");
             if (!payload.itemId) errors.push("Item ID is required.");
             if (!payload.seller.characterName) errors.push("Character name is required.");
-            if (payload.commission.gold === 0 && payload.commission.silver === 0 && payload.commission.copper === 0) errors.push("Commission must be nonzero.");
+            if (payload.commission.gold === 0 && payload.commission.silver === 0 && payload.commission.copper === 0) {
+                errors.push("Commission must be nonzero.");
+            }
+            if (payload.details && payload.details.length > 200) {
+                errors.push("Details must be <= 200 characters.");
+            }
+            if (BAD_WORDS.find(word => payload.details && payload.details.toLowerCase().includes(word), false)) {
+                errors.push("Please do not use inappropriate language in your additional details.");
+            }
+
             setErrors(errors);
             return errors.length === 0;
         }
@@ -184,7 +194,7 @@ export default function Sell() {
                     <h4>Item Details</h4>
                     <Form.Group>
                         <Row>
-                            <Col md={8}>
+                            <Col md={4}>
                                 <Form.Label>Item</Form.Label>
                                 <ReactSelect
                                     styles={{
@@ -275,11 +285,22 @@ export default function Sell() {
                                         }
                                     }}>
                                     <option value={"Rank 1"}>Rank 1 (Worst)</option>
+                                    <option value={"Rank 1"}>Rank 1 (Worst)</option>
                                     <option value={"Rank 2"}>Rank 2</option>
                                     <option value={"Rank 3"}>Rank 3</option>
                                     <option value={"Rank 4"}>Rank 4</option>
                                     <option value={"Rank 5"}>Rank 5 (Best)</option>
                                 </Form.Control>
+                            </Col>
+                            <Col md={4}>
+                                <Form.Label>Additional Details</Form.Label>
+                                <Form.Control
+                                    type="text" value={payload.details}
+                                    onChange={(e) => {
+                                        setPayload({ ...payload, details: e.target.value });
+                                    }}/>
+                                <Form.Text muted>Free text field to provide any other information you want
+                                    to. Please be civil.</Form.Text>
                             </Col>
                         </Row>
                     </Form.Group>

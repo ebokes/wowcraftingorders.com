@@ -1,6 +1,7 @@
 import { ListingPayload } from "../types";
 import Ajv, { JSONSchemaType } from "ajv";
 import { CustomError } from "./common";
+import { BAD_WORDS } from "../data/badwords";
 
 const ajv = new Ajv({ allErrors: true });
 
@@ -11,6 +12,7 @@ export const ListingSchema: JSONSchemaType<ListingPayload> = {
     properties: {
         itemId: { type: "number", minimum: 0 },
         quality: { type: "string" },
+        details: { type: "string", nullable: true, minLength: 0, maxLength: 200 },
         commission: {
             type: "object",
             properties: {
@@ -48,6 +50,25 @@ export const ListingSchema: JSONSchemaType<ListingPayload> = {
                 }
             }
         },
+        providedReagents: {
+            type: "array",
+            items: {
+                type: "object",
+                properties: {
+                    count: { type: "number", minimum: 1 },
+                    reagent: {
+                        type: "object",
+                        properties: {
+                            itemId: { type: "number", minimum: 0 },
+                            required: { type: "boolean", nullable: true },
+                            buyerProvides: { type: "boolean", nullable: true },
+                        },
+                        required: ["itemId"],
+                    }
+                },
+                required: ["count", "reagent"],
+            }
+        }
     },
     required: ["itemId", "commission", "seller", "quality"],
     errorMessage: {
@@ -56,7 +77,8 @@ export const ListingSchema: JSONSchemaType<ListingPayload> = {
             commission: "Commission is required.",
         },
         properties: {
-            itemId: "Item is not valid.",
+            itemId: "Item ID must be a number greater than zero.",
+            details: "Details must be a valid string <= 200 characters."
         },
     }
 };
@@ -71,6 +93,11 @@ const validateListingBusiness = (payload: ListingPayload): CustomError[] => {
     const errors: CustomError[] = [];
     if (!payload.commission.gold && !payload.commission.silver && !payload.commission.copper) {
         errors.push({ message: "Commission must be nonzero." });
+    }
+    if (payload.details) {
+        if (BAD_WORDS.find(word => payload.details && payload.details.toLowerCase().includes(word), false)) {
+            errors.push({ message: "Please do not use inappropriate language in your additional details." });
+        }
     }
     return errors;
 }

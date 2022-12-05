@@ -74,8 +74,12 @@ export function ListingView({
                                  data-wowhead={`item=${listing.itemId}`}>Loading
             Tooltip...</Link></b>}
         {includeSeller && <p className={"m-0"}><b>Seller:</b> {listing.seller.characterName}-{listing.seller.realm}</p>}
-        <p className={"mb-2"}><b>Minimum Quality: </b>{listing.quality + "/5"}
+        <p className={"m-0"}><b>Guaranteed Quality: </b>{listing.quality + "/5"}
         </p>
+        {listing.details && <p className={"m-0"}><b>{"Details: "}</b>{listing.details}</p>}
+
+        <div className={"my-1"}></div>
+
         <p className={"m-0"}><b>Commission:</b>{" "}
             {listing.commission.gold}<span style={{ color: "#D4A017" }}><b>g</b></span>{" "}
             {listing.commission.silver}<span style={{ color: "#909090" }}><b>s</b></span>{" "}

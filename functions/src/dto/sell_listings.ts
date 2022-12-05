@@ -1,27 +1,11 @@
 import * as admin from "firebase-admin";
-import { Character, Listing, ListingPayload } from "./types";
-import { EU_CONNECTED_REALMS, US_CONNECTED_REALMS } from "./data/realms";
-import { REGIONS } from "./data/regions";
+import { Character, Listing, ListingPayload } from "../types/types";
+import { EU_CONNECTED_REALMS, US_CONNECTED_REALMS } from "../data/realms";
+import { REGIONS } from "../data/regions";
 import * as functions from "firebase-functions";
+import { LISTINGS_COLLECTION } from "./common";
 
-let COLLECTIONS_SUFFIX;
-switch (process.env.APP_ENV) {
-    case undefined:
-    case "development":
-    case "test": {
-        COLLECTIONS_SUFFIX = "_test";
-        break;
-    }
-    case "production": {
-        COLLECTIONS_SUFFIX = "_prod";
-        break;
-    }
-    default: {
-        throw new Error(`Unknown environment: ${process.env.APP_ENV}`);
-    }
-}
 
-const LISTINGS_COLLECTION = "listings" + COLLECTIONS_SUFFIX;
 export const getListings = async () => {
     const db = admin.firestore();
     return (await db.collection(LISTINGS_COLLECTION).get()).docs.map((doc) => {

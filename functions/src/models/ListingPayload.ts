@@ -1,6 +1,6 @@
-import { ListingPayload } from "../types";
+import { ListingPayload } from "../types/types";
 import Ajv, { JSONSchemaType } from "ajv";
-import { CustomError } from "./common";
+import { CustomError } from "../validation/common";
 import { BAD_WORDS } from "../data/badwords";
 
 const ajv = new Ajv({ allErrors: true });

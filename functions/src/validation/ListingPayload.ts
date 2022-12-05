@@ -1,16 +1,21 @@
 import { ListingPayload } from "../types";
 import Ajv, { JSONSchemaType } from "ajv";
 import { CustomError } from "./common";
+// @ts-ignore
+import list from "badwords-list";
 
 const ajv = new Ajv({ allErrors: true });
 
 require("ajv-errors")(ajv, { singleError: true });
+
+const BAD_WORDS = list.array;
 
 export const ListingSchema: JSONSchemaType<ListingPayload> = {
     type: "object",
     properties: {
         itemId: { type: "number", minimum: 0 },
         quality: { type: "string" },
+        details: { type: "string", nullable: true },
         commission: {
             type: "object",
             properties: {
@@ -48,6 +53,25 @@ export const ListingSchema: JSONSchemaType<ListingPayload> = {
                 }
             }
         },
+        providedReagents: {
+            type: "array",
+            items: {
+                type: "object",
+                properties: {
+                    count: { type: "number", minimum: 1 },
+                    reagent: {
+                        type: "object",
+                        properties: {
+                            itemId: { type: "number", minimum: 0 },
+                            required: { type: "boolean", nullable: true },
+                            buyerProvides: { type: "boolean", nullable: true },
+                        },
+                        required: ["itemId"],
+                    }
+                },
+                required: ["count", "reagent"],
+            }
+        }
     },
     required: ["itemId", "commission", "seller", "quality"],
     errorMessage: {
@@ -71,6 +95,11 @@ const validateListingBusiness = (payload: ListingPayload): CustomError[] => {
     const errors: CustomError[] = [];
     if (!payload.commission.gold && !payload.commission.silver && !payload.commission.copper) {
         errors.push({ message: "Commission must be nonzero." });
+    }
+    if (payload.details) {
+        if (BAD_WORDS.reduce((acc: boolean, word: string) => acc || payload.details && payload.details.includes(word), false)) {
+            errors.push({ message: "Please do not use inappropriate language in your additional details." });
+        }
     }
     return errors;
 }

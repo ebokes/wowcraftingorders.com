@@ -16,19 +16,12 @@ export default function Home() {
     const { data: listings, error } = useSWR(`/${context.region}/${context.realm}/items`);
 
     let connectedRealms;
-    switch (context.region) {
-        case REGIONS.US: {
-            connectedRealms = US_CONNECTED_REALMS.find((connectedRealmList: string[]) => connectedRealmList.includes(context.realm))
-            break;
-        }
-        // TODO: TypeScript bug is causing this to mark as unreachable https://youtrack.jetbrains.com/issue/WEB-37894
-        case REGIONS.EU: {
-            connectedRealms = EU_CONNECTED_REALMS.find((connectedRealmList: string[]) => connectedRealmList.includes(context.realm))
-            break;
-        }
-        default: {
-            throw new Error(`Invalid region: ${context.region}`);
-        }
+    if (context.region === REGIONS.US) {
+        connectedRealms = US_CONNECTED_REALMS.find((connectedRealmList: string[]) => connectedRealmList.includes(context.realm))
+    } else if (context.region === REGIONS.EU) {
+        connectedRealms = EU_CONNECTED_REALMS.find((connectedRealmList: string[]) => connectedRealmList.includes(context.realm))
+    } else {
+        throw new Error(`Invalid region: ${context.region}`);
     }
 
     return (

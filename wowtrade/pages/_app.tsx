@@ -7,7 +7,7 @@ import Script from "next/script";
 import { SWRConfig } from "swr";
 import CustomNavbar from "../components/CustomNavbar";
 import Container from "react-bootstrap/Container";
-import { SessionProvider } from "next-auth/react"
+import { SessionContextValue, SessionProvider } from "next-auth/react"
 import { createContext, useState } from "react";
 import { REGIONS } from "../data/regions";
 import { US_REALMS } from "../data/realms";
@@ -30,9 +30,30 @@ export const RegionRealmContext = createContext({
     },
 })
 
+// TODO: Should properly type the Session object here
+export const updateListingTimestamps = async (session: SessionContextValue<boolean> | { readonly data: null, readonly status: "loading" }, region: string) => {
+    const PING_INTERVAL = 1000 * 60; // Ping every minute
+    const ping = async () => {
+        fetch(`${ROOT_URL}/${region}/ping`, {
+            method: "GET",
+            headers: {
+                // @ts-ignore
+                "Authorization": `Bearer ${session.data.accessToken}`
+            }
+        }).catch();
+    }
+    // @ts-ignore
+    if (session && session.status === "authenticated") {
+        ping().catch();
+        const interval = setInterval(ping, PING_INTERVAL);
+        return () => clearInterval(interval);
+    }
+}
+
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     const [realm, setRealm] = useState(US_REALMS[0]);
     const [region, setRegion] = useState(REGIONS.US);
+
     return <div
         style={{ height: "fit-content" }}>
         <style global jsx>{`

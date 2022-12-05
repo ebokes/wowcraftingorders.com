@@ -102,6 +102,20 @@ export const getListingsForItem = async (region: string, realm: string, itemId: 
     });
 }
 
+/**
+ * Update each of the provided listings' timestamps to the current timestamp.
+ * @param listings
+ */
+export const updateListingTimestamps = async (listings: Listing[]) => {
+    const db = admin.firestore();
+    const batch = db.batch();
+    listings.forEach((listing) => {
+        const ref = db.collection(LISTINGS_COLLECTION).doc(listing.id);
+        batch.update(ref, { timestampSeconds: Date.now() / 1000 });
+    });
+    await batch.commit();
+}
+
 export const getCharacterListings = async (characters: Character[]): Promise<Listing[]> => {
     const db = admin.firestore();
     const listings: Listing[] = [];

@@ -63,9 +63,9 @@ export function ListingView({
 
     let deltaTimeText;
     if (!timeText.length) {
-        deltaTimeText = "Posted just now.";
+        deltaTimeText = "Last active just now.";
     } else {
-        deltaTimeText = "Posted " + timeText.join(" ") + " ago.";
+        deltaTimeText = "Last active " + timeText.join(" ") + " ago.";
     }
 
     return <div className={"bg-black text-white"}>
@@ -93,8 +93,7 @@ export function ListingView({
                 </span>)}
             </p>}
         {<div style={{ position: "absolute", bottom: "20px", right: "20px" }}>
-            {postTimestamp && deltaTimeText !== "Posted ago." && <p className={"mb-0"}>{deltaTimeText}</p>}
-            {postTimestamp && deltaTimeText === "Posted ago." && <p className={"mb-0"}>Posted just now.</p>}
+            <p className={"mb-0"}>{deltaTimeText}</p>
         </div>}
         {includeDelete && deleteUserListing && <div style={{ position: "absolute", bottom: "20px", left: "20px" }}>
             <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>

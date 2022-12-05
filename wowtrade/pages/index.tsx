@@ -2,16 +2,18 @@ import Head from 'next/head'
 import { useContext, useEffect } from "react";
 import ListingsList from "../components/ListingsList";
 import { Form } from "react-bootstrap";
-import { RegionRealmContext } from "./_app";
+import { RegionRealmContext, updateListingTimestamps } from "./_app";
 import { SetRegionRealmView } from "../components/SetRealms";
 import Link from "next/link";
 import useSWR from "swr";
 import { refreshWowheadLinks } from "../utils/wowhead";
 import { REGIONS } from "../data/regions";
 import { EU_CONNECTED_REALMS, US_CONNECTED_REALMS } from "../data/realms";
+import { useSession } from "next-auth/react";
 
 export default function Home() {
     const context = useContext(RegionRealmContext);
+    const session = useSession();
     useEffect(refreshWowheadLinks, [context.region, context.realm]);
     const { data: listings, error } = useSWR(`/${context.region}/${context.realm}/items`);
 
@@ -23,6 +25,10 @@ export default function Home() {
     } else {
         throw new Error(`Invalid region: ${context.region}`);
     }
+
+    useEffect(() => {
+        updateListingTimestamps(session, context.region).catch();
+    }, [session])
 
     return (
         <div>

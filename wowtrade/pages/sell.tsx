@@ -2,7 +2,7 @@ import { Button, Col, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { Listing, ListingPayload, ReagentStack } from "../types/types";
-import { RegionRealmContext, ROOT_URL } from "./_app";
+import { RegionRealmContext, ROOT_URL, updateListingTimestamps } from "./_app";
 import { signIn, useSession } from "next-auth/react";
 import { SetRegionRealmView } from "../components/SetRealms";
 import Script from "next/script";
@@ -14,6 +14,10 @@ export default function Sell() {
     const session = useSession();
     const context = useContext(RegionRealmContext);
     const [userListings, setUserListings] = useState<Listing[] | undefined>(undefined);
+
+    useEffect(() => {
+        updateListingTimestamps(session, context.region).catch();
+    }, [session])
 
     // Form input
     // TODO: Should probably model the state as an actual payload object

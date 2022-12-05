@@ -1,6 +1,6 @@
 import { signIn, useSession } from "next-auth/react";
 import { useContext, useEffect, useState } from "react";
-import { RegionRealmContext, ROOT_URL } from "./_app";
+import { RegionRealmContext, ROOT_URL, updateListingTimestamps } from "./_app";
 import { Listing } from "../types/types";
 import ListingsList from "../components/ListingsList";
 import Link from "next/link";
@@ -10,6 +10,10 @@ export default function MyListings() {
     const session = useSession();
     const context = useContext(RegionRealmContext);
     const [listings, setListings] = useState<Listing[] | undefined>();
+
+    useEffect(() => {
+        updateListingTimestamps(session, context.region).catch();
+    }, [session])
 
     // Retrieve listings for user
     useEffect(() => {

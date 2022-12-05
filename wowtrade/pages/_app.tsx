@@ -7,8 +7,8 @@ import Script from "next/script";
 import { SWRConfig } from "swr";
 import CustomNavbar from "../components/CustomNavbar";
 import Container from "react-bootstrap/Container";
-import { SessionProvider } from "next-auth/react"
-import { createContext, useEffect, useState } from "react";
+import { SessionContextValue, SessionProvider } from "next-auth/react"
+import { createContext, useState } from "react";
 import { REGIONS } from "../data/regions";
 import { US_REALMS } from "../data/realms";
 
@@ -30,29 +30,30 @@ export const RegionRealmContext = createContext({
     },
 })
 
+// TODO: Should properly type the Session object here
+export const updateListingTimestamps = async (session: SessionContextValue<boolean> | { readonly data: null, readonly status: "loading" }, region: string) => {
+    const ping = async () => {
+        console.log("Pinging...");
+        fetch(`${ROOT_URL}/${region}/ping`, {
+            method: "GET",
+            headers: {
+                // @ts-ignore
+                "Authorization": `Bearer ${session.data.accessToken}`
+            }
+        }).catch();
+    }
+    console.log("session: ", session);
+    // @ts-ignore
+    if (session && session.status === "authenticated") {
+        ping().catch();
+        const interval = setInterval(ping, 20000);
+        return () => clearInterval(interval);
+    }
+}
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     const [realm, setRealm] = useState(US_REALMS[0]);
     const [region, setRegion] = useState(REGIONS.US);
-
-    // If authenticated, hit ping endpoint once per minute to refresh timestamps on your listings
-    useEffect(() => {
-        const ping = async () => {
-            console.log("Pinging...");
-            fetch(`${ROOT_URL}/${region}/ping`, {
-                method: "GET",
-                headers: {
-                    "Authorization": `Bearer ${session.data.accessToken}`
-                }
-            }).catch();
-        }
-        console.log("session: ", session);
-        if (session && session.status === "authenticated") {
-            ping().catch();
-            const interval = setInterval(ping, 20000);
-            return () => clearInterval(interval);
-        }
-    }, [session]);
 
     return <div
         style={{ height: "fit-content" }}>

@@ -8,7 +8,7 @@ import { SWRConfig } from "swr";
 import CustomNavbar from "../components/CustomNavbar";
 import Container from "react-bootstrap/Container";
 import { SessionProvider } from "next-auth/react"
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { REGIONS } from "../data/regions";
 import { US_REALMS } from "../data/realms";
 
@@ -30,9 +30,26 @@ export const RegionRealmContext = createContext({
     },
 })
 
+
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     const [realm, setRealm] = useState(US_REALMS[0]);
     const [region, setRegion] = useState(REGIONS.US);
+
+    // If authenticated, hit ping endpoint once per minute to refresh timestamps on your listings
+    useEffect(() => {
+        if (session.status === "authenticated") {
+            const interval = setInterval(() => {
+                fetch(`${ROOT_URL}/${region}/ping`, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": `Bearer ${session.data.accessToken}`
+                    }
+                }).catch();
+            }, 60000);
+            return () => clearInterval(interval);
+        }
+    }, []);
+
     return <div
         style={{ height: "fit-content" }}>
         <style global jsx>{`

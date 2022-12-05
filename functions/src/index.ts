@@ -20,7 +20,8 @@ import {
     getListingsForItem,
     getListingsFromRealm,
     isDuplicateListing,
-    updateListing
+    updateListing,
+    updateListingTimestamps
 } from "./persistence";
 import * as timeout from "connect-timeout";
 
@@ -188,6 +189,25 @@ app.get("/:region/:realm/item/:id", async (request, response) => {
             const listings = await getListingsForItem(request.params.region, request.params.realm, parseInt(request.params.id));
             functions.logger.debug(`Successfully retrieved listings for ${request.params.region}/${request.params.realm} w/ Item ID${request.params.id}: ${JSON.stringify(listings)}`);
             return response.send(listings);
+        }
+        default: {
+            return response.sendStatus(405);
+        }
+    }
+});
+
+// Online sellers semi-regularly ping this endpoint, which updates the timestamps on all their listings
+app.get("/:region/ping", ensureAuthenticated, async (request, response) => {
+    switch (request.method) {
+        case "GET": {
+            request.headers["authorization"] = request.headers["authorization"] as string;
+
+            // Get list of all their listings
+            const characters = await getCharacters(request.params.region, request.headers["authorization"]);
+            const listings = await getCharacterListings(characters);
+
+            await updateListingTimestamps(listings);
+            return response.sendStatus(200);
         }
         default: {
             return response.sendStatus(405);

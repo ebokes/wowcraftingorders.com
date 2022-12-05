@@ -63,9 +63,9 @@ export function ListingView({
 
     let deltaTimeText;
     if (!timeText.length) {
-        deltaTimeText = "Posted just now.";
+        deltaTimeText = "Last active just now.";
     } else {
-        deltaTimeText = "Posted " + timeText.join(" ") + " ago.";
+        deltaTimeText = "Last active " + timeText.join(" ") + " ago.";
     }
 
     return <div className={"bg-black text-white"}>

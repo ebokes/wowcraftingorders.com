@@ -46,9 +46,10 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
                 }
             }).catch();
         }
+        console.log("session: ", session);
         if (session && session.status === "authenticated") {
             ping().catch();
-            const interval = setInterval(ping, 2000);
+            const interval = setInterval(ping, 20000);
             return () => clearInterval(interval);
         }
     }, []);

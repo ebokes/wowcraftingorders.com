@@ -37,15 +37,17 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
 
     // If authenticated, hit ping endpoint once per minute to refresh timestamps on your listings
     useEffect(() => {
+        const ping = async () => {
+            fetch(`${ROOT_URL}/${region}/ping`, {
+                method: "GET",
+                headers: {
+                    "Authorization": `Bearer ${session.data.accessToken}`
+                }
+            }).catch();
+        }
         if (session && session.status === "authenticated") {
-            const interval = setInterval(() => {
-                fetch(`${ROOT_URL}/${region}/ping`, {
-                    method: "GET",
-                    headers: {
-                        "Authorization": `Bearer ${session.data.accessToken}`
-                    }
-                }).catch();
-            }, 60000);
+            ping().catch();
+            const interval = setInterval(ping, 2000);
             return () => clearInterval(interval);
         }
     }, []);

@@ -37,7 +37,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
 
     // If authenticated, hit ping endpoint once per minute to refresh timestamps on your listings
     useEffect(() => {
-        if (session.status === "authenticated") {
+        if (session && session.status === "authenticated") {
             const interval = setInterval(() => {
                 fetch(`${ROOT_URL}/${region}/ping`, {
                     method: "GET",

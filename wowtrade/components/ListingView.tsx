@@ -51,13 +51,16 @@ export function ListingView({
     }
 
     const timeText = [];
-    if (differenceInDays(new Date(), postTimestamp) > 0) {
+    const daysDifference = differenceInDays(new Date(), postTimestamp);
+    const hoursDifference = differenceInHours(new Date(), postTimestamp);
+    const minutesDifference = differenceInMinutes(new Date(), postTimestamp);
+    if (daysDifference > 0) {
         timeText.push(`${differenceInDays(new Date(), postTimestamp)}d`);
     }
-    if (differenceInHours(new Date(), postTimestamp) > 0) {
+    if (hoursDifference > 0 && daysDifference < 2) {
         timeText.push(`${differenceInHours(new Date(), postTimestamp) % 24}h`);
     }
-    if (differenceInMinutes(new Date(), postTimestamp) > 0) {
+    if (minutesDifference > 0 && hoursDifference < 4 && daysDifference === 0) {
         timeText.push(`${differenceInMinutes(new Date(), postTimestamp) % 60 % 24}m`);
     }
 

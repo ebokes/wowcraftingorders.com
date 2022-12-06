@@ -78,7 +78,7 @@ export const getSellerListingsForItemController: RequestHandler = async (request
     }
 }
 
-export const updateListingTimestampsController: RequestHandler = async (request, response, next) => {
+export const updateSellerListingTimestampsController: RequestHandler = async (request, response, next) => {
     switch (request.method) {
         case "GET": {
             return updateSellerListingTimestampsService(request, response, next);

@@ -27,7 +27,6 @@ export interface SellerListing extends SellerListingPayload {
 }
 
 export interface BuyerListingPayload {
-    type?: "buyer" | "seller";
     itemId: number; // Item ID
     commission: Commission; // Fine to embed
     quality: "Rank 1" | "Rank 2" | "Rank 3" | "Rank 4" | "Rank 5";

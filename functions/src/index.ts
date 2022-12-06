@@ -9,7 +9,7 @@ import Pino from "express-pino-logger";
 import type { RequestHandler } from "express";
 import * as express from "express";
 import * as timeout from "connect-timeout";
-import { logResponseBody } from "./middleware";
+import { logResponseBody } from "./middleware/middleware";
 
 const pino = Pino()
 
@@ -27,7 +27,7 @@ app.use(cors);
 app.use(pino);
 
 // Routes need to be here in the middleware
-require("./routes/routes");
+require("./routes/sellerRoutes");
 
 app.use(logResponseBody);
 exports.app = functions.region("us-central1").https.onRequest(app);

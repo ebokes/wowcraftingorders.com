@@ -9,7 +9,7 @@ import { ITEMS } from "../data/items";
 import ReactSelect from "react-select";
 import { BAD_WORDS } from "../data/badwords";
 
-export default function Sell() {
+export default function Create() {
 
     const session = useSession();
     const context = useContext(RegionRealmTypeContext);

@@ -21,9 +21,9 @@ export default function BasicNavbar() {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Link href="/" className={"navbar-text me-3"}
-                              style={{ textDecoration: "none" }}>Buy</Link>
-                        <Link href="/sell" className={"navbar-text me-3"}
-                              style={{ textDecoration: "none" }}>Sell</Link>
+                              style={{ textDecoration: "none" }}>Listings</Link>
+                        <Link href="/create" className={"navbar-text me-3"}
+                              style={{ textDecoration: "none" }}>Create a Listing</Link>
                         <Link href="/my-listings" className={"navbar-text me-3"}
                               style={{ textDecoration: "none" }}>My
                             Listings</Link>

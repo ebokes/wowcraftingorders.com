@@ -46,8 +46,9 @@ export default function Home() {
                 <p>WoWCraftingOrders.com connects buyers and sellers of private work orders, especially high-quality
                     ones. Finding skilled crafters can often be complicated, and trade chat doesn't really solve the
                     problem, which is where this site comes in.</p>
-                <p>To buy an item, stay on this page! To list an item, please check out the <Link
-                    href={"/sell"}>Sell</Link> page.</p>
+                <p>You can view listings on this page. To create a listing, either indicating you want to buy an item (a
+                    buy order) or indicating you can craft an item (a sell order) please check out the <Link
+                        href={"/sell"}>Create a Listing</Link> page.</p>
                 <Form style={{ width: "100%" }}>
                     <SetRegionRealmType/>
                 </Form>

@@ -34,7 +34,7 @@ export function SetRegionRealmType() {
         </Col>
         <Col md={4}>
             <Form.Group>
-                <Form.Label>Listings Type</Form.Label>
+                <Form.Label>Are you a buyer or seller?</Form.Label>
                 <Form.Control as={"select"} value={context.type} onChange={(e) => {
                     switch (e.target.value) {
                         case "buyer_listings": {
@@ -55,6 +55,8 @@ export function SetRegionRealmType() {
                     <option value={"buyer_listings"}>I'm a Crafter
                     </option>
                 </Form.Control>
+                <Form.Text muted>Determines whether you're shown listings from crafters (if you're a buyer) or buyers
+                    (if you're a crafter).</Form.Text>
             </Form.Group>
         </Col>
     </Row>

@@ -76,7 +76,7 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
     return <div>
         <Form className="mb-2 mt-0" style={{ width: "100%" }}>
             <Row>
-                <Col md={4}>
+                <Col md={6}>
                     <Form.Group>
                         <Form.Label>Filter by Name</Form.Label>
                         <Form.Control type="text" value={search}
@@ -85,7 +85,7 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
                                       }} placeholder="Item Name"/>
                     </Form.Group>
                 </Col>
-                <Col md={4}>
+                <Col md={3}>
                     <Form.Group>
                         <Form.Label>Sort Method</Form.Label>
                         <Form.Control as={"select"} value={sortMethod}
@@ -98,7 +98,7 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
                         </Form.Control>
                     </Form.Group>
                 </Col>
-                <Col md={4}>
+                <Col md={3}>
                     <Form.Group controlId={"quality"}>
                         <Form.Label>Quality</Form.Label>
                         <Form.Control as={"select"}

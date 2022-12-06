@@ -99,7 +99,7 @@ export default function Create() {
         }
         try {
             console.log(`Sending payload`, payload);
-            const response = await fetch(`${ROOT_URL}/${context.type}`, {
+            const response = await fetch(`${ROOT_URL}/${context.type === "buyer_listings" ? "seller_listings" : "buyer_listings"}`, {
                 method: "POST",
                 mode: "cors",
                 headers: {

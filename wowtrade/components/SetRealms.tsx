@@ -1,13 +1,13 @@
 import { Col, Form, Row } from "react-bootstrap";
 import { EU_REALMS, US_REALMS } from "../data/realms";
 import { useContext } from "react";
-import { RegionRealmContext } from "../pages/_app";
+import { RegionRealmTypeContext } from "../pages/_app";
 import { REGIONS } from "../data/regions";
 
-export function SetRegionRealmView() {
-    const context = useContext(RegionRealmContext);
+export function SetRegionRealmType() {
+    const context = useContext(RegionRealmTypeContext);
     return <Row>
-        <Col>
+        <Col md={4}>
             <Form.Label>Region</Form.Label>
             <Form.Control as="select"
                           value={context.region} onChange={(e) => {
@@ -18,7 +18,7 @@ export function SetRegionRealmView() {
             </Form.Control>
             <Form.Text muted>Currently, only the Americas & Europe are supported.</Form.Text>
         </Col>
-        <Col>
+        <Col md={4}>
             <Form.Label>Realm</Form.Label>
             <Form.Control as="select"
                           value={context.realm} onChange={(e) => {
@@ -31,6 +31,31 @@ export function SetRegionRealmView() {
                     return <option key={realm} value={realm}>{realm}</option>
                 })}
             </Form.Control>
+        </Col>
+        <Col md={4}>
+            <Form.Group>
+                <Form.Label>Listings Type</Form.Label>
+                <Form.Control as={"select"} value={context.type} onChange={(e) => {
+                    switch (e.target.value) {
+                        case "Buyer Listings": {
+                            context.setType("Buyer Listings");
+                            break;
+                        }
+                        case "Seller Listings": {
+                            context.setType("Seller Listings");
+                            break;
+                        }
+                        default: {
+                            throw new Error(`Invalid listings type: ${e.target.value}`);
+                        }
+                    }
+                }}>
+                    <option value={"buyer_listings"}>I'm looking to purchase items (shows listings from crafters)
+                    </option>
+                    <option value={"seller_listings"}>I'm looking to craft items (shows listings from buyers)
+                    </option>
+                </Form.Control>
+            </Form.Group>
         </Col>
     </Row>
 }

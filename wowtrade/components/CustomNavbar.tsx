@@ -4,14 +4,14 @@ import Navbar from 'react-bootstrap/Navbar';
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "react-bootstrap";
 import { useContext } from "react";
-import { RegionRealmContext } from "../pages/_app";
+import { RegionRealmTypeContext } from "../pages/_app";
 import Link from "next/link";
 
 export const RED_COLOR = "#e15b64";
 
 export default function BasicNavbar() {
     const { data: session } = useSession();
-    const context = useContext(RegionRealmContext);
+    const context = useContext(RegionRealmTypeContext);
 
     return (
         <Navbar bg="dark" variant="dark" expand="lg">

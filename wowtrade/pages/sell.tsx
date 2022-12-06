@@ -1,11 +1,10 @@
 import { Button, Col, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
-import { Listing, ListingPayload, ReagentStack } from "../types/types";
-import { RegionRealmContext, ROOT_URL, updateListingTimestamps } from "./_app";
+import { ListingPayload, ReagentStack } from "../types/types";
+import { RegionRealmTypeContext, ROOT_URL, updateListingTimestamps } from "./_app";
 import { signIn, useSession } from "next-auth/react";
-import { SetRegionRealmView } from "../components/SetRealms";
-import Script from "next/script";
+import { SetRegionRealmType } from "../components/SetRealms";
 import { ITEMS } from "../data/items";
 import ReactSelect from "react-select";
 import { BAD_WORDS } from "../data/badwords";
@@ -13,8 +12,7 @@ import { BAD_WORDS } from "../data/badwords";
 export default function Sell() {
 
     const session = useSession();
-    const context = useContext(RegionRealmContext);
-    const [userListings, setUserListings] = useState<Listing[] | undefined>(undefined);
+    const context = useContext(RegionRealmTypeContext);
 
     useEffect(() => {
         updateListingTimestamps(session, context.region).catch();
@@ -101,7 +99,7 @@ export default function Sell() {
         }
         try {
             console.log(`Sending payload`, payload);
-            const response = await fetch(`${ROOT_URL}/listings`, {
+            const response = await fetch(`${ROOT_URL}/${context.type}`, {
                 method: "POST",
                 mode: "cors",
                 headers: {
@@ -112,8 +110,7 @@ export default function Sell() {
                 body: JSON.stringify(updatedPayload)
             });
             if (response.ok) {
-                const responseJson = await response.json();
-                setUserListings(userListings ? [...userListings, responseJson] : [responseJson]);
+                await response.json();
                 setSuccess(true);
             } else {
                 switch (response.status) {
@@ -148,7 +145,7 @@ export default function Sell() {
             <h3>Create a Listing</h3>
             <p>To view your current listings, please use the <Link href={"my-listings"}>My Listings</Link> page.</p>
             <Form style={{ width: "100%" }}>
-                <SetRegionRealmView/>
+                <SetRegionRealmType/>
                 <Row className={"my-3"}>
                     <h4>Seller Details</h4>
                     <Col md={4}>
@@ -367,7 +364,6 @@ export default function Sell() {
             {success && <ListGroup>
                 <ListGroup.Item variant="success">Successfully submitted listing!</ListGroup.Item>
             </ListGroup>}
-            {userListings && <Script strategy={"afterInteractive"}>{`window.$WowheadPower.refreshLinks();`}</Script>}
         </main>
     </div>
 }

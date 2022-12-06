@@ -21,26 +21,31 @@ if (!process.env.NEXT_PUBLIC_VERCEL_ENV || process.env.NEXT_PUBLIC_VERCEL_ENV ==
     ROOT_URL = 'https://us-central1-wowtrade.cloudfunctions.net/app-prod';
 }
 
-export const RegionRealmContext = createContext({
+export const RegionRealmTypeContext = createContext({
     region: REGIONS.US,
     setRegion: (_: string) => {
     },
     realm: US_REALMS[0],
     setRealm: (_: string) => {
     },
+    type: "seller_listings",
+    setType: (_: string) => {
+    }
 })
 
 // TODO: Should properly type the Session object here
 export const updateListingTimestamps = async (session: SessionContextValue<boolean> | { readonly data: null, readonly status: "loading" }, region: string) => {
     const PING_INTERVAL = 1000 * 60; // Ping every minute
     const ping = async () => {
-        fetch(`${ROOT_URL}/${region}/ping`, {
-            method: "GET",
-            headers: {
-                // @ts-ignore
-                "Authorization": `Bearer ${session.data.accessToken}`
-            }
-        }).catch();
+        ["buyer_listings", "seller_listings"].map(listingType => {
+            fetch(`${ROOT_URL}/${region}/${listingType}/ping`, {
+                method: "GET",
+                headers: {
+                    // @ts-ignore
+                    "Authorization": `Bearer ${session.data.accessToken}`
+                }
+            }).catch();
+        })
     }
     // @ts-ignore
     if (session && session.status === "authenticated") {
@@ -53,6 +58,7 @@ export const updateListingTimestamps = async (session: SessionContextValue<boole
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     const [realm, setRealm] = useState(US_REALMS[0]);
     const [region, setRegion] = useState(REGIONS.US);
+    const [type, setType] = useState("seller_listings");
 
     return <div
         style={{ height: "fit-content" }}>
@@ -92,7 +98,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
 
 
         <SessionProvider session={session}>
-            <RegionRealmContext.Provider value={{
+            <RegionRealmTypeContext.Provider value={{
                 region: region,
                 setRegion: (region: string) => {
                     if (region === "us") {
@@ -105,7 +111,14 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
                 }, realm: realm,
                 setRealm: (realm: string) => {
                     setRealm(realm);
+                }, type: type,
+                setType: (type: string) => {
+                    if (type !== "buyer_listings" && type !== "seller_listings") {
+                        throw new Error(`Unrecognized listings type: ${type}`);
+                    }
+                    setType(type);
                 }
+
             }}>
                 <SWRConfig value={{
                     fetcher: (url) => fetch(ROOT_URL + url).then(r => r.json())
@@ -115,7 +128,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
                         <Component {...pageProps} />
                     </Container>
                 </SWRConfig>
-            </RegionRealmContext.Provider>
+            </RegionRealmTypeContext.Provider>
         </SessionProvider>
 
     </div>

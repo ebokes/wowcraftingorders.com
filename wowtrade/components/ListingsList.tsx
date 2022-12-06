@@ -15,6 +15,7 @@ const SORT_TYPES = {
 }
 
 interface Props {
+    type: string;
     listings: Listing[] | undefined;
     error: any;
     setListingsCallback?: (listings: Listing[]) => void;
@@ -23,8 +24,10 @@ interface Props {
 
 /**
  * Generic component for rendering a list of listings along with a search box and selection of sorts and filters.
+ * This generic list inherits the listing type from props rather than from the context, enabling me to mix and
+ * match on the same screen if need be.
  */
-export default function ListingsList({ listings, error, setListingsCallback, includeDelete }: Props) {
+export default function ListingsList({ type, listings, error, setListingsCallback, includeDelete }: Props) {
 
     // Errors shouldn't be fatal, but should be thrown silently and a generic error message should be thrown
     if (error) console.error(error);
@@ -44,7 +47,7 @@ export default function ListingsList({ listings, error, setListingsCallback, inc
         if (!setListingsCallback) throw new Error(`Attempting to delete when no setListingCallback was provided.`);
         setSuccess(false);
         setErrors([]);
-        const response = await fetch(ROOT_URL + `/listings/${id}`, {
+        const response = await fetch(ROOT_URL + `/${type}/${id}`, {
             method: "DELETE",
             headers: {
                 // TODO: Proper way to not need to ignore this is to extend the Session type

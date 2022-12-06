@@ -16,3 +16,4 @@ switch (process.env.APP_ENV) {
 }
 
 export const LISTINGS_COLLECTION = "listings" + COLLECTIONS_SUFFIX;
+export const BUYER_LISTINGS_COLLECTION = "buyer_listings" + COLLECTIONS_SUFFIX;

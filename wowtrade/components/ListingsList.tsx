@@ -75,7 +75,7 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
 
     return <div>
         <Form className="mb-2 mt-0" style={{ width: "100%" }}>
-            <Row className={"my-4"}>
+            <Row>
                 <Col md={8}>
                     <Form.Group>
                         <Form.Label>Filter by Name</Form.Label>

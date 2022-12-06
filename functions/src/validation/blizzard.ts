@@ -16,13 +16,16 @@ const blizzardApiRequest = async (url: string, namespace: string, token: string)
     };
     try {
         const response = await axios.get<BattleNetProfileDataResponse>(url, config);
-        console.log("Response from Blizzard API: " + JSON.stringify(response));
         console.log("Response.data from Blizzard API: " + JSON.stringify(response.data));
         return response.data;
     } catch (error) {
         console.error(`Blizzard API returned error with url ${url} and config ${JSON.stringify(config)}.`);
         console.error(error);
-        return {};
+        return {
+            wow_accounts: {
+                characters: []
+            }
+        };
     }
 }
 

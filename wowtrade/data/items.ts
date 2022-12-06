@@ -1200,11 +1200,8 @@ const EQUIPPABLE_ITEMS: Item[] = [{
 }, {
     "id": 190506, "name": "Primal Molten Spellblade", "itemLevel": 350, reagents: [
         { count: 1, reagent: SPARK_OF_INGENUITY },
-        { count: 50, reagent: PRIMAL_CHAOS },
-        { count: 1, reagent: FIERY_SOUL },
-        { count: 10, reagent: AWAKENED_FIRE },
-        { count: 16, reagent: EARTHSHINE_SCALES },
-        { count: 100, reagent: RESILIENT_LEATHER },
+        { count: 120, reagent: PRIMAL_CHAOS },
+        { count: 17, reagent: PRIMAL_MOLTEN_ALLOY },
     ]
 }, {
     "id": 193512,

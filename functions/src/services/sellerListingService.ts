@@ -16,7 +16,7 @@ import {
 } from "../dto/sellerListingsDto";
 import * as functions from "firebase-functions";
 
-export const saveListingService: RequestHandler = async (request, response) => {
+export const saveSellerListingService: RequestHandler = async (request, response) => {
     request.headers["authorization"] = request.headers["authorization"] as string;
 
     // Payload is missing fields
@@ -48,7 +48,7 @@ export const saveListingService: RequestHandler = async (request, response) => {
     return response.status(201).send(createdItem);
 }
 
-export const updateListingService: RequestHandler = async (request, response) => {
+export const updateSellerListingService: RequestHandler = async (request, response) => {
     request.headers["authorization"] = request.headers["authorization"] as string;
 
     // Payload is missing fields
@@ -77,7 +77,7 @@ export const updateListingService: RequestHandler = async (request, response) =>
     return response.status(200).send(updatedItem);
 }
 
-export const deleteListingService: RequestHandler = async (request, response) => {
+export const deleteSellerListingService: RequestHandler = async (request, response) => {
     request.headers["authorization"] = request.headers["authorization"] as string;
 
     // Retrieve the listing by id
@@ -95,7 +95,7 @@ export const deleteListingService: RequestHandler = async (request, response) =>
     return response.sendStatus(200);
 }
 
-export const getListingsForWowAccountService: RequestHandler = async (request, response) => {
+export const getSellerListingsForWowAccountService: RequestHandler = async (request, response) => {
     request.headers["authorization"] = request.headers["authorization"] as string;
 
     // Get list of characters
@@ -106,19 +106,19 @@ export const getListingsForWowAccountService: RequestHandler = async (request, r
     return response.status(200).send(listings);
 }
 
-export const getListingsForRealmService: RequestHandler = async (request, response) => {
+export const getSellerListingsForRealmService: RequestHandler = async (request, response) => {
     const listings = await getSellerListingsFromRealmDto(request.params.region, request.params.realm);
     functions.logger.debug(`Successfully retrieved listings: ${request.params.region}/${request.params.realm}: ${JSON.stringify(listings)}`);
     return response.status(200).send(listings);
 }
 
-export const getListingsForItemService: RequestHandler = async (request, response) => {
+export const getSellerListingsForItemService: RequestHandler = async (request, response) => {
     const listings = await getSellerListingsForItemDto(request.params.region, request.params.realm, parseInt(request.params.id));
     functions.logger.debug(`Successfully retrieved listings for ${request.params.region}/${request.params.realm} w/ Item ID${request.params.id}: ${JSON.stringify(listings)}`);
     return response.send(listings);
 }
 
-export const updateListingTimestampsService: RequestHandler = async (request, response) => {
+export const updateSellerListingTimestampsService: RequestHandler = async (request, response) => {
     request.headers["authorization"] = request.headers["authorization"] as string;
 
     // Get list of all their listings

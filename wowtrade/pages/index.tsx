@@ -53,7 +53,6 @@ export default function Home() {
                     <SetRegionRealmType/>
                 </Form>
 
-                <h3 className={"mt-4 mb-0"}>Recent Listings</h3>
                 {connectedRealms !== undefined &&
                     <p className={"mb-3"}>Showing listings from connected realms {connectedRealms.join(", ")}.</p>}
                 <ListingsList type={context.type} listings={listings} error={error} includeDelete={false}/>

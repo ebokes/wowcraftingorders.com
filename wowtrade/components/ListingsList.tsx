@@ -120,7 +120,7 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
         {listings && listings.length === 0 && <div>No listings found. Once some are created you'll see them here!</div>}
         {error && <div>Error fetching data. Please refresh and try again.</div>}
 
-        {success && <Alert key={"success"}>Listing deleted successfully.</Alert>}
+        {success && <Alert key={"success"} variant={"success"}>Listing deleted successfully.</Alert>}
         {errors.length > 0 && <div>{errors.map((error) => <Alert key={"danger"}>{error}</Alert>)}</div>}
 
 

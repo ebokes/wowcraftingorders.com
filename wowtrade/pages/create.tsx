@@ -348,14 +348,14 @@ export default function Create() {
                 </Row>
                 <Row className={"my-3"}>
                     <Col md={12}>
-                        <Form.Text>Please verify you've indicated whether you're a buyer or seller, which
-                            determines which type of listing this creates. If you're a buyer, a listing indicating
-                            you'd like to buy the item is created. If you're a crafter, a
-                            listing indicating you can craft the item is created.</Form.Text>
                         <Button disabled={submitting} variant="primary" type="submit" style={{ width: "100%" }}
                                 onClick={handleSubmit}>
                             Submit Listing
                         </Button>
+                        <Form.Text>Please double-check you selected whether you're a buyer or seller, which
+                            determines which type of listing this creates. If you're a buyer, a listing indicating
+                            you'd like to buy the item is created. If you're a crafter, a
+                            listing indicating you can craft the item is created.</Form.Text>
                     </Col>
                 </Row>
             </Form>

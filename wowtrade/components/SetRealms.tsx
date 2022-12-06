@@ -50,9 +50,9 @@ export function SetRegionRealmType() {
                         }
                     }
                 }}>
-                    <option value={"buyer_listings"}>I'm a Buyer (shows listings from crafters)
+                    <option value={"seller_listings"}>I'm a Buyer (shows listings from crafters)
                     </option>
-                    <option value={"seller_listings"}>I'm a Crafter (shows listings from buyers)
+                    <option value={"buyer_listings"}>I'm a Crafter (shows listings from buyers)
                     </option>
                 </Form.Control>
             </Form.Group>

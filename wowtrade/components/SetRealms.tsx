@@ -37,12 +37,12 @@ export function SetRegionRealmType() {
                 <Form.Label>Listings Type</Form.Label>
                 <Form.Control as={"select"} value={context.type} onChange={(e) => {
                     switch (e.target.value) {
-                        case "Buyer Listings": {
-                            context.setType("Buyer Listings");
+                        case "buyer_listings": {
+                            context.setType("buyer_listings");
                             break;
                         }
-                        case "Seller Listings": {
-                            context.setType("Seller Listings");
+                        case "seller_listings": {
+                            context.setType("seller_listings");
                             break;
                         }
                         default: {
@@ -50,9 +50,9 @@ export function SetRegionRealmType() {
                         }
                     }
                 }}>
-                    <option value={"buyer_listings"}>I'm looking to purchase items (shows listings from crafters)
+                    <option value={"buyer_listings"}>I'm a Buyer (shows listings from crafters)
                     </option>
-                    <option value={"seller_listings"}>I'm looking to craft items (shows listings from buyers)
+                    <option value={"seller_listings"}>I'm a Crafter (shows listings from buyers)
                     </option>
                 </Form.Control>
             </Form.Group>

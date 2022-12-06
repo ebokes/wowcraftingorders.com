@@ -28,6 +28,7 @@ app.use(pino);
 
 // Routes need to be here in the middleware
 require("./routes/sellerRoutes");
+require("./routes/buyerRoutes");
 
 app.use(logResponseBody);
 exports.app = functions.region("us-central1").https.onRequest(app);

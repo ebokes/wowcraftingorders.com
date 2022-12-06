@@ -11,6 +11,7 @@ import { SessionContextValue, SessionProvider } from "next-auth/react"
 import { createContext, useState } from "react";
 import { REGIONS } from "../data/regions";
 import { US_REALMS } from "../data/realms";
+import { CookiesProvider, useCookies } from "react-cookie";
 
 export let ROOT_URL: string;
 if (!process.env.NEXT_PUBLIC_VERCEL_ENV || process.env.NEXT_PUBLIC_VERCEL_ENV === 'development') {
@@ -56,9 +57,11 @@ export const updateListingTimestamps = async (session: SessionContextValue<boole
 }
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
-    const [realm, setRealm] = useState(US_REALMS[0]);
-    const [region, setRegion] = useState(REGIONS.US);
-    const [type, setType] = useState("seller_listings");
+    const [cookies, setCookie] = useCookies(["region", "realm", "type"]);
+    const [realm, setRealm] = useState(cookies.realm || US_REALMS[0]);
+    const [region, setRegion] = useState(cookies.region || REGIONS.US);
+    const [type, setType] = useState(cookies.type || "seller_listings");
+
 
     return <div
         style={{ height: "fit-content" }}>
@@ -96,40 +99,45 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
             id={'custom'}>{`var whTooltips = whTooltips || { colorLinks: true, iconizeLinks: true, renameLinks: true};`}</script>
         <Script strategy={"beforeInteractive"} src={'https://wow.zamimg.com/js/tooltips.js'}/>
 
-
-        <SessionProvider session={session}>
-            <RegionRealmTypeContext.Provider value={{
-                region: region,
-                setRegion: (region: string) => {
-                    if (region === "us") {
-                        setRegion(REGIONS.US);
-                    } else if (region === "eu") {
-                        setRegion(REGIONS.EU);
-                    } else {
-                        throw new Error("Unrecognized region " + region);
+        <CookiesProvider>
+            <SessionProvider session={session}>
+                <RegionRealmTypeContext.Provider value={{
+                    region: region,
+                    setRegion: (region: string) => {
+                        if (region === "us") {
+                            setCookie("region", REGIONS.US, { path: "/" });
+                            setRegion(REGIONS.US);
+                        } else if (region === "eu") {
+                            setCookie("region", REGIONS.EU, { path: "/" });
+                            setRegion(REGIONS.EU);
+                        } else {
+                            throw new Error("Unrecognized region " + region);
+                        }
+                    }, realm: realm,
+                    setRealm: (realm: string) => {
+                        setCookie("realm", realm, { path: "/" });
+                        setRealm(realm);
+                    }, type: type,
+                    setType: (type: string) => {
+                        if (type !== "buyer_listings" && type !== "seller_listings") {
+                            throw new Error(`Unrecognized listings type: ${type}`);
+                        }
+                        setCookie("type", type, { path: "/" });
+                        setType(type);
                     }
-                }, realm: realm,
-                setRealm: (realm: string) => {
-                    setRealm(realm);
-                }, type: type,
-                setType: (type: string) => {
-                    if (type !== "buyer_listings" && type !== "seller_listings") {
-                        throw new Error(`Unrecognized listings type: ${type}`);
-                    }
-                    setType(type);
-                }
 
-            }}>
-                <SWRConfig value={{
-                    fetcher: (url) => fetch(ROOT_URL + url).then(r => r.json())
                 }}>
-                    <CustomNavbar/>
-                    <Container>
-                        <Component {...pageProps} />
-                    </Container>
-                </SWRConfig>
-            </RegionRealmTypeContext.Provider>
-        </SessionProvider>
+                    <SWRConfig value={{
+                        fetcher: (url) => fetch(ROOT_URL + url).then(r => r.json())
+                    }}>
+                        <CustomNavbar/>
+                        <Container>
+                            <Component {...pageProps} />
+                        </Container>
+                    </SWRConfig>
+                </RegionRealmTypeContext.Provider>
+            </SessionProvider>
+        </CookiesProvider>
 
     </div>
 }

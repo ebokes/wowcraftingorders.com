@@ -67,12 +67,18 @@ export default function MyListings() {
         <p>The "Last Active" time on your listings will regularly update anytime you are on the site and logged
             into Battle.net.</p>
 
-        <h3>Your Seller Listings (you can craft these items)</h3>
-        <ListingsList type={"seller_listings"} listings={sellerListings} error={undefined} includeDelete={true}
-                      setListingsCallback={setSellerListings}/>
+        {sellerListings && <div>
+            <h3>Your Seller Listings</h3>
+            <p>These are the listings you've indicated you can <i>craft</i>.</p>
+            <ListingsList type={"seller_listings"} listings={sellerListings} error={undefined} includeDelete={true}
+                          setListingsCallback={setSellerListings}/>
+        </div>}
 
-        <h3>Your Buyer Listings (you want to buy these items)</h3>
-        <ListingsList type={"buyer_listings"} listings={buyerListings} error={undefined} includeDelete={true}
-                      setListingsCallback={setBuyerListings}/>
+        {buyerListings && <div><h3>Your Buyer Listings (you want to buy these items)</h3>
+            <p>These are the listings you've indicated you want to <i>buy</i>.</p>
+            <ListingsList type={"buyer_listings"} listings={buyerListings} error={undefined} includeDelete={true}
+                          setListingsCallback={setBuyerListings}/>
+        </div>}
+
     </div>
 }

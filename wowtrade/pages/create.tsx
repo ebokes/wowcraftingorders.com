@@ -282,7 +282,6 @@ export default function Create() {
                                         }
                                     }}>
                                     <option value={"Rank 1"}>Rank 1 (Worst)</option>
-                                    <option value={"Rank 1"}>Rank 1 (Worst)</option>
                                     <option value={"Rank 2"}>Rank 2</option>
                                     <option value={"Rank 3"}>Rank 3</option>
                                     <option value={"Rank 4"}>Rank 4</option>

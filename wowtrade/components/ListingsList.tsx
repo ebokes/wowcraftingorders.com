@@ -117,6 +117,7 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
             </Row>
         </Form>
 
+        <p>Click on an item to view all listings for that item!</p>
         {!listings && !error && <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>}
         {listings && listings.length === 0 && <div>No listings found. Once some are created you'll see them here!</div>}
         {error && <div>Error fetching data. Please refresh and try again.</div>}
@@ -124,7 +125,6 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
         {success && <Alert key={"success"}>Listing deleted successfully.</Alert>}
         {errors.length > 0 && <div>{errors.map((error) => <Alert key={"danger"}>{error}</Alert>)}</div>}
 
-        <p>Click on an item to view all listings for that item!</p>
 
         <Row sm={1} lg={2} xxl={3} className="card-deck pb-5" style={{ height: "fit-content" }}>
             {listings && listings

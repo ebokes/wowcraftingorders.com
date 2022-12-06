@@ -144,7 +144,7 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
                                 minHeight: "100%",
                             }}
                         >
-                            <ListingView key={listing.id} listing={listing} includeItem includeSeller
+                            <ListingView type={type} key={listing.id} listing={listing} includeItem includeSeller
                                          includeDelete={includeDelete}
                                          deleteUserListing={deleteUserListing}/>
                         </Card>

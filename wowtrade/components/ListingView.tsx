@@ -4,9 +4,11 @@ import Link from "next/link";
 import differenceInMinutes from "date-fns/differenceInMinutes";
 import differenceInHours from "date-fns/differenceInHours";
 import differenceInDays from "date-fns/differenceInDays";
+import { ITEMS } from "../data/items";
 
 
 interface Props {
+    type: string;
     listing: Listing;
     deleteUserListing?: (id: string) => void;
     includeItem?: boolean;
@@ -18,6 +20,7 @@ interface Props {
 /**
  * Given a listing, renders it.
  * @param listing
+ * @param type Whether this is a seller_listing or buyer_listing
  * @param deleteUserListing A callback function that deletes the listing.
  * @param includeItem Whether to include a link to the item itself.
  * @param includeSeller Whether to include who's selling it.
@@ -25,6 +28,7 @@ interface Props {
  * @constructor
  */
 export function ListingView({
+                                type,
                                 listing,
                                 deleteUserListing,
                                 includeItem,
@@ -71,14 +75,21 @@ export function ListingView({
         deltaTimeText = "Last active " + timeText.join(" ") + " ago.";
     }
 
+    const item = ITEMS.find(item => item.id === listing.itemId);
+    if (!item) throw new Error("Couldn't find item!");
+
     return <div className={"bg-black text-white"}>
         {includeItem && <b><Link style={{ fontSize: "18px" }}
                                  href={`/item/${listing.itemId}`}
-                                 data-wowhead={`item=${listing.itemId}`}>Loading
-            Tooltip...</Link></b>}
-        {includeSeller && <p className={"m-0"}><b>Seller:</b> {listing.seller.characterName}-{listing.seller.realm}</p>}
-        <p className={"m-0"}><b>Guaranteed Quality: </b>{listing.quality + "/5"}
+                                 data-wowhead={`item=${listing.itemId}`}>{item.name}</Link></b>}
+        {includeSeller && <p className={"m-0"}>
+            <b>{type === "seller_listings" ? "Seller: " : "Buyer: "}</b> {listing.seller.characterName}-{listing.seller.realm}
+        </p>}
+
+        <p className={"m-0"}>
+            <b>{type === "seller_listings" ? "Guaranteed Quality: " : "Desired Quality: "}</b>{listing.quality + "/5"}
         </p>
+
         {listing.details && <p className={"m-0"}><b>{"Details: "}</b>{listing.details}</p>}
 
         <div className={"my-1"}></div>
@@ -92,7 +103,8 @@ export function ListingView({
         {listing.seller.battleNetTag &&
             <p className={"m-0"}><b>Battle.net Tag:</b> {listing.seller.battleNetTag}</p>}
         {!!listing.providedReagents && !!listing.providedReagents.length &&
-            <p className={"m-0"}><b>{"Seller-Provided Reagents: "}</b>
+            <p className={"m-0"}>
+                <b>{type === "seller_listings" ? "Seller-Provided Reagents: " : "Buyer-Provided Reagents: "}</b>
                 {listing.providedReagents.map((reagent, i) => <span key={i}>
                     {reagent.count}{"x "}<Link
                     href={`https://www.wowhead.com/item=${reagent.reagent.itemId}`}></Link>{i !== listing.providedReagents.length - 1 &&

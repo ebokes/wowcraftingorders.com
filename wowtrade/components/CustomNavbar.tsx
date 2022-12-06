@@ -4,14 +4,14 @@ import Navbar from 'react-bootstrap/Navbar';
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "react-bootstrap";
 import { useContext } from "react";
-import { RegionRealmContext } from "../pages/_app";
+import { RegionRealmTypeContext } from "../pages/_app";
 import Link from "next/link";
 
 export const RED_COLOR = "#e15b64";
 
 export default function BasicNavbar() {
     const { data: session } = useSession();
-    const context = useContext(RegionRealmContext);
+    const context = useContext(RegionRealmTypeContext);
 
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
@@ -21,9 +21,9 @@ export default function BasicNavbar() {
                 <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="me-auto">
                         <Link href="/" className={"navbar-text me-3"}
-                              style={{ textDecoration: "none" }}>Buy</Link>
-                        <Link href="/sell" className={"navbar-text me-3"}
-                              style={{ textDecoration: "none" }}>Sell</Link>
+                              style={{ textDecoration: "none" }}>Listings</Link>
+                        <Link href="/create" className={"navbar-text me-3"}
+                              style={{ textDecoration: "none" }}>Create a Listing</Link>
                         <Link href="/my-listings" className={"navbar-text me-3"}
                               style={{ textDecoration: "none" }}>My
                             Listings</Link>

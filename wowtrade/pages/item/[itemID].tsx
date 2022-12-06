@@ -3,15 +3,15 @@ import useSWR from "swr";
 import Image from "next/image";
 import ListingsList from "../../components/ListingsList";
 import { useContext } from "react";
-import { RegionRealmContext } from "../_app";
-import { SetRegionRealmView } from "../../components/SetRealms";
+import { RegionRealmTypeContext } from "../_app";
+import { SetRegionRealmType } from "../../components/SetRealms";
 import Link from "next/link";
 import { ITEMS } from "../../data/items";
 
 export default function itemPage() {
 
     // Hooks
-    const context = useContext(RegionRealmContext);
+    const context = useContext(RegionRealmTypeContext);
     const router = useRouter();
     let { itemID } = router.query;
     const { data: listings, error } = useSWR(`/${context.region}/${context.realm}/item/${itemID}`);
@@ -25,7 +25,7 @@ export default function itemPage() {
     return <div>
         <h3 className={"mt-5"}>Listings for <Link href={`https://www.wowhead.com/item=${itemID}`}>${item.name}</Link>
         </h3>
-        <SetRegionRealmView/>
-        <ListingsList listings={listings} error={error} includeDelete={false}/>
+        <SetRegionRealmType/>
+        <ListingsList type={context.type} listings={listings} error={error} includeDelete={false}/>
     </div>
 }

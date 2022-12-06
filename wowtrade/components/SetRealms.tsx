@@ -1,13 +1,13 @@
 import { Col, Form, Row } from "react-bootstrap";
 import { EU_REALMS, US_REALMS } from "../data/realms";
 import { useContext } from "react";
-import { RegionRealmContext } from "../pages/_app";
+import { RegionRealmTypeContext } from "../pages/_app";
 import { REGIONS } from "../data/regions";
 
-export function SetRegionRealmView() {
-    const context = useContext(RegionRealmContext);
+export function SetRegionRealmType() {
+    const context = useContext(RegionRealmTypeContext);
     return <Row>
-        <Col>
+        <Col md={4}>
             <Form.Label>Region</Form.Label>
             <Form.Control as="select"
                           value={context.region} onChange={(e) => {
@@ -18,7 +18,7 @@ export function SetRegionRealmView() {
             </Form.Control>
             <Form.Text muted>Currently, only the Americas & Europe are supported.</Form.Text>
         </Col>
-        <Col>
+        <Col md={4}>
             <Form.Label>Realm</Form.Label>
             <Form.Control as="select"
                           value={context.realm} onChange={(e) => {
@@ -31,6 +31,33 @@ export function SetRegionRealmView() {
                     return <option key={realm} value={realm}>{realm}</option>
                 })}
             </Form.Control>
+        </Col>
+        <Col md={4}>
+            <Form.Group>
+                <Form.Label>Are you a buyer or seller?</Form.Label>
+                <Form.Control as={"select"} value={context.type} onChange={(e) => {
+                    switch (e.target.value) {
+                        case "buyer_listings": {
+                            context.setType("buyer_listings");
+                            break;
+                        }
+                        case "seller_listings": {
+                            context.setType("seller_listings");
+                            break;
+                        }
+                        default: {
+                            throw new Error(`Invalid listings type: ${e.target.value}`);
+                        }
+                    }
+                }}>
+                    <option value={"seller_listings"}>I'm a Buyer
+                    </option>
+                    <option value={"buyer_listings"}>I'm a Crafter
+                    </option>
+                </Form.Control>
+                <Form.Text muted>Determines whether you're shown listings from crafters (if you're a buyer) or buyers
+                    (if you're a crafter).</Form.Text>
+            </Form.Group>
         </Col>
     </Row>
 }

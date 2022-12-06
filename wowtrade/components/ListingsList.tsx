@@ -15,6 +15,7 @@ const SORT_TYPES = {
 }
 
 interface Props {
+    type: string;
     listings: Listing[] | undefined;
     error: any;
     setListingsCallback?: (listings: Listing[]) => void;
@@ -23,8 +24,10 @@ interface Props {
 
 /**
  * Generic component for rendering a list of listings along with a search box and selection of sorts and filters.
+ * This generic list inherits the listing type from props rather than from the context, enabling me to mix and
+ * match on the same screen if need be.
  */
-export default function ListingsList({ listings, error, setListingsCallback, includeDelete }: Props) {
+export default function ListingsList({ type, listings, error, setListingsCallback, includeDelete }: Props) {
 
     // Errors shouldn't be fatal, but should be thrown silently and a generic error message should be thrown
     if (error) console.error(error);
@@ -44,7 +47,7 @@ export default function ListingsList({ listings, error, setListingsCallback, inc
         if (!setListingsCallback) throw new Error(`Attempting to delete when no setListingCallback was provided.`);
         setSuccess(false);
         setErrors([]);
-        const response = await fetch(ROOT_URL + `/listings/${id}`, {
+        const response = await fetch(ROOT_URL + `/${type}/${id}`, {
             method: "DELETE",
             headers: {
                 // TODO: Proper way to not need to ignore this is to extend the Session type
@@ -72,8 +75,8 @@ export default function ListingsList({ listings, error, setListingsCallback, inc
 
     return <div>
         <Form className="mb-2 mt-0" style={{ width: "100%" }}>
-            <Row className={"my-4"}>
-                <Col md={8}>
+            <Row>
+                <Col md={6}>
                     <Form.Group>
                         <Form.Label>Filter by Name</Form.Label>
                         <Form.Control type="text" value={search}
@@ -82,7 +85,7 @@ export default function ListingsList({ listings, error, setListingsCallback, inc
                                       }} placeholder="Item Name"/>
                     </Form.Group>
                 </Col>
-                <Col md={4}>
+                <Col md={3}>
                     <Form.Group>
                         <Form.Label>Sort Method</Form.Label>
                         <Form.Control as={"select"} value={sortMethod}
@@ -95,11 +98,9 @@ export default function ListingsList({ listings, error, setListingsCallback, inc
                         </Form.Control>
                     </Form.Group>
                 </Col>
-            </Row>
-            <Row>
-                <Col md={12}>
+                <Col md={3}>
                     <Form.Group controlId={"quality"}>
-                        <Form.Label>Minimum Quality</Form.Label>
+                        <Form.Label>Quality</Form.Label>
                         <Form.Control as={"select"}
                                       onChange={(e) => setQuality(e.target.value)}>
                             <option value={"All"}>All</option>
@@ -114,6 +115,7 @@ export default function ListingsList({ listings, error, setListingsCallback, inc
             </Row>
         </Form>
 
+        <p>Click on an item to view all listings for that item!</p>
         {!listings && !error && <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>}
         {listings && listings.length === 0 && <div>No listings found. Once some are created you'll see them here!</div>}
         {error && <div>Error fetching data. Please refresh and try again.</div>}
@@ -121,7 +123,6 @@ export default function ListingsList({ listings, error, setListingsCallback, inc
         {success && <Alert key={"success"}>Listing deleted successfully.</Alert>}
         {errors.length > 0 && <div>{errors.map((error) => <Alert key={"danger"}>{error}</Alert>)}</div>}
 
-        <p>Click on an item to view all listings for that item!</p>
 
         <Row sm={1} lg={2} xxl={3} className="card-deck pb-5" style={{ height: "fit-content" }}>
             {listings && listings
@@ -141,7 +142,7 @@ export default function ListingsList({ listings, error, setListingsCallback, inc
                                 minHeight: "100%",
                             }}
                         >
-                            <ListingView key={listing.id} listing={listing} includeItem includeSeller
+                            <ListingView type={type} key={listing.id} listing={listing} includeItem includeSeller
                                          includeDelete={includeDelete}
                                          deleteUserListing={deleteUserListing}/>
                         </Card>

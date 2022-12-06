@@ -1,35 +1,19 @@
 import * as admin from "firebase-admin";
-import { Character, Listing, ListingPayload } from "./types";
-import { EU_CONNECTED_REALMS, US_CONNECTED_REALMS } from "./data/realms";
-import { REGIONS } from "./data/regions";
+import { Character, SellerListing, SellerListingPayload } from "../types/types";
+import { EU_CONNECTED_REALMS, US_CONNECTED_REALMS } from "../data/realms";
+import { REGIONS } from "../data/regions";
 import * as functions from "firebase-functions";
+import { LISTINGS_COLLECTION } from "./common";
 
-let COLLECTIONS_SUFFIX;
-switch (process.env.APP_ENV) {
-    case undefined:
-    case "development":
-    case "test": {
-        COLLECTIONS_SUFFIX = "_test";
-        break;
-    }
-    case "production": {
-        COLLECTIONS_SUFFIX = "_prod";
-        break;
-    }
-    default: {
-        throw new Error(`Unknown environment: ${process.env.APP_ENV}`);
-    }
-}
 
-const LISTINGS_COLLECTION = "listings" + COLLECTIONS_SUFFIX;
-export const getListings = async () => {
+export const getSellerListingsDto = async () => {
     const db = admin.firestore();
     return (await db.collection(LISTINGS_COLLECTION).get()).docs.map((doc) => {
-        return { id: doc.id, ...doc.data() } as Listing;
+        return { id: doc.id, ...doc.data() } as SellerListing;
     });
 };
 
-export const getListingsFromRealm = async (region: string, realm: string): Promise<Listing[]> => {
+export const getSellerListingsFromRealmDto = async (region: string, realm: string): Promise<SellerListing[]> => {
     const db = admin.firestore();
 
     let realmsToQuery;
@@ -64,41 +48,41 @@ export const getListingsFromRealm = async (region: string, realm: string): Promi
     return (await db.collection(LISTINGS_COLLECTION)
         .where("seller.region", "==", region)
         .where("seller.realm", "in", realmsToQuery).get()).docs.map((doc) => {
-        return { id: doc.id, ...doc.data() } as Listing;
+        return { id: doc.id, ...doc.data() } as SellerListing;
     });
 }
 
-export const getListing = async (listingId: string): Promise<Listing | undefined> => {
+export const getSellerListingDto = async (listingId: string): Promise<SellerListing | undefined> => {
     const db = admin.firestore();
     const doc = await db.collection(LISTINGS_COLLECTION).doc(listingId).get();
-    return { id: doc.id, ...doc.data() } as Listing;
+    return { id: doc.id, ...doc.data() } as SellerListing;
 }
 
-export const deleteListing = async (listingId: string) => {
+export const deleteSellerListingDto = async (listingId: string) => {
     const db = admin.firestore();
     return db.collection(LISTINGS_COLLECTION).doc(listingId).delete();
 }
 
 // TODO: Could be slightly cleaned up
-export const addListing = async (listing: ListingPayload): Promise<Listing> => {
+export const addSellerListingDto = async (listing: SellerListingPayload): Promise<SellerListing> => {
     const db = admin.firestore();
     const data = await db.collection(LISTINGS_COLLECTION).add({ ...listing, timestampSeconds: Date.now() / 1000 });
-    return { id: data.id, timestampSeconds: Date.now() / 1000, ...listing } as Listing;
+    return { id: data.id, timestampSeconds: Date.now() / 1000, ...listing } as SellerListing;
 };
 
-export const updateListing = async (id: string, payload: ListingPayload): Promise<Listing> => {
+export const updateSellerListingDto = async (id: string, payload: SellerListingPayload): Promise<SellerListing> => {
     const db = admin.firestore();
     await db.collection(LISTINGS_COLLECTION).doc(id).update({
         ...payload,
         timestampSeconds: Date.now() / 1000
     });
-    return { id, timestampSeconds: Date.now() / 1000, ...payload } as Listing;
+    return { id, timestampSeconds: Date.now() / 1000, ...payload } as SellerListing;
 }
 
-export const getListingsForItem = async (region: string, realm: string, itemId: number): Promise<Listing[]> => {
+export const getSellerListingsForItemDto = async (region: string, realm: string, itemId: number): Promise<SellerListing[]> => {
     const db = admin.firestore();
     return (await db.collection(LISTINGS_COLLECTION).where("seller.region", "==", region).where("seller.realm", "==", realm).where("itemId", "==", itemId).get()).docs.map((doc) => {
-        return { id: doc.id, ...doc.data() } as Listing;
+        return { id: doc.id, ...doc.data() } as SellerListing;
     });
 }
 
@@ -106,7 +90,7 @@ export const getListingsForItem = async (region: string, realm: string, itemId: 
  * Update each of the provided listings' timestamps to the current timestamp.
  * @param listings
  */
-export const updateListingTimestamps = async (listings: Listing[]) => {
+export const updateSellerListingTimestamps = async (listings: SellerListing[]) => {
     const db = admin.firestore();
     const batch = db.batch();
     listings.forEach((listing) => {
@@ -116,9 +100,9 @@ export const updateListingTimestamps = async (listings: Listing[]) => {
     await batch.commit();
 }
 
-export const getCharacterListings = async (characters: Character[]): Promise<Listing[]> => {
+export const getSellerListingsForCharactersDto = async (characters: Character[]): Promise<SellerListing[]> => {
     const db = admin.firestore();
-    const listings: Listing[] = [];
+    const listings: SellerListing[] = [];
     for (const character of characters) {
         const matchingListings = await db.collection(LISTINGS_COLLECTION)
             .where("seller.region", "==", character.region)
@@ -126,13 +110,13 @@ export const getCharacterListings = async (characters: Character[]): Promise<Lis
             .where("seller.characterName", "==", character.characterName)
             .get();
         listings.push(...matchingListings.docs.map((doc) => {
-            return { id: doc.id, ...doc.data() } as Listing;
+            return { id: doc.id, ...doc.data() } as SellerListing;
         }));
     }
     return listings;
 }
 
-export const isDuplicateListing = async (listing: ListingPayload) => {
+export const isDuplicateSellerListing = async (listing: SellerListingPayload) => {
     const db = admin.firestore();
     const listings = await db.collection(LISTINGS_COLLECTION)
         .where("seller.region", "==", listing.seller.region)

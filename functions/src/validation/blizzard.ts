@@ -1,5 +1,6 @@
 import axios from "axios";
-import { BattleNetProfileDataResponse, BNetCharacter, Character } from "../types";
+import { Character } from "../types/types";
+import { BattleNetProfileDataResponse, BNetCharacter } from "../types/blizzard_types";
 
 const blizzardApiRequest = async (url: string, namespace: string, token: string): Promise<BattleNetProfileDataResponse | object> => {
     console.log("Requesting Blizzard API with url: " + url);

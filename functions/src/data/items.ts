@@ -1,4 +1,4 @@
-import { Item } from "../types";
+import { Item } from "../types/types";
 import {
     ADAMANT_SCALES,
     AIRY_SOUL,

@@ -35,7 +35,7 @@ export const RegionRealmTypeContext = createContext({
 
 // TODO: Should properly type the Session object here
 export const updateListingTimestamps = async (session: SessionContextValue<boolean> | { readonly data: null, readonly status: "loading" }, region: string) => {
-    const PING_INTERVAL = 1000 * 60; // Ping every minute
+    const PING_INTERVAL = 1000 * 60 * 2; // Ping every two minutes
     const ping = async () => {
         ["buyer_listings", "seller_listings"].map(listingType => {
             fetch(`${ROOT_URL}/${region}/${listingType}/ping`, {

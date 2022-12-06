@@ -1,4 +1,4 @@
-import { ListingPayload } from "../types/types";
+import { SellerListingPayload } from "../types/types";
 import Ajv, { JSONSchemaType } from "ajv";
 import { CustomError } from "../validation/common";
 import { BAD_WORDS } from "../data/badwords";
@@ -7,7 +7,7 @@ const ajv = new Ajv({ allErrors: true });
 
 require("ajv-errors")(ajv, { singleError: true });
 
-export const ListingSchema: JSONSchemaType<ListingPayload> = {
+export const SellerListingPayloadSchema: JSONSchemaType<SellerListingPayload> = {
     type: "object",
     properties: {
         itemId: { type: "number", minimum: 0 },
@@ -83,13 +83,13 @@ export const ListingSchema: JSONSchemaType<ListingPayload> = {
     }
 };
 
-const validateListingSchema = (payload: ListingPayload): CustomError[] => {
-    const validate = ajv.compile(ListingSchema);
+const validateSellerListingSchema = (payload: SellerListingPayload): CustomError[] => {
+    const validate = ajv.compile(SellerListingPayloadSchema);
     validate(payload);
     if (!validate.errors) return [];
     return validate.errors.map(error => ({ message: error.message })) as CustomError[];
 }
-const validateListingBusiness = (payload: ListingPayload): CustomError[] => {
+const validateSellerListingBusiness = (payload: SellerListingPayload): CustomError[] => {
     const errors: CustomError[] = [];
     if (!payload.commission.gold && !payload.commission.silver && !payload.commission.copper) {
         errors.push({ message: "Commission must be nonzero." });
@@ -102,8 +102,8 @@ const validateListingBusiness = (payload: ListingPayload): CustomError[] => {
     return errors;
 }
 
-export const validateListing = (payload: ListingPayload): CustomError[] => {
-    const schemaErrors = validateListingSchema(payload);
-    const businessErrors = validateListingBusiness(payload);
+export const validateSellerListing = (payload: SellerListingPayload): CustomError[] => {
+    const schemaErrors = validateSellerListingSchema(payload);
+    const businessErrors = validateSellerListingBusiness(payload);
     return schemaErrors.concat(businessErrors);
 }

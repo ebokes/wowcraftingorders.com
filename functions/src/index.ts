@@ -5,11 +5,13 @@
 // Needs to happen before persistence layer gets imported
 import { initializeApp } from "firebase-admin/app";
 import * as functions from "firebase-functions";
-
+import Pino from "express-pino-logger";
 import type { RequestHandler } from "express";
 import * as express from "express";
 import * as timeout from "connect-timeout";
-import { logRequest, logResponseBody } from "./middleware";
+import { logResponseBody } from "./middleware";
+
+const pino = Pino()
 
 initializeApp(functions.config().firebase);
 
@@ -22,7 +24,7 @@ export const app = express();
 app.use(timeout(15000));
 app.use(haltOnTimedOut);
 app.use(cors);
-app.use(logRequest);
+app.use(pino);
 
 // Routes need to be here in the middleware
 require("./routes/routes");

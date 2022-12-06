@@ -12,7 +12,7 @@ import {
 /**
  * This file defines the "controllers" for the app, which are the functions that take a request and return a response.
  */
-export const saveListingController: RequestHandler = async (request, response, next) => {
+export const saveSellerListingController: RequestHandler = async (request, response, next) => {
     switch (request.method) {
         case "POST": {
             return saveListingService(request, response, next);
@@ -23,7 +23,7 @@ export const saveListingController: RequestHandler = async (request, response, n
     }
 };
 
-export const updateListingController: RequestHandler = async (request, response, next) => {
+export const updateSellerListingController: RequestHandler = async (request, response, next) => {
     switch (request.method) {
         case "PUT": {
             return updateListingService(request, response, next);
@@ -34,7 +34,7 @@ export const updateListingController: RequestHandler = async (request, response,
     }
 };
 
-export const deleteListingController: RequestHandler = async (request, response, next) => {
+export const deleteSellerListingController: RequestHandler = async (request, response, next) => {
     switch (request.method) {
         case "DELETE": {
             return deleteListingService(request, response, next);
@@ -45,7 +45,7 @@ export const deleteListingController: RequestHandler = async (request, response,
     }
 }
 
-export const getListingsForWowAccountController: RequestHandler = async (request, response, next) => {
+export const getSellerListingsForWowAccountController: RequestHandler = async (request, response, next) => {
     switch (request.method) {
         case "GET": {
             return getListingsForWowAccountService(request, response, next);
@@ -56,7 +56,7 @@ export const getListingsForWowAccountController: RequestHandler = async (request
     }
 }
 
-export const getItemsForRealmController: RequestHandler = async (request, response, next) => {
+export const getSellerListingsForRealmController: RequestHandler = async (request, response, next) => {
     switch (request.method) {
         case "GET": {
             return getListingsForRealmService(request, response, next);
@@ -67,7 +67,7 @@ export const getItemsForRealmController: RequestHandler = async (request, respon
     }
 }
 
-export const getListingsForItemController: RequestHandler = async (request, response, next) => {
+export const getSellerListingsForItemController: RequestHandler = async (request, response, next) => {
     switch (request.method) {
         case "GET": {
             return getListingsForItemService(request, response, next);

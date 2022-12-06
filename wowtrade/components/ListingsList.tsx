@@ -76,7 +76,7 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
     return <div>
         <Form className="mb-2 mt-0" style={{ width: "100%" }}>
             <Row>
-                <Col md={8}>
+                <Col md={4}>
                     <Form.Group>
                         <Form.Label>Filter by Name</Form.Label>
                         <Form.Control type="text" value={search}
@@ -98,11 +98,9 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
                         </Form.Control>
                     </Form.Group>
                 </Col>
-            </Row>
-            <Row>
-                <Col md={12}>
+                <Col md={4}>
                     <Form.Group controlId={"quality"}>
-                        <Form.Label>Minimum Quality</Form.Label>
+                        <Form.Label>Quality</Form.Label>
                         <Form.Control as={"select"}
                                       onChange={(e) => setQuality(e.target.value)}>
                             <option value={"All"}>All</option>

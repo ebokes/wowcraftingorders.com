@@ -15,9 +15,6 @@ const blizzardApiRequest = async (url: string, namespace: string, token: string)
         }
     };
     const response = await axios.get<BattleNetProfileDataResponse>(url, config);
-    if (response.status !== 200) {
-        console.error(`Blizzard API returned status code ${response.status} with config ${JSON.stringify(config)}. Full response object: ${JSON.stringify(response)}`);
-    }
     console.log("Response from Blizzard API: " + JSON.stringify(response.data));
     return response.data;
 }

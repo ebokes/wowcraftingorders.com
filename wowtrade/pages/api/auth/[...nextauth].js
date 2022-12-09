@@ -34,10 +34,7 @@ export const authOptions = {
 
 const tokenIsValid = async (token) => {
     const response = await fetch(`https://oauth.battle.net/oauth/check_token?token=${token}`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
+        method: 'POST'
     })
 
     return response.ok;

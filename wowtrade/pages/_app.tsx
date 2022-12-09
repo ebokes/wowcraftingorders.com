@@ -7,7 +7,7 @@ import Script from "next/script";
 import { SWRConfig } from "swr";
 import CustomNavbar from "../components/CustomNavbar";
 import Container from "react-bootstrap/Container";
-import { SessionContextValue, SessionProvider } from "next-auth/react"
+import { SessionContextValue, SessionProvider, signOut } from "next-auth/react"
 import { createContext, useState } from "react";
 import { REGIONS } from "../data/regions";
 import { US_REALMS } from "../data/realms";
@@ -45,7 +45,15 @@ export const updateListingTimestamps = async (session: SessionContextValue<boole
                     // @ts-ignore
                     "Authorization": `Bearer ${session.data.accessToken}`
                 }
-            }).catch();
+            }).then(response => {
+                if (response.status !== 200) {
+                    switch (response.status) {
+                        case 401: {
+                            signOut();
+                        }
+                    }
+                }
+            }).catch(e => console.error(e));
         })
     }
     // @ts-ignore

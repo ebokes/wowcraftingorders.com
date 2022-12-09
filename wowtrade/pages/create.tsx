@@ -3,7 +3,7 @@ import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { ListingPayload, ReagentStack } from "../types/types";
 import { RegionRealmTypeContext, ROOT_URL, updateListingTimestamps } from "./_app";
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { SetRegionRealmType } from "../components/SetRealms";
 import { ITEMS } from "../data/items";
 import ReactSelect from "react-select";
@@ -116,10 +116,7 @@ export default function Create() {
                 switch (response.status) {
                     case 400: // Error messages sent alongside with more detail
                     case 401: {
-                        const body = await response.json();
-                        setErrors(
-                            body.map((error: any) => error.message)
-                        );
+                        await signOut();
                         break;
                     }
                     case 409: {

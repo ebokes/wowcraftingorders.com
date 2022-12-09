@@ -1,4 +1,4 @@
-import { signIn, useSession } from "next-auth/react";
+import { signIn, signOut, useSession } from "next-auth/react";
 import { useContext, useEffect, useState } from "react";
 import { RegionRealmTypeContext, ROOT_URL, updateListingTimestamps } from "./_app";
 import { Listing } from "../types/types";
@@ -20,15 +20,27 @@ export default function MyListings() {
     useEffect(() => {
         const fetchData = async () => {
             if (!session.data) return;
-            const listings = await fetch(`${ROOT_URL}/${context.region}/buyer_listings`, {
-                method: "GET",
-                headers: {
-                    // TODO: Proper way to not need to ignore this is to extend the Session type
-                    // @ts-ignore
-                    "Authorization": `Bearer ${session.data.accessToken}`
+            try {
+                const listings = await fetch(`${ROOT_URL}/${context.region}/buyer_listings`, {
+                    method: "GET",
+                    headers: {
+                        // TODO: Proper way to not need to ignore this is to extend the Session type
+                        // @ts-ignore
+                        "Authorization": `Bearer ${session.data.accessToken}`
+                    }
+                })
+                if (!listings.ok) {
+                    switch (listings.status) {
+                        case 401: {
+                            await signOut();
+                        }
+                    }
                 }
-            })
-            setBuyerListings(await listings.json());
+                setBuyerListings(await listings.json());
+            } catch (err) {
+                console.error(err);
+            }
+
         }
 
         fetchData().catch();
@@ -37,15 +49,26 @@ export default function MyListings() {
     useEffect(() => {
         const fetchData = async () => {
             if (!session.data) return;
-            const listings = await fetch(`${ROOT_URL}/${context.region}/seller_listings`, {
-                method: "GET",
-                headers: {
-                    // TODO: Proper way to not need to ignore this is to extend the Session type
-                    // @ts-ignore
-                    "Authorization": `Bearer ${session.data.accessToken}`
+            try {
+                const listings = await fetch(`${ROOT_URL}/${context.region}/seller_listings`, {
+                    method: "GET",
+                    headers: {
+                        // TODO: Proper way to not need to ignore this is to extend the Session type
+                        // @ts-ignore
+                        "Authorization": `Bearer ${session.data.accessToken}`
+                    }
+                })
+                if (!listings.ok) {
+                    switch (listings.status) {
+                        case 401: {
+                            await signOut();
+                        }
+                    }
                 }
-            })
-            setSellerListings(await listings.json());
+                setSellerListings(await listings.json());
+            } catch (err) {
+                console.error(err);
+            }
         }
 
         fetchData().catch();

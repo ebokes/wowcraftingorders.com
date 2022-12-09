@@ -26,18 +26,9 @@ export const authOptions = {
             // Send properties to the client, like an access_token from a provider.
             session.accessToken = token.accessToken
             session.token = token;
-            if (!(await tokenIsValid(session.token))) return null;
             return session
         }
     }
-}
-
-const tokenIsValid = async (token) => {
-    const response = await fetch(`https://oauth.battle.net/oauth/check_token?token=${token}`, {
-        method: 'POST'
-    })
-
-    return response.ok;
 }
 
 export default NextAuth(authOptions)

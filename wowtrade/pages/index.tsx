@@ -32,6 +32,8 @@ export default function Home() {
         updateListingTimestamps(session, context.region).catch();
     }, [session])
 
+    console.log("session:", session);
+
     return (
         <div>
             <Head>

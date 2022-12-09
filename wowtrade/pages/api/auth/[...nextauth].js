@@ -16,7 +16,11 @@ export const authOptions = {
     callbacks: {
         async jwt({token, account}) {
             // Persist the OAuth access_token to the token right after signin
+            console.log("token: ", token);
+            console.log("account: ", account);
             if (account) {
+                // const response = await fetch(`oauth.battle.net/oauth/check_token`,
+                //     method: 'POST',)
                 token.account = account;
                 token.accessToken = account.access_token
             }

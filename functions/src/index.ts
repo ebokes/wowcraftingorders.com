@@ -6,10 +6,11 @@
 import { initializeApp } from "firebase-admin/app";
 import * as functions from "firebase-functions";
 import Pino from "express-pino-logger";
-import type { RequestHandler } from "express";
+import type { ErrorRequestHandler, RequestHandler } from "express";
 import * as express from "express";
 import * as timeout from "connect-timeout";
 import { logResponseBody } from "./middleware/middleware";
+import { Blizzard401Error } from "./validation/blizzard";
 
 const pino = Pino()
 
@@ -30,5 +31,20 @@ app.use(pino);
 require("./routes/sellerRoutes");
 require("./routes/buyerRoutes");
 
+
 app.use(logResponseBody);
+
+// Catch and handle certain errors
+const errorHandler: ErrorRequestHandler = (err, req, res) => {
+    if (err) {
+        if (err instanceof Blizzard401Error) {
+            functions.logger.debug("Outdated Blizzard OAuth token. Full error: ", err);
+            res.sendStatus(401);
+        }
+        functions.logger.error(err);
+        res.sendStatus(500);
+    }
+};
+app.use(errorHandler)
+
 exports.app = functions.region("us-central1").https.onRequest(app);

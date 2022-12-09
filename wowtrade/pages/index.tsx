@@ -31,8 +31,8 @@ export default function Home() {
     console.log("session: ", session);
 
     useEffect(() => {
-        updateListingTimestamps(session, context.region).catch();
-    }, [session])
+        updateListingTimestamps(session, context.region).catch(e => console.error(e));
+    }, [session, context.region])
 
     return (
         <div>

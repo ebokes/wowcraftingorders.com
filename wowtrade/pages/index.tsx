@@ -28,6 +28,8 @@ export default function Home() {
         throw new Error(`Invalid region: ${context.region}`);
     }
 
+    console.log("session: ", session);
+
     useEffect(() => {
         updateListingTimestamps(session, context.region).catch();
     }, [session])

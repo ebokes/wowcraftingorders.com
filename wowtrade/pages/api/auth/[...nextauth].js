@@ -34,6 +34,7 @@ export const authOptions = {
     }
 }
 
+// Looking to see that it's valid in at least one region
 const tokenIsValid = async (token) => {
     const promises = ["us", "eu"].map(region => {
         return fetch(`https://oauth.battle.net/oauth/check_token?token=${token}&region=${region}`, {
@@ -45,7 +46,9 @@ const tokenIsValid = async (token) => {
         })
     });
 
+    console.log(promises);
     const responses = await Promise.all(promises);
+    console.log(responses);
     return responses.any(response => response.status === 200);
 }
 

@@ -37,7 +37,7 @@ export const authOptions = {
 // Looking to see that it's valid in at least one region
 const tokenIsValid = async (token) => {
     const promises = ["us", "eu"].map(region => {
-        return fetch(`https://oauth.battle.net/oauth/check_token?token=${token}&region=${region}`, {
+        return fetch(`https://${region}.battle.net/oauth/check_token?token=${token}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

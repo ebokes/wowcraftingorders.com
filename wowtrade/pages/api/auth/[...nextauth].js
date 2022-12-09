@@ -26,28 +26,21 @@ export const authOptions = {
             // Send properties to the client, like an access_token from a provider.
             session.accessToken = token.accessToken
             session.token = token;
-            // if (!await tokenIsValid(session.token)) return null;
+            if (!(await tokenIsValid(session.token))) return null;
             return session
         }
     }
 }
 
-// Looking to see that it's valid in at least one region
-// const tokenIsValid = async (token) => {
-//     const promises = ["us", "eu"].map(region => {
-//         return fetch(`https://${region}.battle.net/oauth/check_token?token=${token}`, {
-//             method: 'POST',
-//             headers: {
-//                 'Content-Type': 'application/json',
-//                 'Authorization': `Bearer ${token}`
-//             },
-//         })
-//     });
-//
-//     console.log(promises);
-//     const responses = await Promise.all(promises);
-//     console.log(responses);
-//     return responses.any(response => response.status === 200);
-// }
+const tokenIsValid = async (token) => {
+    const response = await fetch(`https://oauth.battle.net/oauth/check_token?token=${token}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    })
+
+    return response.ok;
+}
 
 export default NextAuth(authOptions)

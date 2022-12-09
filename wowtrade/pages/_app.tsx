@@ -37,7 +37,8 @@ export const RegionRealmTypeContext = createContext({
 // TODO: Should properly type the Session object here
 export const updateListingTimestamps = async (session: SessionContextValue<boolean> | { readonly data: null, readonly status: "loading" }, region: string) => {
     const PING_INTERVAL = 1000 * 60 * 2; // Ping every two minutes
-    const ping = async () => {
+    const ping = async (session: SessionContextValue<boolean> | { readonly data: null, readonly status: "loading" }) => {
+        if (session.status !== "authenticated") return;
         ["buyer_listings", "seller_listings"].map(listingType => {
             fetch(`${ROOT_URL}/${region}/${listingType}/ping`, {
                 method: "GET",
@@ -56,12 +57,9 @@ export const updateListingTimestamps = async (session: SessionContextValue<boole
             }).catch(e => console.error(e));
         })
     }
-    // @ts-ignore
-    if (session && session.status === "authenticated") {
-        ping().catch();
-        const interval = setInterval(ping, PING_INTERVAL);
-        return () => clearInterval(interval);
-    }
+
+    const interval = setInterval(() => ping(session), PING_INTERVAL);
+    return () => clearInterval(interval);
 }
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {

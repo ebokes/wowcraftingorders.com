@@ -8,7 +8,7 @@ export class Blizzard401Error extends Error {
     }
 }
 
-const blizzardApiRequest = async (url: string, namespace: string, token: string, region: string): Promise<BattleNetProfileDataResponse | object> => {
+const blizzardApiRequest = async (url: string, namespace: string, token: string, region: string): Promise<BattleNetProfileDataResponse> => {
     console.log("Requesting Blizzard API with url: " + url);
     const config = {
         headers: {
@@ -25,7 +25,7 @@ const blizzardApiRequest = async (url: string, namespace: string, token: string,
         console.log("Response from Blizzard API: " + JSON.stringify(response.data));
         return response.data;
     } catch (error) {
-        if (axios.isAxiosError(error) && (error as AxiosError).status === 401) {
+        if (axios.isAxiosError(error) && (error as AxiosError).response?.status === 401) {
             throw new Blizzard401Error();
         }
         throw error;

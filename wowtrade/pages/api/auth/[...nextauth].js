@@ -16,8 +16,6 @@ export const authOptions = {
     callbacks: {
         async jwt({token, account}) {
             // Persist the OAuth access_token to the token right after signin
-            console.log("token: ", token);
-            console.log("account: ", account);
             if (account) {
                 // const response = await fetch(`oauth.battle.net/oauth/check_token`,
                 //     method: 'POST',)
@@ -30,9 +28,25 @@ export const authOptions = {
             // Send properties to the client, like an access_token from a provider.
             session.accessToken = token.accessToken
             session.token = token;
+            if (!await tokenIsValid(session.token)) return null;
             return session
         }
     }
+}
+
+const tokenIsValid = async (token) => {
+    const promises = ["us", "eu"].map(region => {
+        return fetch(`https://oauth.battle.net/oauth/check_token?token=${token}&region=${region}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
+            },
+        })
+    });
+
+    const responses = await Promise.all(promises);
+    return responses.any(response => response.status === 200);
 }
 
 export default NextAuth(authOptions)

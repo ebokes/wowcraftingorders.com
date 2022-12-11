@@ -93,10 +93,17 @@ export const getSellerListingsForItemDto = async (region: string, realm: string,
 export const updateSellerListingTimestamps = async (listings: SellerListing[]) => {
     const db = admin.firestore();
     const batch = db.batch();
-    listings.forEach((listing) => {
+    const promises = listings.map(async (listing) => {
         const ref = db.collection(LISTINGS_COLLECTION).doc(listing.id);
-        batch.update(ref, { timestampSeconds: Date.now() / 1000 });
+
+        // If timestamp is at least five minutes ago, update
+        const data = (await ref.get()).data() as SellerListing;
+        if (data.timestampSeconds < (Date.now() / 1000) - 300) {
+            batch.update(ref, { timestampSeconds: Date.now() / 1000 });
+        }
     });
+
+    await Promise.all(promises);
     await batch.commit();
 }
 

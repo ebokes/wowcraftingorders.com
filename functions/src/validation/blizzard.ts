@@ -9,7 +9,6 @@ export class Blizzard401Error extends Error {
 }
 
 const blizzardApiRequest = async (url: string, namespace: string, token: string, region: string): Promise<BattleNetProfileDataResponse> => {
-    console.log("Requesting Blizzard API with url: " + url);
     const config = {
         headers: {
             "Authorization": token,
@@ -21,6 +20,7 @@ const blizzardApiRequest = async (url: string, namespace: string, token: string,
         }
     };
     try {
+        console.log(`Requesting Blizzard API with url ${url} and config ${JSON.stringify(config)}.`);
         const response = await axios.get<BattleNetProfileDataResponse>(url, config);
         console.log("Response from Blizzard API: " + JSON.stringify(response.data));
         return response.data;

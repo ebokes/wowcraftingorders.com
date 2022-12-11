@@ -35,7 +35,7 @@ require("./routes/buyerRoutes");
 app.use(logResponseBody);
 
 // Catch and handle certain errors
-const errorHandler: ErrorRequestHandler = (err, req, res) => {
+const errorHandler: ErrorRequestHandler = (err, req, res, _) => {
     if (err) {
         if (err instanceof Blizzard401Error) {
             functions.logger.debug("Outdated Blizzard OAuth token. Full error: ", err);

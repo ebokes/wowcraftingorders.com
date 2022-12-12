@@ -2,6 +2,7 @@ import { RequestHandler } from "express";
 import * as functions from "firebase-functions";
 import axios from "axios";
 
+const tokenStatusCodeIsValid = (statusCode: number) => statusCode >= 200 && statusCode < 300;
 export const ensureAuthenticated: RequestHandler = async (request, response, next) => {
     if (!request.headers["authorization"]) {
         functions.logger.error(`Missing authorization header on request to url ${request.url}`);
@@ -14,14 +15,9 @@ export const ensureAuthenticated: RequestHandler = async (request, response, nex
             token: AUTH_TOKEN,
         }
     });
-    if (checkTokenResponse.status !== 200) {
-        functions.logger.warn(`Token check returned status ${checkTokenResponse.status} with reason ${checkTokenResponse.data.reason}`);
-        if (checkTokenResponse.status === 401 || checkTokenResponse.status === 403) {
-            functions.logger.warn(`Authorization error checking token.`);
-            return response.sendStatus(401);
-        }
-        functions.logger.error(`Unknown error checking token.`);
-        return response.sendStatus(500);
+    if (!tokenStatusCodeIsValid(checkTokenResponse.status)) {
+        functions.logger.warn(`Received authorization error code ${checkTokenResponse.status} with reason ${checkTokenResponse.data.reason} while checking token.`);
+        return response.sendStatus(401);
     }
     return next();
 }

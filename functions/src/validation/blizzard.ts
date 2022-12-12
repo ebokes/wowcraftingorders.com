@@ -1,6 +1,7 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { Character } from "../types/types";
 import { BattleNetProfileDataResponse, BNetCharacter } from "../types/blizzard_types";
+import { REGIONS } from "../data/regions";
 
 export class Blizzard401Error extends Error {
     constructor() {
@@ -16,20 +17,13 @@ const blizzardApiRequest = async (url: string, namespace: string, token: string,
         },
         params: {
             "namespace": `${namespace}`,
-            "locale": region === "us" ? "en_US" : "en_GB",
+            "locale": region === REGIONS.US ? "en_US" : "en_GB",
         }
     };
-    try {
-        console.log(`Requesting Blizzard API with url ${url} and config ${JSON.stringify(config)}.`);
-        const response = await axios.get<BattleNetProfileDataResponse>(url, config);
-        console.log("Response from Blizzard API: " + JSON.stringify(response.data));
-        return response.data;
-    } catch (error) {
-        if (axios.isAxiosError(error) && (error as AxiosError).response?.status === 401) {
-            throw new Blizzard401Error();
-        }
-        throw error;
-    }
+    console.log(`Requesting Blizzard API with url ${url} and config ${JSON.stringify(config)}.`);
+    const response = await axios.get<BattleNetProfileDataResponse>(url, config);
+    console.log("Response from Blizzard API: " + JSON.stringify(response.data));
+    return response.data;
 }
 
 export const getCharacters = async (region: string, token: string): Promise<Character[]> => {

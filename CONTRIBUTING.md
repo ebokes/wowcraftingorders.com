@@ -3,15 +3,20 @@
 You can do a few things to contribute:
 
 1. **Create issues.** Create issues for bugs you find or features you'd like to see. Please follow the issues guidelines
-   found below.
+   found below. You can propose just about anything through an issue.
 2. **Create pull requests.** Assign yourself to an issue you're working on and create a pull request when you're done.
    Please follow the pull request guidelines found below.
+3. Be part of the discussion in the Discord: https://discord.gg/WYJa6uCbSd
 
 ## Onboarding
 
 If you plan to contribute to this project, please send Kal#0963 a ping on Discord with a brief overview of your
-development background (not mandatory) to get read-only access to a few important tools:
+development background (not required, just something I'd like to know) as well as your GitHub username to get read-only
+access to a few things:
 
+- **GitHub.** I'll add you as a collaborator to the repo, which will allow you to create branches and pull requests
+  without needing to fork. I have the CODEOWNERS file and permissions set up such that a review from me is necessary to
+  merge in - more people can be added to that file at a later point.
 - **Firebase.** This can be useful for logs, database entries, and so on.
 - **Vercel.** This is our Continuous Deployment solution, and can be useful for diagnosing build failures and details
   regarding the deployment workflow.

@@ -122,11 +122,9 @@ export const getBuyerListingsForItemService: RequestHandler = async (request, re
 export const updateBuyerListingTimestampsService: RequestHandler = async (request, response) => {
     request.headers["authorization"] = request.headers["authorization"] as string;
 
-    // Get list of all their listings
-    const characters = await getCharacters(request.params.region, request.headers["authorization"]);
-    const listings = await getBuyerListingsForCharactersDto(characters);
-
     try {
+        const characters = await getCharacters(request.params.region, request.headers["authorization"]);
+        const listings = await getBuyerListingsForCharactersDto(characters);
         await updateBuyerListingTimestamps(listings);
         return response.sendStatus(200);
     } catch (err) {

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Character } from "../types/types";
-import { BattleNetProfileDataResponse, BNetCharacter } from "../types/blizzard_types";
+import { BattleNetProfileDataResponse } from "../types/blizzard_types";
 import { REGIONS } from "../data/regions";
 
 export class Blizzard401Error extends Error {
@@ -34,9 +34,6 @@ export const getCharacters = async (region: string, token: string): Promise<Char
 }
 
 export const ownsCharacter = async (region: string, realm: string, characterName: string, token: string): Promise<boolean> => {
-    const data = await blizzardApiRequest(`https://${region}.api.blizzard.com/profile/user/wow`, `profile-${region}`, token, region) as BattleNetProfileDataResponse;
-    const charactersInRealm = data["wow_accounts"]
-        .reduce((acc: any, curr: any) => acc.concat(curr.characters), [])
-        .filter((character: BNetCharacter) => character.realm.name.toLowerCase() === realm.toLowerCase() && character.name.toLowerCase() === characterName.toLowerCase());
-    return charactersInRealm.length !== 0;
+    const characters = await getCharacters(region, token);
+    return characters.some(character => character.region === region && character.realm === realm && character.characterName === characterName);
 }

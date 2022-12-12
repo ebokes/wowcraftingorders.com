@@ -78,7 +78,7 @@ export function ListingView({
     const item = ITEMS.find(item => item.id === listing.itemId);
     if (!item) throw new Error("Couldn't find item!");
 
-    return <div className={"bg-black text-white m-1 p-3 border border-primary rounded"}
+    return <div className={"bg-black text-white m-1 mb-2 p-3 border border-secondary rounded"}
                 style={{ position: "relative" }}>
         <p className={"m-0"}>{includeItem && <b><Link style={{ fontSize: "18px" }}
                                                       href={`/item/${listing.itemId}`}

@@ -1,5 +1,5 @@
 import { Listing } from "../types/types";
-import { Alert, Card, Col, Form, Row } from "react-bootstrap";
+import { Alert, Col, Form, Row } from "react-bootstrap";
 import { ListingView } from "./ListingView";
 import { useEffect, useState } from "react";
 import { refreshWowheadLinks } from "../utils/wowhead";
@@ -124,29 +124,14 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
         {errors.length > 0 && <div>{errors.map((error) => <Alert key={"danger"}>{error}</Alert>)}</div>}
 
 
-        <Row sm={1} lg={2} xxl={3} className="card-deck pb-5" style={{ height: "fit-content" }}>
+        <Row>
             {listings && listings
                 .filter(filterBySearch(search))
                 .filter(filterByQuality(quality))
                 .map((listing: Listing) => (
-                    <div
-                        key={listing.id}
-                        className="p-2"
-                        style={{ alignItems: "stretch" }}
-                    >
-                        <Card
-                            className={"bg-black text-white"}
-                            style={{
-                                border: "2px gray solid",
-                                padding: "20px",
-                                minHeight: "100%",
-                            }}
-                        >
-                            <ListingView type={type} key={listing.id} listing={listing} includeItem includeSeller
-                                         includeDelete={includeDelete}
-                                         deleteUserListing={deleteUserListing}/>
-                        </Card>
-                    </div>
+                    <ListingView type={type} key={listing.id} listing={listing} includeItem includeSeller
+                                 includeDelete={includeDelete}
+                                 deleteUserListing={deleteUserListing}/>
                 ))}
         </Row>
     </div>

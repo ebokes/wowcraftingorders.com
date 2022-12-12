@@ -14,7 +14,8 @@ export default function itemPage() {
     const context = useContext(RegionRealmTypeContext);
     const router = useRouter();
     let { itemID } = router.query;
-    const { data: listings, error } = useSWR(`/${context.region}/${context.realm}/item/${itemID}`);
+
+    const { data: listings, error } = useSWR(`/${context.region}/${context.realm}/${context.type}/item/${itemID}`);
 
     // Router doesn't generally update until after the first render, so null check is necessary
     if (!itemID) return <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>

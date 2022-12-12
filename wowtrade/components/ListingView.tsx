@@ -100,9 +100,7 @@ export function ListingView({
                 {listing.seller.battleNetTag &&
                     <p className={"m-0"}><b>Battle.net Tag:</b> {listing.seller.battleNetTag}</p>}
                 {includeDelete && deleteUserListing &&
-                    <div style={{ position: "absolute", bottom: "20px", left: "20px" }}>
-                        <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>
-                    </div>}
+                    <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>}
             </Col>
             <Col md={4}>
                 {listing.details && <p className={"m-0"}><b>{"Details: "}</b>{listing.details}</p>}

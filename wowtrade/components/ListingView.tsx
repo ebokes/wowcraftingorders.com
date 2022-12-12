@@ -1,5 +1,5 @@
 import { Listing } from "../types/types";
-import { Button } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import Link from "next/link";
 import differenceInMinutes from "date-fns/differenceInMinutes";
 import differenceInHours from "date-fns/differenceInHours";
@@ -78,45 +78,56 @@ export function ListingView({
     const item = ITEMS.find(item => item.id === listing.itemId);
     if (!item) throw new Error("Couldn't find item!");
 
-    return <div className={"bg-black text-white"}>
-        {includeItem && <b><Link style={{ fontSize: "18px" }}
-                                 href={`/item/${listing.itemId}`}
-                                 data-wowhead={`item=${listing.itemId}`}>{item.name}</Link></b>}
-        {includeSeller && <p className={"m-0"}>
-            <b>{type === "seller_listings" ? "Seller: " : "Buyer: "}</b> {listing.seller.characterName}-{listing.seller.realm}
-        </p>}
+    return <div className={"bg-black text-white m-1 mb-2 p-3 border border-secondary rounded"}
+                style={{ position: "relative" }}>
+        <p className={"m-0"}>{includeItem && <b><Link style={{ fontSize: "18px" }}
+                                                      href={`/item/${listing.itemId}`}
+                                                      data-wowhead={`item=${listing.itemId}`}>{item.name}</Link></b>}</p>
+        <Row>
+            <Col md={4}>
 
-        <p className={"m-0"}>
-            <b>{type === "seller_listings" ? "Guaranteed Quality: " : "Desired Quality: "}</b>{listing.quality + "/5"}
-        </p>
 
-        {listing.details && <p className={"m-0"}><b>{"Details: "}</b>{listing.details}</p>}
+                <p className={"m-0"}>
+                    <b>{type === "seller_listings" ? "Guaranteed Quality: " : "Desired Quality: "}</b>{listing.quality + "/5"}
+                </p>
 
-        <div className={"my-1"}></div>
-
-        <p className={"m-0"}><b>Commission:</b>{" "}
-            {listing.commission.gold}<span style={{ color: "#D4A017" }}><b>g</b></span>{" "}
-            {listing.commission.silver}<span style={{ color: "#909090" }}><b>s</b></span>{" "}
-            {listing.commission.copper}<span style={{ color: "#B87333" }}><b>c</b></span></p>
-        {listing.seller.discordTag &&
-            <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.discordTag}</p>}
-        {listing.seller.battleNetTag &&
-            <p className={"m-0"}><b>Battle.net Tag:</b> {listing.seller.battleNetTag}</p>}
-        {!!listing.providedReagents && !!listing.providedReagents.length &&
-            <p className={"m-0"}>
-                <b>{type === "seller_listings" ? "Seller-Provided Reagents: " : "Buyer-Provided Reagents: "}</b>
-                {listing.providedReagents.map((reagent, i) => <span key={i}>
+                <p className={"m-0"}><b>Commission:</b>{" "}
+                    {listing.commission.gold}<span style={{ color: "#D4A017" }}><b>g</b></span>{" "}
+                    {listing.commission.silver}<span style={{ color: "#909090" }}><b>s</b></span>{" "}
+                    {listing.commission.copper}<span style={{ color: "#B87333" }}><b>c</b></span></p>
+                {listing.seller.discordTag &&
+                    <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.discordTag}</p>}
+                {listing.seller.battleNetTag &&
+                    <p className={"m-0"}><b>Battle.net Tag:</b> {listing.seller.battleNetTag}</p>}
+                {includeDelete && deleteUserListing &&
+                    <div style={{ position: "absolute", bottom: "20px", left: "20px" }}>
+                        <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>
+                    </div>}
+            </Col>
+            <Col md={4}>
+                {listing.details && <p className={"m-0"}><b>{"Details: "}</b>{listing.details}</p>}
+                {!!listing.providedReagents && !!listing.providedReagents.length &&
+                    <p className={"m-0"}>
+                        <b>{type === "seller_listings" ? "Seller-Provided: " : "Buyer-Provided: "}</b>
+                        {listing.providedReagents.map((reagent, i) => <span key={i}>
                     {reagent.count}{"x "}<Link
-                    href={`https://www.wowhead.com/item=${reagent.reagent.itemId}`}></Link>{i !== listing.providedReagents.length - 1 &&
-                    <span>{", "}</span>}
+                            href={`https://www.wowhead.com/item=${reagent.reagent.itemId}`}></Link>{i !== listing.providedReagents.length - 1 &&
+                            <span>{", "}</span>}
                 </span>)}
-            </p>}
-        {<div style={{ position: "absolute", bottom: "20px", right: "20px" }}>
-            <p className={"mb-0"}>{deltaTimeText}</p>
-        </div>}
-        {includeDelete && deleteUserListing && <div style={{ position: "absolute", bottom: "20px", left: "20px" }}>
-            <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>
-        </div>}
-        <div style={{ paddingTop: "50px" }}></div>
+                    </p>}
+                {<div style={{ position: "absolute", top: "20px", right: "20px", textAlign: "right" }}>
+                    <p className={"mb-0"}>{includeSeller && <p className={"m-0"}>
+                        {type === "seller_listings" ? "Seller: " : "Buyer: "}
+                        <b>{listing.seller.characterName}</b>-{listing.seller.realm}
+                    </p>}</p>
+                </div>}
+
+                {<div style={{ position: "absolute", bottom: "20px", right: "20px", textAlign: "right" }}>
+                    <p className={"mb-0"}>{deltaTimeText}</p>
+                </div>}
+
+
+            </Col>
+        </Row>
     </div>
 }

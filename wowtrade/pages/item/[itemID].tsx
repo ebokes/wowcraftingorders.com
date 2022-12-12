@@ -4,7 +4,7 @@ import Image from "next/image";
 import ListingsList from "../../components/ListingsList";
 import { useContext } from "react";
 import { RegionRealmTypeContext } from "../_app";
-import { SetRegionRealmType } from "../../components/SetRealms";
+import { BUYER, SetRegionRealmType } from "../../components/SetRealms";
 import Link from "next/link";
 import { ITEMS } from "../../data/items";
 
@@ -15,7 +15,10 @@ export default function itemPage() {
     const router = useRouter();
     let { itemID } = router.query;
 
-    const { data: listings, error } = useSWR(`/${context.region}/${context.realm}/${context.type}/item/${itemID}`);
+    const {
+        data: listings,
+        error
+    } = useSWR(`/${context.region}/${context.realm}/${context.type === BUYER ? "seller_listings" : "buyer_listings"}/item/${itemID}`);
 
     // Router doesn't generally update until after the first render, so null check is necessary
     if (!itemID) return <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>

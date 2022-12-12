@@ -16,18 +16,39 @@ export interface Commission {
     copper?: number;
 }
 
-export interface ListingPayload {
+export interface SellerListingPayload {
     itemId: number; // Item ID
     commission: Commission; // Fine to embed
     quality: "Rank 1" | "Rank 2" | "Rank 3" | "Rank 4" | "Rank 5";
-    seller: Seller; // TODO: Should probably split off into a disjoint collection
     details?: string;
+    seller: Seller; // TODO: Should probably split off into a disjoint collection
+    providedReagents: ReagentStack[]; // For now, it's all or nothing, but I plan to allow partial filling in the future
+    infusions: Reagent[];
+}
+
+export interface SellerListing extends SellerListingPayload {
+    id: string;
+    timestampSeconds: number;
+}
+
+export interface BuyerListingPayload {
+    itemId: number; // Item ID
+    commission: Commission; // Fine to embed
+    quality: "Rank 1" | "Rank 2" | "Rank 3" | "Rank 4" | "Rank 5";
+    details?: string;
+    seller: Seller; // TODO: Should probably split off into a disjoint collection
     providedReagents: ReagentStack[]; // For now, it's all or nothing, but I plan to allow partial filling in the future
 }
 
-export interface Listing extends ListingPayload {
+export interface BuyerListing extends BuyerListingPayload {
     id: string;
     timestampSeconds: number;
+}
+
+export interface Character {
+    region: string;
+    realm: string;
+    characterName: string;
 }
 
 export interface Item {

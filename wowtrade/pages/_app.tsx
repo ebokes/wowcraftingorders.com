@@ -8,15 +8,17 @@ import { SWRConfig } from "swr";
 import CustomNavbar from "../components/CustomNavbar";
 import Container from "react-bootstrap/Container";
 import { SessionProvider, signOut } from "next-auth/react"
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { REGIONS } from "../data/regions";
 import { US_REALMS } from "../data/realms";
 import { CookiesProvider, useCookies } from "react-cookie";
 import { SESSION_TYPE } from "../types/types";
+import { BUYER, SELLER } from "../components/SetRealms";
 
 export let ROOT_URL: string;
+export const DEV_ROOT_URL = 'http://localhost:5001/wowtrade/us-central1/app';
 if (!process.env.NEXT_PUBLIC_VERCEL_ENV || process.env.NEXT_PUBLIC_VERCEL_ENV === 'development') {
-    ROOT_URL = 'http://localhost:5001/wowtrade/us-central1/app';
+    ROOT_URL = DEV_ROOT_URL; // Override some functionality in other classes during development that needs auth
 } else if (process.env.NEXT_PUBLIC_VERCEL_ENV === 'preview') {
     ROOT_URL = 'https://us-central1-wowtrade.cloudfunctions.net/app-test';
 } else {
@@ -30,7 +32,7 @@ export const RegionRealmTypeContext = createContext({
     realm: US_REALMS[0],
     setRealm: (_: string) => {
     },
-    type: "seller_listings",
+    type: SELLER,
     setType: (_: string) => {
     }
 })
@@ -53,6 +55,8 @@ export const updateListingTimestamps = async (session: SESSION_TYPE, region: str
             if (response.status === 401) {
                 alert("Your Battle.net session has expired. Please log in again.");
                 await signOut();
+            } else if (!response.ok) {
+                console.error("Error pinging listings", response);
             } else {
                 return (await response.json());
             }
@@ -84,9 +88,15 @@ export const updateListingTimestamps = async (session: SESSION_TYPE, region: str
 
 export default function App({ Component, pageProps: { session, ...pageProps } }: AppProps) {
     const [cookies, setCookie] = useCookies(["region", "realm", "type"]);
-    const [realm, setRealm] = useState(cookies.realm || US_REALMS[0]);
-    const [region, setRegion] = useState(cookies.region || REGIONS.US);
-    const [type, setType] = useState(cookies.type || "seller_listings");
+    const [realm, setRealm] = useState(US_REALMS[0]);
+    const [region, setRegion] = useState(REGIONS.US);
+    const [type, setType] = useState(SELLER);
+
+    useEffect(() => {
+        if (cookies.realm) setRealm(cookies.realm);
+        if (cookies.region) setRegion(cookies.region);
+        if (cookies.type) setType(cookies.type);
+    }, []);
 
 
     return <div
@@ -145,7 +155,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
                         setRealm(realm);
                     }, type: type,
                     setType: (type: string) => {
-                        if (type !== "buyer_listings" && type !== "seller_listings") {
+                        if (type !== BUYER && type !== SELLER) {
                             throw new Error(`Unrecognized listings type: ${type}`);
                         }
                         setCookie("type", type, { path: "/" });

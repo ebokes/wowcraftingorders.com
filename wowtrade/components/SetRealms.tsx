@@ -1,11 +1,19 @@
 import { Col, Form, Row } from "react-bootstrap";
 import { EU_REALMS, US_REALMS } from "../data/realms";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { RegionRealmTypeContext } from "../pages/_app";
 import { REGIONS } from "../data/regions";
+import { refreshWowheadLinks } from "../utils/wowhead";
+
+/*
+    Buyer = I'm a buyer, show seller listings and submit buyer listings
+    Seller = I'm a seller, show buyer listings and submit seller listings.
+ */
+export const BUYER = "buyer", SELLER = "seller";
 
 export function SetRegionRealmType() {
     const context = useContext(RegionRealmTypeContext);
+    useEffect(refreshWowheadLinks, [context.region, context.realm, context.type]);
     return <Row>
         <Col md={4}>
             <Form.Label>Region</Form.Label>
@@ -37,12 +45,12 @@ export function SetRegionRealmType() {
                 <Form.Label>Are you a buyer or seller?</Form.Label>
                 <Form.Control as={"select"} value={context.type} onChange={(e) => {
                     switch (e.target.value) {
-                        case "buyer_listings": {
-                            context.setType("buyer_listings");
+                        case BUYER: {
+                            context.setType(BUYER);
                             break;
                         }
-                        case "seller_listings": {
-                            context.setType("seller_listings");
+                        case SELLER: {
+                            context.setType(SELLER);
                             break;
                         }
                         default: {
@@ -50,13 +58,13 @@ export function SetRegionRealmType() {
                         }
                     }
                 }}>
-                    <option value={"seller_listings"}>I'm a Buyer
+                    <option value={BUYER}>I'm a Buyer
                     </option>
-                    <option value={"buyer_listings"}>I'm a Crafter
+                    <option value={SELLER}>I'm a Seller
                     </option>
                 </Form.Control>
-                <Form.Text muted>Determines whether you're shown listings from crafters (if you're a buyer) or buyers
-                    (if you're a crafter).</Form.Text>
+                <Form.Text muted>Determines whether you're shown listings from sellers (if you're a buyer) or buyers
+                    (if you're a seller).</Form.Text>
             </Form.Group>
         </Col>
     </Row>

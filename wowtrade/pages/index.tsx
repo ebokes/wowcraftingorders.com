@@ -3,7 +3,7 @@ import { useContext, useEffect } from "react";
 import ListingsList from "../components/ListingsList";
 import { Form } from "react-bootstrap";
 import { RegionRealmTypeContext, updateListingTimestamps } from "./_app";
-import { SetRegionRealmType } from "../components/SetRealms";
+import { BUYER, SetRegionRealmType } from "../components/SetRealms";
 import Link from "next/link";
 import useSWR from "swr";
 import { refreshWowheadLinks } from "../utils/wowhead";
@@ -15,7 +15,7 @@ export default function Home() {
     const context = useContext(RegionRealmTypeContext);
     const session = useSession();
     useEffect(refreshWowheadLinks, [context.region, context.realm]);
-    const itemsQueryString = `/${context.region}/${context.realm}/${context.type}`;
+    const itemsQueryString = `/${context.region}/${context.realm}/${context.type === BUYER ? "seller_listings" : "buyer_listings"}`;
 
     const { data: listings, error } = useSWR(itemsQueryString);
 
@@ -48,14 +48,15 @@ export default function Home() {
                     problem, which is where this site comes in.</p>
                 <p>You can view listings on this page. To create a listing, either indicating you want to buy an item (a
                     buy order) or indicating you can craft an item (a sell order) please check out the <Link
-                        href={"/sell"}>Create a Listing</Link> page.</p>
+                        href={"/create"}>Create a Listing</Link> page.</p>
                 <Form style={{ width: "100%" }}>
                     <SetRegionRealmType/>
                 </Form>
 
                 {connectedRealms !== undefined &&
                     <p className={"mb-3"}>Showing listings from connected realms {connectedRealms.join(", ")}.</p>}
-                <ListingsList type={context.type} listings={listings} error={error} includeDelete={false}/>
+                <ListingsList type={context.type === BUYER ? "seller_listings" : "buyer_listings"} listings={listings}
+                              error={error} includeDelete={false}/>
             </main>
         </div>
     )

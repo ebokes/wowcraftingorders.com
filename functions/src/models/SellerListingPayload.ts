@@ -12,7 +12,7 @@ export const SellerListingPayloadSchema: JSONSchemaType<SellerListingPayload> = 
     properties: {
         itemId: { type: "number", minimum: 0 },
         quality: { type: "string" },
-        details: { type: "string", nullable: true, minLength: 0, maxLength: 200 },
+        details: { type: "string", nullable: true, minLength: 0, maxLength: 400 },
         commission: {
             type: "object",
             properties: {
@@ -68,13 +68,28 @@ export const SellerListingPayloadSchema: JSONSchemaType<SellerListingPayload> = 
                 },
                 required: ["count", "reagent"],
             }
+        },
+        infusions: {
+            type: "array",
+            items: {
+                type: "object",
+                properties: {
+                    itemId: { type: "number", minimum: 0 },
+                    required: { type: "boolean", nullable: true },
+                    buyerProvides: { type: "boolean", nullable: true },
+                },
+                required: ["itemId"],
+            }
         }
     },
-    required: ["itemId", "commission", "seller", "quality"],
+    required: ["itemId", "commission", "seller", "quality", "infusions"],
     errorMessage: {
         required: {
             itemId: "Item is required.",
             commission: "Commission is required.",
+            buyer: "Buyer is required.",
+            quality: "Quality is required.",
+            infusions: "Infusions are required.",
         },
         properties: {
             itemId: "Item ID must be a number greater than zero.",

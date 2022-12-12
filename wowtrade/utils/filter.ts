@@ -1,5 +1,5 @@
 import { itemFromItemId } from "../data/items";
-import { Listing } from "../types/types";
+import { BuyerListing, SellerListing } from "../types/types";
 
 /**
  * Filter to listings that fit the given search criterion.
@@ -11,7 +11,7 @@ import { Listing } from "../types/types";
  * - If the item name contains the search, return true, otherwise false
  */
 export const filterBySearch = (search: string) => {
-    return (listing: Listing) => {
+    return (listing: BuyerListing | SellerListing) => {
         const fuzzyIncludes = (s1: string, s2: string) => {
             return s1.toLowerCase().replaceAll(" ", "").includes(s2.toLowerCase().replaceAll(" ", ""));
         }
@@ -25,7 +25,7 @@ export const filterBySearch = (search: string) => {
  * @param quality The quality to filter by.
  */
 export const filterByQuality = (quality: string) => {
-    return (listing: Listing) => {
+    return (listing: BuyerListing | SellerListing) => {
         if (quality === "All") return true;
         return listing.quality === quality;
     }

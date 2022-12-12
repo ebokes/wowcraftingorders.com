@@ -1,4 +1,4 @@
-import { Listing } from "../types/types";
+import { BuyerListing, SellerListing } from "../types/types";
 import { Alert, Col, Form, Row } from "react-bootstrap";
 import { ListingView } from "./ListingView";
 import { useEffect, useState } from "react";
@@ -8,6 +8,7 @@ import { dateSort } from "../utils/sort";
 import { filterByQuality, filterBySearch } from "../utils/filter";
 import { ROOT_URL } from "../pages/_app";
 import { signOut, useSession } from "next-auth/react";
+import { BUYER } from "./SetRealms";
 
 
 const SORT_TYPES = {
@@ -15,10 +16,10 @@ const SORT_TYPES = {
 }
 
 interface Props {
-    type: string;
-    listings: Listing[] | undefined;
+    type: string; // This is reversed from the rest of the project, but "buyer" indicates these are buyer listings and "seller" indicates these are seller listings
+    listings: (BuyerListing | SellerListing)[] | undefined;
     error: any;
-    setListingsCallback?: (listings: Listing[]) => void;
+    setListingsCallback?: (listings: (BuyerListing | SellerListing)[]) => void;
     includeDelete: boolean;
 }
 
@@ -47,7 +48,7 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
         if (!setListingsCallback) throw new Error(`Attempting to delete when no setListingCallback was provided.`);
         setSuccess(false);
         setErrors([]);
-        const response = await fetch(ROOT_URL + `/${type}/${id}`, {
+        const response = await fetch(ROOT_URL + `/${type === BUYER ? "buyer_listings" : "seller_listings"}/${id}`, {
             method: "DELETE",
             headers: {
                 // TODO: Proper way to not need to ignore this is to extend the Session type
@@ -55,15 +56,20 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
                 "Authorization": `Bearer ${session.data.accessToken}`
             }
         });
-        if (response.ok) {
-            setSuccess(true);
-            if (listings) setListingsCallback(listings.filter((listing) => listing.id !== id));
-        } else {
-            if (response.status === 401) {
-                alert("Your Battle.net session has expired. Please log in again.");
-                await signOut();
+        if (!response.ok) {
+            switch (response.status) {
+                case 401: {
+                    alert("Your Battle.net session has expired. Please log in again.");
+                    await signOut();
+                    break;
+                }
+                default: {
+                    setErrors(["Unknown error deleting listing. Please try again."])
+                }
             }
-            setErrors(["Error deleting listing. Please try again."])
+        } else {
+            if (listings) setListingsCallback(listings.filter((listing) => listing.id !== id));
+            setSuccess(true);
         }
     }
 
@@ -119,20 +125,21 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
             </Row>
         </Form>
 
-        <p>Click on an item to view all listings for that item!</p>
-        {!listings && !error && <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>}
-        {listings && listings.length === 0 && <div>No listings found. Once some are created you'll see them here!</div>}
-        {error && <div>Error fetching data. Please refresh and try again.</div>}
-
         {success && <Alert key={"success"} variant={"success"}>Listing deleted successfully.</Alert>}
         {errors.length > 0 && <div>{errors.map((error) => <Alert key={"danger"}>{error}</Alert>)}</div>}
 
-
         <Row>
+            <h4>{type === BUYER ? "Buyer Listings" : "Seller Listings"}</h4>
+            {!listings && !error && <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>}p
+            {listings && listings.length === 0 && <div>
+                <p>Click on an item to view all listings for that item!</p>
+                <p>No listings found. Once some are created you'll see them here!</p>
+            </div>}
+            {error && <div>Error fetching data. Please refresh and try again.</div>}
             {listings && listings
                 .filter(filterBySearch(search))
                 .filter(filterByQuality(quality))
-                .map((listing: Listing) => (
+                .map((listing: BuyerListing | SellerListing) => (
                     <ListingView type={type} key={listing.id} listing={listing} includeItem includeSeller
                                  includeDelete={includeDelete}
                                  deleteUserListing={deleteUserListing}/>

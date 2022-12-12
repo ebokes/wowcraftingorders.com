@@ -82,7 +82,7 @@ import {
     WINDSONG_PLUMAGE,
     WRITHEBARK,
     YSEMERALD
-} from "./reagents";
+} from "./reagents/reagents";
 
 export const itemFromItemId = (itemId: number): Item => {
     const item = ITEMS.find(i => i.id === itemId);

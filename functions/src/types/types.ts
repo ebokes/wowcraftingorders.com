@@ -19,6 +19,7 @@ export interface SellerListingPayload {
     details?: string;
     seller: Seller; // TODO: Should probably split off into a disjoint collection
     providedReagents: ReagentStack[]; // For now, it's all or nothing, but I plan to allow partial filling in the future
+    infusions: Reagent[];
 }
 
 export interface SellerListing extends SellerListingPayload {

@@ -1,25 +1,20 @@
-import { Button, Col, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
-import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
-import { ListingPayload, ReagentStack } from "../types/types";
-import { RegionRealmTypeContext, ROOT_URL, updateListingTimestamps } from "./_app";
 import { signIn, signOut, useSession } from "next-auth/react";
-import { SetRegionRealmType } from "../components/SetRealms";
-import { ITEMS } from "../data/items";
-import ReactSelect from "react-select";
+import { useContext, useEffect, useState } from "react";
+import { RegionRealmTypeContext, ROOT_URL } from "./_app";
+import { BuyerListingPayload, SellerListingPayload } from "../types/types";
+import { Button, Col, Form, InputGroup, ListGroup, Row } from "react-bootstrap";
 import { BAD_WORDS } from "../data/badwords";
+import Link from "next/link";
+import { BUYER, SELLER, SetRegionRealmType } from "../components/SetRealms";
+import { INFUSIONS } from "../data/reagents/infusions";
+import { ReagentsView } from "../components/Reagents";
+import { ItemSelectView } from "../components/ItemSelect";
 
-export default function Create() {
-
+export default () => {
     const session = useSession();
     const context = useContext(RegionRealmTypeContext);
 
-    useEffect(() => {
-        updateListingTimestamps(session, context.region).catch();
-    }, [session])
-
-    // Form input
-    let [payload, setPayload] = useState<ListingPayload>({
+    let [payload, setPayload] = useState<BuyerListingPayload | SellerListingPayload>({
         itemId: 0,
         commission: {
             copper: 0,
@@ -32,13 +27,14 @@ export default function Create() {
             realm: context.realm,
             characterName: "",
         },
-        providedReagents: []
+        providedReagents: [],
+        infusions: context.type === SELLER ? INFUSIONS : undefined
     });
+
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [errors, setErrors] = useState<string[]>([]);
     const [success, setSuccess] = useState<boolean>(false);
 
-    // Wowhead tooltips
     useEffect(() => {
         const inlineScript = document.createElement('script');
         inlineScript.innerHTML = 'window.$WowheadPower.refreshLinks();';
@@ -58,7 +54,6 @@ export default function Create() {
             </div>
         );
     }
-
 
     const handleSubmit = async (e: any) => {
         e.preventDefault();
@@ -82,8 +77,8 @@ export default function Create() {
             if (payload.commission.gold === 0 && payload.commission.silver === 0 && payload.commission.copper === 0) {
                 errors.push("Commission must be nonzero.");
             }
-            if (payload.details && payload.details.length > 200) {
-                errors.push("Details must be <= 200 characters.");
+            if (payload.details && payload.details.length > 400) {
+                errors.push("Details must be <= 400 characters.");
             }
             if (BAD_WORDS.find(word => payload.details && payload.details.toLowerCase().includes(word), false)) {
                 errors.push("Please do not use inappropriate language in your additional details.");
@@ -98,7 +93,7 @@ export default function Create() {
         }
         try {
             console.log(`Sending payload`, payload);
-            const response = await fetch(`${ROOT_URL}/${context.type === "buyer_listings" ? "seller_listings" : "buyer_listings"}`, {
+            const response = await fetch(`${ROOT_URL}/${context.type === BUYER ? "buyer_listings" : "seller_listings"}`, {
                 method: "POST",
                 mode: "cors",
                 headers: {
@@ -143,7 +138,7 @@ export default function Create() {
             <p>To view your current listings, please use the <Link href={"my-listings"}>My Listings</Link> page.</p>
             <Form style={{ width: "100%" }}>
                 <SetRegionRealmType/>
-                <Row className={"my-3"}>
+                <Row className={"my-1"}>
                     <h4>Seller Details</h4>
                     <Col md={4}>
                         <Form.Group>
@@ -184,121 +179,57 @@ export default function Create() {
                         </Form.Group>
                     </Col>
                 </Row>
-                <Row className={"my-3"}>
+                <Row className={"my-1"}>
                     <h4>Item Details</h4>
                     <Form.Group>
-                        <Row>
-                            <Col md={4}>
+                        <Row className={"mb-3"}>
+                            <Col md={12}>
                                 <Form.Label>Item</Form.Label>
-                                <ReactSelect
-                                    styles={{
-                                        control: (baseStyles) => ({
-                                            ...baseStyles,
-                                            backgroundColor: "rgb(20, 25, 30)",
-
-                                        }),
-                                        dropdownIndicator: (baseStyles) => ({
-                                            ...baseStyles,
-                                            color: "white"
-                                        }),
-                                        option: (baseStyles) => ({
-                                            ...baseStyles,
-                                            backgroundColor: "rgb(20, 25, 30)",
-                                            color: "white",
-                                            ":hover": {
-                                                backgroundColor: "rgb(40, 45, 50)",
-                                            }
-                                        }),
-                                        menu: (baseStyles) => ({
-                                            ...baseStyles,
-                                            backgroundColor: "rgb(20, 25, 30)"
-                                        }),
-                                        singleValue: (baseStyles) => ({
-                                            ...baseStyles,
-                                            color: "white"
-                                        }),
-                                    }}
-                                    defaultValue={{ value: -1, label: "No Item Selected" }}
-                                    onChange={(newValue) => {
-                                        if (!newValue) return;
-                                        setPayload({ ...payload, itemId: newValue.value })
-                                    }} options={[...ITEMS]
-                                    .sort((a, b) => a.name.localeCompare(b.name))
-                                    .map(item => {
-                                        return {
-                                            value: item.id,
-                                            label: item.name
-                                        }
-                                    })
-                                    .concat([{ value: -1, label: "No Item Selected" }])
-                                }/>
-
+                                <ItemSelectView payload={payload} setPayload={setPayload}/>
                                 {!!payload.itemId &&
-                                    <Link data-wowhead={`https://www.wowhead.com/item=${payload.itemId}`}
-                                          href="#"></Link>}
+                                    <h5 className={"mt-2"}><Link
+                                        data-wowhead={`https://www.wowhead.com/item=${payload.itemId}`}
+                                        href="#"></Link></h5>}
                                 {!!payload.itemId && <div>
-                                    <Form>
-                                        <ul>
-                                            {ITEMS.find(item => item.id === payload.itemId)?.reagents.map(reagent => {
-                                                return <li key={reagent.reagent.itemId}>{reagent.count}{"x "}<Link
-                                                    href={`https://www.wowhead.com/item=${reagent.reagent.itemId}`}></Link>
-                                                    {!!reagent.reagent.buyerProvides &&
-                                                        <span>{" (Buyer-Provided)"}</span>}
-                                                    {!reagent.reagent.buyerProvides &&
-                                                        <Form.Check onChange={() => {
-                                                            payload.providedReagents.find((iterationReagent: ReagentStack) => iterationReagent.reagent.itemId === reagent.reagent.itemId)
-                                                                ? setPayload({
-                                                                    ...payload,
-                                                                    providedReagents: payload.providedReagents.filter((iterationReagent: ReagentStack) => iterationReagent.reagent.itemId !== reagent.reagent.itemId)
-                                                                }) : setPayload({
-                                                                    ...payload,
-                                                                    providedReagents: [
-                                                                        ...payload.providedReagents,
-                                                                        reagent
-                                                                    ]
-                                                                })
-                                                        }} type={"checkbox"}
-                                                                    id={`reagent-${reagent.reagent.itemId}`}
-                                                                    label={"I will provide this!"}/>}
-                                                </li>
-                                            })}
-                                        </ul>
-                                    </Form>
+                                    <ReagentsView payload={payload} setPayload={setPayload}/>
                                 </div>}
-                            </Col>
-                            <Col md={4}>
-                                <Form.Label>Minimum Quality</Form.Label>
-                                <Form.Control
-                                    as={"select"} value={payload.quality}
-                                    onChange={(e) => {
-                                        const value = e.target.value;
-                                        if (value === "Rank 1" || value === "Rank 2" || value === "Rank 3" || value === "Rank 4" || value === "Rank 5") {
-                                            setPayload({ ...payload, quality: value })
-                                        } else {
-                                            throw new Error(`Invalid quality ${e.target.value}`);
-                                        }
-                                    }}>
-                                    <option value={"Rank 1"}>Rank 1 (Worst)</option>
-                                    <option value={"Rank 2"}>Rank 2</option>
-                                    <option value={"Rank 3"}>Rank 3</option>
-                                    <option value={"Rank 4"}>Rank 4</option>
-                                    <option value={"Rank 5"}>Rank 5 (Best)</option>
-                                </Form.Control>
-                            </Col>
-                            <Col md={4}>
-                                <Form.Label>Additional Details</Form.Label>
-                                <Form.Control
-                                    type="text" value={payload.details}
-                                    onChange={(e) => {
-                                        setPayload({ ...payload, details: e.target.value });
-                                    }}/>
-                                <Form.Text muted>Free text field to provide any other information you want
-                                    to. Please be civil.</Form.Text>
                             </Col>
                         </Row>
                     </Form.Group>
                 </Row>
-                <Row className={"my-3"}>
+                <Row className={"my-1"}>
+                    <Col md={6}>
+                        <Form.Label>Minimum Quality</Form.Label>
+                        <Form.Control
+                            as={"select"} value={payload.quality}
+                            onChange={(e) => {
+                                const value = e.target.value;
+                                if (value === "Rank 1" || value === "Rank 2" || value === "Rank 3" || value === "Rank 4" || value === "Rank 5") {
+                                    setPayload({ ...payload, quality: value })
+                                } else {
+                                    throw new Error(`Invalid quality ${e.target.value}`);
+                                }
+                            }}>
+                            <option value={"Rank 1"}>Rank 1 (Worst)</option>
+                            <option value={"Rank 2"}>Rank 2</option>
+                            <option value={"Rank 3"}>Rank 3</option>
+                            <option value={"Rank 4"}>Rank 4</option>
+                            <option value={"Rank 5"}>Rank 5 (Best)</option>
+                        </Form.Control>
+                    </Col>
+                    <Col md={6}>
+                        <Form.Label>Additional Details</Form.Label>
+                        <Form.Control
+                            type="text" value={payload.details}
+                            onChange={(e) => {
+                                setPayload({ ...payload, details: e.target.value });
+                            }}/>
+                        <Form.Text muted>Free text field to provide any other information you want
+                            to, such as your inspiration proc chance or any other benefits that didn't exist on the
+                            form. Please be civil.</Form.Text>
+                    </Col>
+                </Row>
+                <Row className={"my-1"}>
                     <h4>Commission</h4>
                     <Col md={4}>
                         <InputGroup>
@@ -343,7 +274,7 @@ export default function Create() {
                         </InputGroup>
                     </Col>
                 </Row>
-                <Row className={"my-3"}>
+                <Row className={"my-1"}>
                     <Col md={12}>
                         <Button disabled={submitting} variant="primary" type="submit" style={{ width: "100%" }}
                                 onClick={handleSubmit}>
@@ -351,7 +282,7 @@ export default function Create() {
                         </Button>
                         <Form.Text>Please double-check you selected whether you're a buyer or seller, which
                             determines which type of listing this creates. If you're a buyer, a listing indicating
-                            you'd like to buy the item is created. If you're a crafter, a
+                            you'd like to buy the item is created. If you're a seller, a
                             listing indicating you can craft the item is created.</Form.Text>
                     </Col>
                 </Row>

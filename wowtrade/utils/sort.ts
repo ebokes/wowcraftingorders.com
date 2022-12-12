@@ -1,4 +1,4 @@
-import { Listing } from "../types/types";
+import { BuyerListing, SellerListing } from "../types/types";
 import { getTotalValueOfCommission } from "./math";
 
 /**
@@ -6,7 +6,7 @@ import { getTotalValueOfCommission } from "./math";
  * @param a The first listing.
  * @param b The first listing.
  */
-export const commissionSort = (a: Listing, b: Listing) => {
+export const commissionSort = (a: BuyerListing | SellerListing, b: BuyerListing | SellerListing) => {
     return getTotalValueOfCommission(a.commission) - getTotalValueOfCommission(b.commission);
 };
 
@@ -15,6 +15,6 @@ export const commissionSort = (a: Listing, b: Listing) => {
  * @param a The first listing.
  * @param b The first listing.
  */
-export const dateSort = (a: Listing, b: Listing) => {
+export const dateSort = (a: BuyerListing | SellerListing, b: BuyerListing | SellerListing) => {
     return b.timestampSeconds - a.timestampSeconds;
 }

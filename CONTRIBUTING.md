@@ -15,16 +15,15 @@ development background (not required, just something I'd like to know) as well a
 access to a few things:
 
 - **GitHub.** I'll add you as a collaborator to the repo, which will allow you to create branches and pull requests
-  without needing to fork. I have the CODEOWNERS file and permissions set up such that a review from me is necessary to
-  merge in - more people can be added to that file at a later point.
+  without needing to fork. I have the CODEOWNERS file and permissions set up such that a review from me is still
+  necessary to
+  merge in - I'm also happy to add more people as the project matures and I develop a sense for who would make a good
+  fit.
 - **Firebase.** This can be useful for logs, database entries, and so on.
 - **Vercel.** This is our Continuous Deployment solution, and can be useful for diagnosing build failures and details
   regarding the deployment workflow.
 
 ## Issues Guidelines
-
-When contributing to this repository, please first discuss the change you wish to make via issue,
-email, or any other method with the owners of this repository before making a change.
 
 Guidelines for labeling issues:
 
@@ -39,7 +38,7 @@ Guidelines for labeling issues:
     - `priority-low` should be used for smaller features or enhancements that are a quality of life
       improvement.
 - **Good First Issue:** Label as `good first issue` if this is something that is relatively small in scope and is
-  approachable for someone without too much background.
+  approachable for someone without really needing to understand how the entire app comes together.
 
 ## Pull Request Process
 

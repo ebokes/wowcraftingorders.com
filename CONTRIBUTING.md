@@ -33,6 +33,8 @@ Guidelines for labeling issues:
       demand.
     - `priority-low` should be used for smaller features or enhancements that are a quality of life
       improvement.
+- **Good First Issue:** Label as `good first issue` if this is something that is relatively small in scope and is
+  approachable for someone without too much background.
 
 ## Pull Request Process
 

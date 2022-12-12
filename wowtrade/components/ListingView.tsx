@@ -101,6 +101,7 @@ export function ListingView({
                 <p className={"m-0"}><b>Battle.net Tag:</b> {listing.seller.battleNetTag}</p>}
             {includeDelete && deleteUserListing &&
                 <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>}
+
             {type === SELLER && (listing as SellerListing).infusions && <div>
                     <span>Seller can craft with these infusions:
                     </span>{(listing as SellerListing).infusions.map((infusion, index) => {
@@ -109,6 +110,9 @@ export function ListingView({
                         href={`https://www.wowhead.com/item=${infusion.itemId}`}></Link>{index !== (listing as SellerListing).infusions.length - 1 ? ", " : ""}</span>)
             })}
             </div>}
+
+            {type === SELLER && (listing as SellerListing).infusions && (listing as SellerListing).infusions.length === 0 &&
+                <span>Seller created this listing before infusions were added to the site.</span>}
 
             {listing.details && <p className={"m-0"}><b>{"Details: "}</b>{listing.details}</p>}
             {!!listing.providedReagents && !!listing.providedReagents.length &&

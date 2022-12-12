@@ -128,22 +128,24 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
         {success && <Alert key={"success"} variant={"success"}>Listing deleted successfully.</Alert>}
         {errors.length > 0 && <div>{errors.map((error) => <Alert key={"danger"}>{error}</Alert>)}</div>}
 
-        <Row>
-            <h4>{type === BUYER ? "Buyer Listings" : "Seller Listings"}</h4>
-            {!listings && !error && <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>}p
-            {listings && listings.length === 0 && <div>
-                <p>Click on an item to view all listings for that item!</p>
-                <p>No listings found. Once some are created you'll see them here!</p>
-            </div>}
-            {error && <div>Error fetching data. Please refresh and try again.</div>}
-            {listings && listings
-                .filter(filterBySearch(search))
-                .filter(filterByQuality(quality))
-                .map((listing: BuyerListing | SellerListing) => (
-                    <ListingView type={type} key={listing.id} listing={listing} includeItem includeSeller
-                                 includeDelete={includeDelete}
-                                 deleteUserListing={deleteUserListing}/>
-                ))}
+        <Row className={"mt-3"}>
+            <Col>
+                <h4>{type === BUYER ? "Buyer Listings" : "Seller Listings"}</h4>
+                {!listings && !error && <Image width="30" height="30" alt="Loading" src={"/loading.gif"}/>}
+                {listings && listings.length === 0 && <div>
+                    <p>Click on an item to view all listings for that item!</p>
+                    <p>No listings found. Once some are created you'll see them here!</p>
+                </div>}
+                {error && <div>Error fetching data. Please refresh and try again.</div>}
+                {listings && listings
+                    .filter(filterBySearch(search))
+                    .filter(filterByQuality(quality))
+                    .map((listing: BuyerListing | SellerListing) => (
+                        <ListingView type={type} key={listing.id} listing={listing} includeItem includeSeller
+                                     includeDelete={includeDelete}
+                                     deleteUserListing={deleteUserListing}/>
+                    ))}
+            </Col>
         </Row>
     </div>
 }

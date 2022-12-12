@@ -7,11 +7,12 @@ import Script from "next/script";
 import { SWRConfig } from "swr";
 import CustomNavbar from "../components/CustomNavbar";
 import Container from "react-bootstrap/Container";
-import { SessionContextValue, SessionProvider, signOut } from "next-auth/react"
+import { SessionProvider, signOut } from "next-auth/react"
 import { createContext, useState } from "react";
 import { REGIONS } from "../data/regions";
 import { US_REALMS } from "../data/realms";
 import { CookiesProvider, useCookies } from "react-cookie";
+import { SESSION_TYPE } from "../types/types";
 
 export let ROOT_URL: string;
 if (!process.env.NEXT_PUBLIC_VERCEL_ENV || process.env.NEXT_PUBLIC_VERCEL_ENV === 'development') {
@@ -34,10 +35,9 @@ export const RegionRealmTypeContext = createContext({
     }
 })
 
-// TODO: Should properly type the Session object here
-export const updateListingTimestamps = async (session: SessionContextValue<boolean> | { readonly data: null, readonly status: "loading" }, region: string) => {
+export const updateListingTimestamps = async (session: SESSION_TYPE, region: string) => {
     const PING_INTERVAL = 1000 * 60 * 2; // Ping every two minutes
-    const ping = async (session: SessionContextValue<boolean> | { readonly data: null, readonly status: "loading" }) => {
+    const ping = async (session: SESSION_TYPE) => {
         if (session.status !== "authenticated") return;
 
         const LISTING_TYPES = ["buyer_listings", "seller_listings"];
@@ -50,7 +50,12 @@ export const updateListingTimestamps = async (session: SessionContextValue<boole
                     "Authorization": `Bearer ${session.data.accessToken}`
                 }
             });
-            return (await response.json());
+            if (response.status === 401) {
+                alert("Your Battle.net session has expired. Please log in again.");
+                await signOut();
+            } else {
+                return (await response.json());
+            }
         });
 
         const responses = await Promise.all(promises);
@@ -58,8 +63,7 @@ export const updateListingTimestamps = async (session: SessionContextValue<boole
             if (response.error) {
                 console.error(response.error);
                 switch (response.status) {
-                    case 401:
-                    case 403: {
+                    case 401: {
                         alert("Your session has expired. Please sign in again.");
                         signOut();
                         break;
@@ -150,7 +154,7 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
 
                 }}>
                     <SWRConfig value={{
-                        fetcher: (url) => fetch(ROOT_URL + url).then(r => r.json())
+                        fetcher: (url) => fetch(ROOT_URL + url).then(r => r.json()).catch(() => signOut())
                     }}>
                         <CustomNavbar/>
                         <Container>

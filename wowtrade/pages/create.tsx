@@ -19,7 +19,6 @@ export default function Create() {
     }, [session])
 
     // Form input
-    // TODO: Should probably model the state as an actual payload object
     let [payload, setPayload] = useState<ListingPayload>({
         itemId: 0,
         commission: {
@@ -116,6 +115,7 @@ export default function Create() {
                 switch (response.status) {
                     case 400: // Error messages sent alongside with more detail
                     case 401: {
+                        alert("Your Battle.net login session has expired. Please log in again.")
                         await signOut();
                         break;
                     }

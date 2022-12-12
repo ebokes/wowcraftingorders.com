@@ -32,6 +32,7 @@ export default function MyListings() {
                 if (!listings.ok) {
                     switch (listings.status) {
                         case 401: {
+                            alert("Your Battle.net session has expired. Please log in again.");
                             await signOut();
                         }
                     }
@@ -61,6 +62,7 @@ export default function MyListings() {
                 if (!listings.ok) {
                     switch (listings.status) {
                         case 401: {
+                            alert("Your Battle.net session has expired. Please log in again.");
                             await signOut();
                         }
                     }
@@ -71,7 +73,7 @@ export default function MyListings() {
             }
         }
 
-        fetchData().catch();
+        fetchData().catch(e => console.error(e));
     }, [session, context.region, context.realm]);
 
 

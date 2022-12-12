@@ -7,7 +7,7 @@ import Image from "next/image";
 import { dateSort } from "../utils/sort";
 import { filterByQuality, filterBySearch } from "../utils/filter";
 import { ROOT_URL } from "../pages/_app";
-import { useSession } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 
 const SORT_TYPES = {
@@ -59,6 +59,10 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
             setSuccess(true);
             if (listings) setListingsCallback(listings.filter((listing) => listing.id !== id));
         } else {
+            if (response.status === 401) {
+                alert("Your Battle.net session has expired. Please log in again.");
+                await signOut();
+            }
             setErrors(["Error deleting listing. Please try again."])
         }
     }

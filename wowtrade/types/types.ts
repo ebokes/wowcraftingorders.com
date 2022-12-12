@@ -1,3 +1,7 @@
+import { SessionContextValue } from "next-auth/react";
+
+export type SESSION_TYPE = SessionContextValue<boolean> | { readonly data: null, readonly status: "loading" };
+
 export interface Seller {
     region: string;
     realm: string;

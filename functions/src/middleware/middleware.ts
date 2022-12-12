@@ -4,7 +4,7 @@ import axios, { AxiosError } from "axios";
 
 export const ensureAuthenticated: RequestHandler = async (request, response, next) => {
     if (!request.headers["authorization"]) {
-        functions.logger.error(`Missing authorization header on request to url ${request.url}`);
+        functions.logger.debug(`Missing authorization header on request to url ${request.url}`);
         return response.sendStatus(401);
     }
     const AUTH_TOKEN = request.headers["authorization"].split(" ")[1];
@@ -17,8 +17,12 @@ export const ensureAuthenticated: RequestHandler = async (request, response, nex
         });
         return next();
     } catch (err) {
-        functions.logger.error(`Received authorization error code ${(err as AxiosError).response?.status} from Blizzard API. Error: ${JSON.stringify((err as AxiosError).response?.data)}`);
-        return response.sendStatus(401);
+        if ((err as AxiosError).response?.status === 400) {
+            functions.logger.debug(`Invalid token on request to url ${request.url}`);
+            return response.sendStatus(401);
+        }
+        functions.logger.error(`Serverside error checking token on request to url ${request.url}: ${JSON.stringify(err)}`);
+        return response.sendStatus(500);
     }
 
 }

@@ -15,6 +15,7 @@ import {
     updateSellerListingTimestamps
 } from "../dto/sellerListingsDto";
 import * as functions from "firebase-functions";
+import axios from "axios";
 
 export const saveSellerListingService: RequestHandler = async (request, response) => {
     request.headers["authorization"] = request.headers["authorization"] as string;
@@ -125,6 +126,16 @@ export const updateSellerListingTimestampsService: RequestHandler = async (reque
     const characters = await getCharacters(request.params.region, request.headers["authorization"]);
     const listings = await getSellerListingsForCharactersDto(characters);
 
-    await updateSellerListingTimestamps(listings);
-    return response.sendStatus(200);
+    try {
+        await updateSellerListingTimestamps(listings);
+        return response.sendStatus(200);
+    } catch (err) {
+        if (axios.isAxiosError(err) && (err.response?.status === 401 || err.response?.status === 403)) {
+            functions.logger.warn(`Authorization error updating timestamps: ${err.response?.data?.reason}`);
+            return response.sendStatus(401);
+        }
+        functions.logger.error(`Unknown error updating seller timestamps: ${err}`);
+        return response.sendStatus(500);
+    }
+
 }

@@ -39,23 +39,38 @@ export const updateListingTimestamps = async (session: SessionContextValue<boole
     const PING_INTERVAL = 1000 * 60 * 2; // Ping every two minutes
     const ping = async (session: SessionContextValue<boolean> | { readonly data: null, readonly status: "loading" }) => {
         if (session.status !== "authenticated") return;
-        ["buyer_listings", "seller_listings"].map(listingType => {
-            fetch(`${ROOT_URL}/${region}/${listingType}/ping`, {
+
+        const LISTING_TYPES = ["buyer_listings", "seller_listings"];
+
+        const promises = LISTING_TYPES.map(async (listingType) => {
+            const response = await fetch(`${ROOT_URL}/${region}/${listingType}/ping`, {
                 method: "GET",
                 headers: {
                     // @ts-ignore
                     "Authorization": `Bearer ${session.data.accessToken}`
                 }
-            }).then(response => {
-                if (response.status !== 200) {
-                    switch (response.status) {
-                        case 401: {
-                            signOut();
-                        }
+            });
+            return (await response.json());
+        });
+
+        const responses = await Promise.all(promises);
+        responses.map((response) => {
+            if (response.error) {
+                console.error(response.error);
+                switch (response.status) {
+                    case 401:
+                    case 403: {
+                        alert("Your session has expired. Please sign in again.");
+                        signOut();
+                        break;
+                    }
+                    default: {
+                        console.error(`Unrecognized response status ${response.status} from ping request with response ${response} and message ${response.statusText}`);
+                        break;
                     }
                 }
-            }).catch(e => console.error(e));
-        })
+            }
+        });
     }
 
     const interval = setInterval(() => ping(session), PING_INTERVAL);

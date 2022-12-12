@@ -1,8 +1,7 @@
 import { RequestHandler } from "express";
 import * as functions from "firebase-functions";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
-const tokenStatusCodeIsValid = (statusCode: number) => statusCode >= 200 && statusCode < 300;
 export const ensureAuthenticated: RequestHandler = async (request, response, next) => {
     if (!request.headers["authorization"]) {
         functions.logger.error(`Missing authorization header on request to url ${request.url}`);
@@ -10,16 +9,18 @@ export const ensureAuthenticated: RequestHandler = async (request, response, nex
     }
     const AUTH_TOKEN = request.headers["authorization"].split(" ")[1];
 
-    const checkTokenResponse = await axios.get("https://oauth.battle.net/oauth/check_token", {
-        params: {
-            token: AUTH_TOKEN,
-        }
-    });
-    if (!tokenStatusCodeIsValid(checkTokenResponse.status)) {
-        functions.logger.warn(`Received authorization error code ${checkTokenResponse.status} with reason ${checkTokenResponse.data.reason} while checking token.`);
+    try {
+        await axios.get("https://oauth.battle.net/oauth/check_token", {
+            params: {
+                token: AUTH_TOKEN,
+            }
+        });
+        return next();
+    } catch (err) {
+        functions.logger.error(`Received authorization error code ${(err as AxiosError).response?.status} from Blizzard API. Error: ${JSON.stringify((err as AxiosError).response?.data)}`);
         return response.sendStatus(401);
     }
-    return next();
+
 }
 
 export const logResponseBody: RequestHandler = (req, res, next) => {

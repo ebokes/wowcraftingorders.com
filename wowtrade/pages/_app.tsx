@@ -73,6 +73,7 @@ export const updateListingTimestamps = async (session: SessionContextValue<boole
         });
     }
 
+    ping(session).catch();
     const interval = setInterval(() => ping(session), PING_INTERVAL);
     return () => clearInterval(interval);
 }

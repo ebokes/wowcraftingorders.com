@@ -1,9 +1,8 @@
 import { Col, Form, Row } from "react-bootstrap";
 import { EU_REALMS, US_REALMS } from "../data/realms";
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { RegionRealmTypeContext } from "../pages/_app";
 import { REGIONS } from "../data/regions";
-import { refreshWowheadLinks } from "../utils/wowhead";
 
 /*
     Buyer = I'm a buyer, show seller listings and submit buyer listings
@@ -13,7 +12,6 @@ export const BUYER = "buyer", SELLER = "seller";
 
 export function SetRegionRealmType() {
     const context = useContext(RegionRealmTypeContext);
-    useEffect(refreshWowheadLinks, [context.region, context.realm, context.type]);
     return <Row className={"mb-2"}>
         <Col md={4}>
             <Form.Label>Region</Form.Label>

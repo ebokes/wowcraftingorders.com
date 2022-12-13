@@ -128,15 +128,22 @@ export function ListingView({
             {includeDelete && deleteUserListing &&
                 <ButtonGroup><Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete
                     Listing</Button></ButtonGroup>}
-            
-            {<div style={{ position: "absolute", top: "20px", right: "20px", textAlign: "right" }}>
+
+            {<div
+                style={{ position: "absolute", top: "20px", right: "20px", textAlign: "right", width: "fit-content" }}>
                 <p className={"mb-0"}>{includeSeller && <p className={"m-0"}>
                     {type === SELLER ? "Seller: " : "Buyer: "}
                     <b>{listing.seller.characterName}</b>-{listing.seller.realm}
                 </p>}</p>
             </div>}
 
-            {<div style={{ position: "absolute", bottom: "20px", right: "20px", textAlign: "right" }}>
+            {<div style={{
+                position: "absolute",
+                bottom: "20px",
+                right: "20px",
+                textAlign: "right",
+                width: "fit-content"
+            }}>
                 <p className={"mb-0"}>{deltaTimeText}</p>
             </div>}
 

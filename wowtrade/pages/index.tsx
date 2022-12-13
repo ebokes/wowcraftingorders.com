@@ -6,7 +6,6 @@ import { RegionRealmTypeContext, updateListingTimestamps } from "./_app";
 import { BUYER, SELLER, SetRegionRealmType } from "../components/SetRealms";
 import Link from "next/link";
 import useSWR from "swr";
-import { refreshWowheadLinks } from "../utils/wowhead";
 import { REGIONS } from "../data/regions";
 import { EU_CONNECTED_REALMS, US_CONNECTED_REALMS } from "../data/realms";
 import { useSession } from "next-auth/react";
@@ -14,7 +13,6 @@ import { useSession } from "next-auth/react";
 export default function Home() {
     const context = useContext(RegionRealmTypeContext);
     const session = useSession();
-    useEffect(refreshWowheadLinks, [context.region, context.realm]);
     const itemsQueryString = `/${context.region}/${context.realm}/${context.type === BUYER ? "seller_listings" : "buyer_listings"}`;
 
     const { data: listings, error } = useSWR(itemsQueryString);

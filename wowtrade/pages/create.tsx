@@ -9,6 +9,7 @@ import { BUYER, SELLER, SetRegionRealmType } from "../components/SetRealms";
 import { INFUSIONS } from "../data/reagents/infusions";
 import { ReagentsView } from "../components/Reagents";
 import { ItemSelectView } from "../components/ItemSelect";
+import { refreshWowheadLinks } from "../utils/wowhead";
 
 export default () => {
     const session = useSession();
@@ -30,20 +31,12 @@ export default () => {
         providedReagents: [],
         infusions: context.type === SELLER ? INFUSIONS : undefined
     });
+    useEffect(refreshWowheadLinks, [payload.itemId]);
 
     const [submitting, setSubmitting] = useState<boolean>(false);
     const [errors, setErrors] = useState<string[]>([]);
     const [success, setSuccess] = useState<boolean>(false);
 
-    useEffect(() => {
-        const inlineScript = document.createElement('script');
-        inlineScript.innerHTML = 'window.$WowheadPower.refreshLinks();';
-        document.body.append(inlineScript);
-
-        return () => {
-            inlineScript.remove();
-        };
-    }, [context.region, context.realm, payload]);
 
     if (session.status !== "authenticated" && !(!process.env.NODE_ENV || process.env.NODE_ENV === 'development')) {
         return (

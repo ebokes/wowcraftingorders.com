@@ -2,13 +2,13 @@ import { BuyerListing, SellerListing } from "../types/types";
 import { Alert, Col, Form, ListGroup, Row } from "react-bootstrap";
 import { ListingView } from "./ListingView";
 import { useEffect, useState } from "react";
-import { refreshWowheadLinks } from "../utils/wowhead";
 import Image from "next/image";
 import { dateSort } from "../utils/sort";
 import { filterByQuality, filterBySearch } from "../utils/filter";
 import { ROOT_URL } from "../pages/_app";
 import { signOut, useSession } from "next-auth/react";
 import { BUYER } from "./SetRealms";
+import { refreshWowheadLinks } from "../utils/wowhead";
 
 
 const SORT_TYPES = {
@@ -41,8 +41,7 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
     const [errors, setErrors] = useState<string[]>([]);
     const [success, setSuccess] = useState<boolean>(false);
 
-    // Hooks
-    useEffect(refreshWowheadLinks, [listings, error, setListingsCallback, search, sortMethod, quality, errors, success]);
+    useEffect(refreshWowheadLinks, [listings]);
 
     const deleteUserListing = async (id: string) => {
         if (!setListingsCallback) throw new Error(`Attempting to delete when no setListingCallback was provided.`);

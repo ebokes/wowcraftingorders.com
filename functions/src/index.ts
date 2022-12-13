@@ -11,9 +11,10 @@ import * as express from "express";
 import * as timeout from "connect-timeout";
 import { logResponseBody } from "./middleware/middleware";
 
+initializeApp(functions.config().firebase);
+
 const pino = Pino()
 
-initializeApp(functions.config().firebase);
 
 const haltOnTimedOut: RequestHandler = (req, res, next) => {
     if (!req.timedout) next();

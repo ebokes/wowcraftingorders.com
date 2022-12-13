@@ -2,6 +2,8 @@ import { SellerListingPayload } from "../types/types";
 import Ajv, { JSONSchemaType } from "ajv";
 import { CustomError } from "../validation/common";
 import { BAD_WORDS } from "../data/badwords";
+import { ITEMS } from "../data/items";
+import * as functions from "firebase-functions";
 
 const ajv = new Ajv({ allErrors: true });
 
@@ -114,6 +116,18 @@ const validateSellerListingBusiness = (payload: SellerListingPayload): CustomErr
             errors.push({ message: "Please do not use inappropriate language in your additional details." });
         }
     }
+
+    const item = ITEMS.find(item => item.id === payload.itemId);
+    payload.providedReagents.map(reagent => {
+        const reagentCount = item?.reagents.find(iterReagent => iterReagent.reagent.itemId === reagent.reagent.itemId)?.count;
+        if (!reagentCount) {
+            functions.logger.error(`Reagent ${reagent.reagent.itemId} not found in item ${payload.itemId} reagents.`);
+            errors.push({ message: "Provided Reagent does not match the item's reagents." });
+        }
+        if (reagent.count > (reagentCount as number)) {
+            errors.push({ message: "More reagents specified than the recipe takes." });
+        }
+    })
     return errors;
 }
 

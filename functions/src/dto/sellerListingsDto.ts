@@ -5,17 +5,18 @@ import { REGIONS } from "../data/regions";
 import * as functions from "firebase-functions";
 import { LISTINGS_COLLECTION } from "./common";
 
-
+const db = admin.firestore();
 export const getSellerListingsDto = async () => {
-    const db = admin.firestore();
-    return (await db.collection(LISTINGS_COLLECTION).get()).docs.map((doc) => {
+    console.debug(`getSellerListingsDto()`);
+    const result = (await db.collection(LISTINGS_COLLECTION).get()).docs.map((doc) => {
         return { id: doc.id, ...doc.data() } as SellerListing;
     });
+    console.debug(`getSellerListingsDto() => ${JSON.stringify(result)}`);
+    return result;
 };
 
 export const getSellerListingsFromRealmDto = async (region: string, realm: string): Promise<SellerListing[]> => {
-    const db = admin.firestore();
-
+    console.debug(`getSellerListingsFromRealmDto: region=${region}, realm=${realm}`);
     let realmsToQuery;
     switch (region) {
         case REGIONS.US: {
@@ -45,45 +46,54 @@ export const getSellerListingsFromRealmDto = async (region: string, realm: strin
         functions.logger.debug(`Realm ${region} ${realm} is part of connected realm group ${JSON.stringify(realmsToQuery)}`);
     }
 
-    return (await db.collection(LISTINGS_COLLECTION)
+    const result = (await db.collection(LISTINGS_COLLECTION)
         .where("seller.region", "==", region)
         .where("seller.realm", "in", realmsToQuery).get()).docs.map((doc) => {
         return { id: doc.id, ...doc.data() } as SellerListing;
     });
+    console.debug(`getSellerListingsFromRealmDto: result=${JSON.stringify(result)}`);
+    return result;
 }
 
 export const getSellerListingDto = async (listingId: string): Promise<SellerListing | undefined> => {
-    const db = admin.firestore();
+    console.debug(`getSellerListingDto: listingId=${listingId}`);
     const doc = await db.collection(LISTINGS_COLLECTION).doc(listingId).get();
+    console.debug(`getSellerListingDto: doc=${JSON.stringify(doc)}`);
     return { id: doc.id, ...doc.data() } as SellerListing;
 }
 
 export const deleteSellerListingDto = async (listingId: string) => {
-    const db = admin.firestore();
-    return db.collection(LISTINGS_COLLECTION).doc(listingId).delete();
+    console.debug(`deleteSellerListingDto: listingId=${listingId}`);
+    const result = db.collection(LISTINGS_COLLECTION).doc(listingId).delete();
+    console.debug(`deleteSellerListingDto: result=${JSON.stringify(result)}`);
+    return result;
 }
 
 // TODO: Could be slightly cleaned up
 export const addSellerListingDto = async (listing: SellerListingPayload): Promise<SellerListing> => {
-    const db = admin.firestore();
+    console.debug(`addSellerListingDto: listing=${JSON.stringify(listing)}`);
     const data = await db.collection(LISTINGS_COLLECTION).add({ ...listing, timestampSeconds: Date.now() / 1000 });
+    console.debug(`addSellerListingDto: data=${JSON.stringify(data)}`);
     return { id: data.id, timestampSeconds: Date.now() / 1000, ...listing } as SellerListing;
 };
 
 export const updateSellerListingDto = async (id: string, payload: SellerListingPayload): Promise<SellerListing> => {
-    const db = admin.firestore();
+    console.debug(`updateSellerListingDto: id=${id}, payload=${JSON.stringify(payload)}`);
     await db.collection(LISTINGS_COLLECTION).doc(id).update({
         ...payload,
         timestampSeconds: Date.now() / 1000
     });
+    console.debug(`updateSellerListingDto: updated`);
     return { id, timestampSeconds: Date.now() / 1000, ...payload } as SellerListing;
 }
 
 export const getSellerListingsForItemDto = async (region: string, realm: string, itemId: number): Promise<SellerListing[]> => {
-    const db = admin.firestore();
-    return (await db.collection(LISTINGS_COLLECTION).where("seller.region", "==", region).where("seller.realm", "==", realm).where("itemId", "==", itemId).get()).docs.map((doc) => {
+    console.debug(`getSellerListingsForItemDto: region=${region}, realm=${realm}, itemId=${itemId}`);
+    const result = (await db.collection(LISTINGS_COLLECTION).where("seller.region", "==", region).where("seller.realm", "==", realm).where("itemId", "==", itemId).get()).docs.map((doc) => {
         return { id: doc.id, ...doc.data() } as SellerListing;
     });
+    console.debug(`getSellerListingsForItemDto: result=${JSON.stringify(result)}`);
+    return result;
 }
 
 /**
@@ -91,7 +101,7 @@ export const getSellerListingsForItemDto = async (region: string, realm: string,
  * @param listings
  */
 export const updateSellerListingTimestamps = async (listings: SellerListing[]) => {
-    const db = admin.firestore();
+    console.debug(`updateSellerListingTimestamps: listings=${JSON.stringify(listings)}`);
     const batch = db.batch();
     const promises = listings.map(async (listing) => {
         const ref = db.collection(LISTINGS_COLLECTION).doc(listing.id);
@@ -105,10 +115,11 @@ export const updateSellerListingTimestamps = async (listings: SellerListing[]) =
 
     await Promise.all(promises);
     await batch.commit();
+    console.debug(`updateSellerListingTimestamps: done`);
 }
 
 export const getSellerListingsForCharactersDto = async (characters: Character[]): Promise<SellerListing[]> => {
-    const db = admin.firestore();
+    console.debug(`getSellerListingsForCharactersDto: characters=${JSON.stringify(characters)}`);
     const listings: SellerListing[] = [];
     for (const character of characters) {
         const matchingListings = await db.collection(LISTINGS_COLLECTION)
@@ -120,16 +131,18 @@ export const getSellerListingsForCharactersDto = async (characters: Character[])
             return { id: doc.id, ...doc.data() } as SellerListing;
         }));
     }
+    console.debug(`getSellerListingsForCharactersDto: listings=${JSON.stringify(listings)}`);
     return listings;
 }
 
 export const isDuplicateSellerListing = async (listing: SellerListingPayload) => {
-    const db = admin.firestore();
+    console.debug(`isDuplicateSellerListing: listing=${JSON.stringify(listing)}`);
     const listings = await db.collection(LISTINGS_COLLECTION)
         .where("seller.region", "==", listing.seller.region)
         .where("seller.realm", "==", listing.seller.realm)
         .where("seller.characterName", "==", listing.seller.characterName)
         .where("itemId", "==", listing.itemId)
         .get();
+    console.debug(`isDuplicateSellerListing: listings=${JSON.stringify(listings)}`);
     return listings.docs.length > 0;
 };

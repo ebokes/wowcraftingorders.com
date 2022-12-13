@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, ListGroup, Row } from "react-bootstrap";
+import { Button, ListGroup, Row } from "react-bootstrap";
 import Link from "next/link";
 import differenceInMinutes from "date-fns/differenceInMinutes";
 import differenceInHours from "date-fns/differenceInHours";
@@ -126,8 +126,9 @@ export function ListingView({
                 </p>}
 
             {includeDelete && deleteUserListing &&
-                <ButtonGroup><Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete
-                    Listing</Button></ButtonGroup>}
+                <p className={"mt-2"}><Button style={{ width: "fit-content" }} variant={"danger"}
+                                              onClick={() => deleteUserListing(listing.id)}>Delete
+                    Listing</Button></p>}
 
             {<div
                 style={{ position: "absolute", top: "20px", right: "20px", textAlign: "right", width: "fit-content" }}>

@@ -22,28 +22,31 @@ export const ReagentsView = ({ payload, setPayload }: Props) => {
     return <Row className={"mt-2"}>
         <Col md={context.type === SELLER ? 6 : 12}>
             <p className={"m-0"}>Recipe Materials</p>
-            <Form.Text>Specify whether you can provide these.</Form.Text>
+            <Form.Text>Specify whether you can provide these, and how many.</Form.Text>
             <ListGroup>
                 {ITEMS.find(item => item.id === payload.itemId)?.reagents.map(reagent => {
                     return <ListGroup.Item
-                        key={reagent.reagent.itemId}>
+                        key={reagent.reagent.itemId} style={{ position: "relative" }}>
 
                         {!reagent.reagent.buyerProvides &&
-                            <Form.Check onChange={() => {
-                                payload.providedReagents.find((iterationReagent: ReagentStack) => iterationReagent.reagent.itemId === reagent.reagent.itemId)
-                                    ? setPayload({
-                                        ...payload,
-                                        providedReagents: payload.providedReagents.filter((iterationReagent: ReagentStack) => iterationReagent.reagent.itemId !== reagent.reagent.itemId)
-                                    }) : setPayload({
-                                        ...payload,
-                                        providedReagents: [
-                                            ...payload.providedReagents,
-                                            reagent
-                                        ]
-                                    })
-                            }} type={"checkbox"}
-                                        id={`reagent-${reagent.reagent.itemId}`} className="me-2"
-                                        style={{ display: "inline" }}/>}
+                            <span>
+                                <Form.Check onChange={() => {
+                                    payload.providedReagents.find((iterationReagent: ReagentStack) => iterationReagent.reagent.itemId === reagent.reagent.itemId)
+                                        ? setPayload({
+                                            ...payload,
+                                            providedReagents: payload.providedReagents.filter((iterationReagent: ReagentStack) => iterationReagent.reagent.itemId !== reagent.reagent.itemId)
+                                        }) : setPayload({
+                                            ...payload,
+                                            providedReagents: [
+                                                ...payload.providedReagents,
+                                                reagent
+                                            ]
+                                        })
+                                }} type={"checkbox"} id={`reagent-${reagent.reagent.itemId}`} className="me-2"
+                                            style={{ display: "inline" }}/>
+                            </span>
+                        }
+
 
                         <span>{reagent.count}{"x "}</span>
 
@@ -52,15 +55,43 @@ export const ReagentsView = ({ payload, setPayload }: Props) => {
                         {!!reagent.reagent.buyerProvides &&
                             <span>{" (Buyer-Provided)"}</span>}
 
+                        {!reagent.reagent.buyerProvides && payload.providedReagents.find((iterationReagent: ReagentStack) => iterationReagent.reagent.itemId === reagent.reagent.itemId) &&
+                            <span style={{ position: "absolute", top: "0", right: "0" }}>
+                                <span className={"ms-3"}>
+                                    <span>Quality coming soon!</span>
+                                </span>
+                                <span className={"ms-3"}>
+                                    <span>Amount: </span>
+                                    <Form.Control type="number"
+                                                  value={payload.providedReagents.find((iterationReagent: ReagentStack) => iterationReagent.reagent.itemId === reagent.reagent.itemId)?.count}
+                                                  onChange={(e) => {
+                                                      setPayload({
+                                                          ...payload,
+                                                          providedReagents: payload.providedReagents.map((iterationReagent: ReagentStack) => {
+                                                              if (iterationReagent.reagent.itemId === reagent.reagent.itemId) {
+                                                                  return {
+                                                                      ...iterationReagent,
+                                                                      count: parseInt(e.target.value)
+                                                                  }
+                                                              }
+                                                              return iterationReagent;
+                                                          })
+                                                      })
+                                                  }}
+                                                  style={{ display: "inline", width: "100px" }}/>
+                                </span>
+                            </span>
+                        }
+
                     </ListGroup.Item>
                 })}
             </ListGroup>
         </Col>
-        {context.type === SELLER &&
+        {context.type === SELLER && (payload as SellerListingPayload).infusions &&
             <Col md={6}>
                 <Form.Group>
                     <p className={"m-0"}>Infusions</p>
-                    <Form.Text muted>Check the box if you can make an item with these!</Form.Text>
+                    <Form.Text muted>Check the box if you can use it in your crafts!</Form.Text>
                     <ListGroup>
                         {INFUSIONS.map((infusion) => {
                             return <ListGroup.Item key={infusion.itemId}>

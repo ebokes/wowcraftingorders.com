@@ -37,3 +37,4 @@ jobs:
           source_dir: "functions"
           project_id: "wowtrade"
           env_vars: APP_ENV=production
+          memory_mb: 128

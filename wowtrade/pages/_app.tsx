@@ -14,6 +14,7 @@ import { US_REALMS } from "../data/realms";
 import { CookiesProvider, useCookies } from "react-cookie";
 import { SESSION_TYPE } from "../types/types";
 import { BUYER, SELLER } from "../components/SetRealms";
+import { refreshWowheadLinks } from "../utils/wowhead";
 
 export let ROOT_URL: string;
 export const DEV_ROOT_URL = 'http://localhost:5001/wowtrade/us-central1/app';
@@ -38,7 +39,7 @@ export const RegionRealmTypeContext = createContext({
 })
 
 export const updateListingTimestamps = async (session: SESSION_TYPE, region: string) => {
-    const PING_INTERVAL = 1000 * 60 * 2; // Ping every two minutes
+    const PING_INTERVAL = 1000 * 60 * 3; // Ping every two minutes
     const ping = async (session: SESSION_TYPE) => {
         if (session.status !== "authenticated") return;
 
@@ -97,6 +98,8 @@ export default function App({ Component, pageProps: { session, ...pageProps } }:
         if (cookies.region) setRegion(cookies.region);
         if (cookies.type) setType(cookies.type);
     }, []);
+
+    useEffect(refreshWowheadLinks, [type]);
 
 
     return <div

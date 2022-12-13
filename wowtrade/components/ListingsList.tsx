@@ -1,5 +1,5 @@
 import { BuyerListing, SellerListing } from "../types/types";
-import { Alert, Col, Form, Row } from "react-bootstrap";
+import { Alert, Col, Form, ListGroup, Row } from "react-bootstrap";
 import { ListingView } from "./ListingView";
 import { useEffect, useState } from "react";
 import { refreshWowheadLinks } from "../utils/wowhead";
@@ -86,7 +86,7 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
     return <div>
         <Form className="mb-2 mt-0" style={{ width: "100%" }}>
             <Row>
-                <Col md={6}>
+                <Col md={5}>
                     <Form.Group>
                         <Form.Label>Filter by Name</Form.Label>
                         <Form.Control type="text" value={search}
@@ -95,7 +95,7 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
                                       }} placeholder="Item Name"/>
                     </Form.Group>
                 </Col>
-                <Col md={3}>
+                <Col md={4}>
                     <Form.Group>
                         <Form.Label>Sort Method</Form.Label>
                         <Form.Control as={"select"} value={sortMethod}
@@ -137,14 +137,16 @@ export default function ListingsList({ type, listings, error, setListingsCallbac
                     <p>No listings found. Once some are created you'll see them here!</p>
                 </div>}
                 {error && <div>Error fetching data. Please refresh and try again.</div>}
-                {listings && listings
-                    .filter(filterBySearch(search))
-                    .filter(filterByQuality(quality))
-                    .map((listing: BuyerListing | SellerListing) => (
-                        <ListingView type={type} key={listing.id} listing={listing} includeItem includeSeller
-                                     includeDelete={includeDelete}
-                                     deleteUserListing={deleteUserListing}/>
-                    ))}
+                <ListGroup>
+                    {listings && listings
+                        .filter(filterBySearch(search))
+                        .filter(filterByQuality(quality))
+                        .map((listing: BuyerListing | SellerListing) => (
+                            <ListingView type={type} key={listing.id} listing={listing} includeItem includeSeller
+                                         includeDelete={includeDelete}
+                                         deleteUserListing={deleteUserListing}/>
+                        ))}
+                </ListGroup>
             </Col>
         </Row>
     </div>

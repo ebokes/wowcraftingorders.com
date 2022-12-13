@@ -1,4 +1,4 @@
-import { Button, Row } from "react-bootstrap";
+import { Button, ButtonGroup, ListGroup, Row } from "react-bootstrap";
 import Link from "next/link";
 import differenceInMinutes from "date-fns/differenceInMinutes";
 import differenceInHours from "date-fns/differenceInHours";
@@ -79,8 +79,8 @@ export function ListingView({
     const item = ITEMS.find(item => item.id === listing.itemId);
     if (!item) throw new Error("Couldn't find item!");
 
-    return <div className={"bg-black text-white m-1 mb-2 p-3 border border-secondary rounded"}
-                style={{ position: "relative" }}>
+    return <ListGroup.Item className={"bg-black p-3 border border-secondary"}
+                           style={{ position: "relative" }}>
         <p className={"m-0"}>{includeItem && <b><Link style={{ fontSize: "18px" }}
                                                       href={`/item/${listing.itemId}`}
                                                       data-wowhead={`item=${listing.itemId}`}>{item.name}</Link></b>}</p>
@@ -99,8 +99,7 @@ export function ListingView({
                 <p className={"m-0"}><b>Discord Tag:</b> {listing.seller.discordTag}</p>}
             {listing.seller.battleNetTag &&
                 <p className={"m-0"}><b>Battle.net Tag:</b> {listing.seller.battleNetTag}</p>}
-            {includeDelete && deleteUserListing &&
-                <Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete Listing</Button>}
+
 
             {type === SELLER && (listing as SellerListing).infusions && <div>
                     <span>Seller can craft with these infusions:
@@ -125,6 +124,11 @@ export function ListingView({
                         <span>{", "}</span>}
                 </span>)}
                 </p>}
+
+            {includeDelete && deleteUserListing &&
+                <ButtonGroup><Button variant={"danger"} onClick={() => deleteUserListing(listing.id)}>Delete
+                    Listing</Button></ButtonGroup>}
+            
             {<div style={{ position: "absolute", top: "20px", right: "20px", textAlign: "right" }}>
                 <p className={"mb-0"}>{includeSeller && <p className={"m-0"}>
                     {type === SELLER ? "Seller: " : "Buyer: "}
@@ -137,5 +141,5 @@ export function ListingView({
             </div>}
 
         </Row>
-    </div>
+    </ListGroup.Item>
 }

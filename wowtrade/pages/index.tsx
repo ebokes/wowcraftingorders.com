@@ -3,7 +3,7 @@ import { useContext, useEffect } from "react";
 import ListingsList from "../components/ListingsList";
 import { Form } from "react-bootstrap";
 import { RegionRealmTypeContext, updateListingTimestamps } from "./_app";
-import { BUYER, SetRegionRealmType } from "../components/SetRealms";
+import { BUYER, SELLER, SetRegionRealmType } from "../components/SetRealms";
 import Link from "next/link";
 import useSWR from "swr";
 import { refreshWowheadLinks } from "../utils/wowhead";
@@ -55,7 +55,7 @@ export default function Home() {
 
                 {connectedRealms !== undefined &&
                     <p className={"mb-3"}>Showing listings from connected realms {connectedRealms.join(", ")}.</p>}
-                <ListingsList type={context.type === BUYER ? "seller_listings" : "buyer_listings"} listings={listings}
+                <ListingsList type={context.type === BUYER ? SELLER : BUYER} listings={listings}
                               error={error} includeDelete={false}/>
             </main>
         </div>

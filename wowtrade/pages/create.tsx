@@ -139,7 +139,6 @@ export default () => {
             <Form style={{ width: "100%" }}>
                 <SetRegionRealmType/>
                 <Row className={"my-1"}>
-                    <h4>Seller Details</h4>
                     <Col md={4}>
                         <Form.Group>
                             <Form.Label>Character Name</Form.Label>
@@ -175,7 +174,7 @@ export default () => {
                                 ...payload,
                                 seller: { ...payload.seller, battleNetTag: e.target.value }
                             })}/>
-                            <Form.Text muted>Optional.</Form.Text>
+                            <Form.Text muted>Optional, but recommended.</Form.Text>
                         </Form.Group>
                     </Col>
                 </Row>
@@ -198,8 +197,8 @@ export default () => {
                     </Form.Group>
                 </Row>
                 <Row className={"my-1"}>
-                    <Col md={6}>
-                        <Form.Label>Minimum Quality</Form.Label>
+                    <Col md={3}>
+                        <Form.Label>{context.type === BUYER ? "Desired Quality" : "Minimum Quality"}</Form.Label>
                         <Form.Control
                             as={"select"} value={payload.quality}
                             onChange={(e) => {
@@ -217,6 +216,23 @@ export default () => {
                             <option value={"Rank 5"}>Rank 5 (Best)</option>
                         </Form.Control>
                     </Col>
+                    <Col md={3}>
+                        <Form.Group>
+                            <Form.Label>{context.type === BUYER ? "Commission I'll Pay" : "Commission I Want"}</Form.Label>
+                            <InputGroup>
+                                <Form.Control
+                                    type="number" value={payload.commission.gold}
+                                    onChange={(e) => setPayload({
+                                        ...payload, commission: {
+                                            ...payload.commission, gold: parseInt(e.target.value)
+                                        }
+                                    })
+                                    }/>
+                                <InputGroup.Text
+                                    className={"bg-dark"} id="basic-addon1">gold</InputGroup.Text>
+                            </InputGroup>
+                        </Form.Group>
+                    </Col>
                     <Col md={6}>
                         <Form.Label>Additional Details</Form.Label>
                         <Form.Control
@@ -224,66 +240,18 @@ export default () => {
                             onChange={(e) => {
                                 setPayload({ ...payload, details: e.target.value });
                             }}/>
-                        <Form.Text muted>Free text field to provide any other information you want
-                            to, such as your inspiration proc chance or any other benefits that didn't exist on the
-                            form. Please be civil.</Form.Text>
+                        <Form.Text muted>Provide any other information you want
+                            to, such as your inspiration proc chance.</Form.Text>
                     </Col>
                 </Row>
-                <Row className={"my-1"}>
-                    <h4>Commission</h4>
-                    <Col md={4}>
-                        <InputGroup>
-                            <Form.Control
-                                type="number" value={payload.commission.gold}
-                                onChange={(e) => setPayload({
-                                    ...payload, commission: {
-                                        ...payload.commission, gold: parseInt(e.target.value)
-                                    }
-                                })
-                                }/>
-                            <InputGroup.Text
-                                className={"bg-dark"} id="basic-addon1">gold</InputGroup.Text>
-                        </InputGroup>
-                    </Col>
-                    <Col md={4}>
-                        <InputGroup>
-                            <Form.Control
-                                type="number"
-                                value={payload.commission.silver}
-                                onChange={(e) => setPayload({
-                                    ...payload, commission: {
-                                        ...payload.commission, silver: parseInt(e.target.value)
-                                    }
-                                })}/>
-                            <InputGroup.Text
-                                className={"bg-dark"} id="basic-addon1">silver</InputGroup.Text>
-                        </InputGroup>
-                    </Col>
-                    <Col md={4}>
-                        <InputGroup>
-                            <Form.Control
-                                type="number"
-                                value={payload.commission.copper}
-                                onChange={(e) => setPayload({
-                                    ...payload, commission: {
-                                        ...payload.commission, copper: parseInt(e.target.value)
-                                    }
-                                })}/>
-                            <InputGroup.Text
-                                className={"bg-dark"} id="basic-addon1">copper</InputGroup.Text>
-                        </InputGroup>
-                    </Col>
-                </Row>
-                <Row className={"my-1"}>
+                <Row className={"mt-3"}>
                     <Col md={12}>
                         <Button disabled={submitting} variant="primary" type="submit" style={{ width: "100%" }}
                                 onClick={handleSubmit}>
                             Submit Listing
                         </Button>
                         <Form.Text>Please double-check you selected whether you're a buyer or seller, which
-                            determines which type of listing this creates. If you're a buyer, a listing indicating
-                            you'd like to buy the item is created. If you're a seller, a
-                            listing indicating you can craft the item is created.</Form.Text>
+                            determines which type of listing this creates.</Form.Text>
                     </Col>
                 </Row>
             </Form>

@@ -3,7 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { RegionRealmTypeContext, ROOT_URL, updateListingTimestamps } from "./_app";
 import ListingsList from "../components/ListingsList";
 import Link from "next/link";
-import { Button } from "react-bootstrap";
+import { Button, Col, Row } from "react-bootstrap";
 import { BUYER, SELLER } from "../components/SetRealms";
 import { BuyerListing, SellerListing } from "../types/types";
 
@@ -99,22 +99,26 @@ export default function MyListings() {
 
     return <div>
         <h3 className={"mt-3"}>My Listings</h3>
-        <p>To create a new listing, please use the <Link href={"/create"}>Sell</Link> page.</p>
-        <p>The "Last Active" time on your listings will regularly update anytime you are on the site and logged
-            into Battle.net.</p>
+        <p>To create a new listing, please use the <Link href={"/create"}>Sell</Link> page. The "Last Active" time on
+            your listings will regularly update anytime you are on the site and logged
+            into Battle.net. No need to refresh the site or manually re-list anything.</p>
 
-        <h3>Your Seller Listings</h3>
-        <p>These are the listings you've indicated you can <i>craft</i>.</p>
-        <ListingsList type={SELLER}
-                      listings={sellerListings}
-                      error={undefined}
-                      includeDelete={true}
-                      setListingsCallback={setSellerListings}/>
-
-        <h3>Your Buyer Listings</h3>
-        <p>These are the listings you've indicated you want to <i>buy</i>.</p>
-        <ListingsList type={BUYER} listings={buyerListings} error={undefined} includeDelete={true}
-                      setListingsCallback={setBuyerListings}/>
-
+        <Row>
+            <Col md={6}>
+                <h3>Your Seller Listings</h3>
+                <p>These are the listings you've indicated you can <i>craft</i>.</p>
+                <ListingsList type={SELLER}
+                              listings={sellerListings}
+                              error={undefined}
+                              includeDelete={true}
+                              setListingsCallback={setSellerListings}/>
+            </Col>
+            <Col md={6}>
+                <h3>Your Buyer Listings</h3>
+                <p>These are the listings you've indicated you want to <i>buy</i>.</p>
+                <ListingsList type={BUYER} listings={buyerListings} error={undefined} includeDelete={true}
+                              setListingsCallback={setBuyerListings}/>
+            </Col>
+        </Row>
     </div>
 }

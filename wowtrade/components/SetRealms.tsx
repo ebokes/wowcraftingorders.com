@@ -14,7 +14,7 @@ export const BUYER = "buyer", SELLER = "seller";
 export function SetRegionRealmType() {
     const context = useContext(RegionRealmTypeContext);
     useEffect(refreshWowheadLinks, [context.region, context.realm, context.type]);
-    return <Row>
+    return <Row className={"mb-2"}>
         <Col md={4}>
             <Form.Label>Region</Form.Label>
             <Form.Control as="select"
@@ -63,8 +63,6 @@ export function SetRegionRealmType() {
                     <option value={SELLER}>I'm a Seller
                     </option>
                 </Form.Control>
-                <Form.Text muted>Determines whether you're shown listings from sellers (if you're a buyer) or buyers
-                    (if you're a seller).</Form.Text>
             </Form.Group>
         </Col>
     </Row>
